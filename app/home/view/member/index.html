@@ -1,0 +1,183 @@
+{extend name="layout/member" /} 
+{block name="content"}
+<style>
+.qiye{
+    padding: 5px 10px;
+    background: #007dfe;
+    color: #ffffff;
+    border-radius: 5px;
+    height: 24px;
+    line-height: 14px;
+    margin-left: 8px;
+    font-size: 12px;
+    position: absolute;
+    top: 12px;
+}
+.kaka-notice-text a img{
+ display: none;
+}
+.kaka-notice-text img{
+ display: none;
+}
+</style>
+    <div class="view-framework-main">
+     <div class="kaka-notice">
+      <div class="kaka-notice-icon">
+       <i class="iconimg iconimg-notice"></i>
+      </div>
+      <div class="kaka-notice-time">
+       <span>{:date("Y",strtotime($new.update_time))}</span>
+       <strong>{:date("m-d",strtotime($new.update_time))}</strong>
+      </div>
+      <div class="kaka-notice-text">
+       <h5><a href="{:url('home/helpfaq/index')}" target="_blank">{$new.title}</a></h5>
+       <a href="{:url('home/helpfaq/index')}" target="_blank" title="{$new.title}">{$new.content|raw}</a>
+      </div> 
+      <div class="kaka-notice-more"> 
+       <a href="{:url('home/helpfaq/index')}" target="_blank"> <span>更多公告</span> <i class="iconfont"></i></a> 
+      </div>
+     </div>
+     <div class="box">
+      <div class="usercenter clearfix">
+       <div class="usercenter-info">
+        <img class="avatar" width="60" height="60" src="__IMG__/avatar.gif" alt="" />
+        <h5 style="height: 48px;line-height: 48px;">亲爱的 {$user.username|default=$user['mobile']}{eq name="$user.userReal.retype" value="2"}<span class="qiye">企业认证</span>{/eq}</h5>
+        <p>欢迎回到{$C.sitename}账户中心<span class="sep">|</span><a class="text-light" href="{:url('home/Login/logout')}" title="如您未在自己的电脑上登录{$C.sitename}，请务必在离开的时候点击退出，以确保您的账户安全。">退出</a></p>
+        <div class="user-security">
+         <label>安全等级：</label>
+         <div class="user-security-progress">
+          <div class="progress">
+           <div class="progress-bar progress-bar-success securelevel-{:security($user)}"></div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="usercenter-assets">
+        <div class="assets-icon">
+         <i class="iconfont icon-money text-orange"></i>
+        </div>
+        <div class="assets-title">
+         <span class="text-gray">账户余额（元）：</span>
+        </div>
+        <div class="assets-money">
+         {$user.money}
+        </div>
+       </div>
+       <div class="usercenter-cash">
+        <p><a class="btn btn-primary" href="{:url('home/Cash/index')}">提现</a><a class="btn btn-link" href="{:url('home/Cash/cashrecords')}">提现记录</a></p>
+        <p class="text-light pt10">提现处理中的金额：<span style="color:red">&yen;{$tix}</span></p>
+       </div>
+      </div>
+      <ul class="security-group clearfix">
+       <li class="security-item">
+        <div class="security-item-bg {if condition="($user['userReal']['retype'] == '1' || $user['userReal']['retype'] == '2')"}security-item-finish{/if}">
+         <div class="security-item-icon">
+          <i class="iconfont"></i>
+         </div>
+         <h5>实名认证后才可提现</h5>
+        </div>
+        <div class="security-item-action">
+         <a class="btn {if condition="($user['userReal']['retype'] == '1' || $user['userReal']['retype'] == '2' || $user['userReal']['clas'] == '2')"} btn-green{else/}btn-primary{/if}" href="{if condition="($user['userReal']['retype'] == '1' || $user['userReal']['retype'] == '2' || $user['userReal']['clas'] == '2')"}{:url('home/Account/index')}{else/}{:url('home/Member/realname')}{/if}"><i class="iconfont iconfont-realname"></i>{if condition="($user['userReal']['retype'] == '1' || $user['userReal']['retype'] == '2' || $user['userReal']['clas'] == '2')"}已实名认证{else/}实名认证{/if}</a> 
+        </div></li>
+       <li class="security-item">
+        <div class="security-item-bg {notempty name="user.mobile"}security-item-mobile{/notempty}">
+         <div class="security-item-icon">
+          <i class="iconfont"></i>
+         </div>
+         <h5>{empty name="user.mobile"}绑定手机可增强账户安全{else/}{:tfen($user.mobile,3,4)}{/empty}</h5>
+        </div>
+        <div class="security-item-action">
+         <a class="btn {empty name="user.mobile"}btn-primary{else/}btn-green{/empty}" href="{:url('home/Member/photo')}"><i class="iconfont iconfont-phone"></i>{empty name="user.mobile"}绑定手机{else/}更换手机{/empty}</a>
+        </div>
+	   </li>
+       <li class="security-item">
+        <div class="security-item-bg {notempty name="user.email"}security-item-email{/notempty}">
+         <div class="security-item-icon">
+          <i class="iconfont"></i>
+         </div>
+         <h5>{empty name="user.email"}绑定邮箱可增强账户安全{else/}{:tfen($user.email,3,4)}{/empty}</h5>
+        </div>
+        <div class="security-item-action">
+         <a class="btn {empty name="user.email"}btn-primary{else/}btn-green{/empty}" href="{:url('home/Member/email')}"><i class="iconfont"></i>{empty name="user.email"}绑定邮箱{else/}更改邮箱{/empty}</a>
+        </div></li>
+       <li class="security-item">
+        <div class="security-item-bg security-item-password">
+         <div class="security-item-icon">
+          <i class="iconfont"></i>
+         </div>
+         <h5>使用强密码增加安全性</h5>
+        </div>
+        <div class="security-item-action">
+         <a class="btn btn-primary" href="{:url('home/Member/password')}"><i class="iconfont"></i>修改密码</a>
+        </div>
+		</li>
+		{eq name='isqq' value='1'}
+		<li class="security-item ">
+			<div class="security-item-bg {notempty name="user.qqopenid"}security-item-qq{/notempty}">
+			   <div class="security-item-icon">
+				 <i class="iconfont"></i>
+				</div>
+				<h5>{notempty name="user.qqopenid"}该账号已绑定QQ{else/}绑定QQ登陆便利{/notempty}</h5>
+			</div>
+			<div class="security-item-action">
+			    {notempty name="user.qqopenid"}
+				<a class="btn btn-green" data-dialog="{:url('home/Member/delqq',['id'=>$user['id']])},350"><i class="iconfont"></i>解绑QQ</a>
+				{else/}
+				<a class="btn btn-primary" href="javascript:toQzoneLogin();"><i class="iconfont"></i>绑定QQ</a>
+				{/notempty}
+			</div>
+        </li>
+        {/eq}
+        {empty name="user.wxopenid"}
+           <li>
+            <div class="security-item-bg security-item-weixin">
+             <img width="172" style="margin: auto; margin-top: 16px;" src="{$url}" />
+            </div>
+            <div class="security-item-action">
+             <p>扫描二维码绑定微信账号<br />你的卖卡处理等信息<br />都会通过微信提醒您</p>
+            </div>
+            </li>
+            {else/}
+            <li>
+            <div class="security-item-bg security-item-weixin">
+             <div class="security-item-icon">
+				 <i class="iconfont text-pink">&#59365;</i>
+				</div>
+				<h5 class="text-pink">该账号已绑定微信</h5>
+            </div>
+            <div class="security-item-action">
+            <a class="btn btn-green" data-dialog="{:url('home/Member/delwx',['id'=>$user['id']])},350"><i class="iconfont"></i>解绑微信</a>
+            </div>
+            </li>
+        {/empty}
+      </ul>
+     </div>
+     <div class="box usercenter-sellrecords">
+      <h3 class="box-caption">您最近提交回收的卡：</h3>
+	  {empty name="$res"}
+	  <div class="nodata">
+		   <i class="iconfont icon-nodata"></i>
+		   <br />您最近没有提交卡进行回收！
+		   <br />
+		   <a class="btn btn-primary" href="{:url('home/card/index')}">我要卖卡</a>
+	  </div>
+	  {else/}
+      <div class="cards-group owl-carousel">
+	  {volist name="ress" id="p"} 
+       <div class="item">
+        <div class="cards-cover">
+         <a href="{:url('home/card/index',['id'=>$p.tid])}" target="_blank"><img src="{$p.phoneRecycleIcon}" alt="{$p.title}" /> </a>
+         <h5 class="title">{$p.title}</h5>
+         <div class="actions">
+          <a class="btn btn-default" href="{:url('home/card/index',['id'=>$p.tid])}" target="_blank">我有卡要回收</a>
+         </div>
+        </div>
+       </div>
+       {/volist}
+      </div>
+	  {/empty}
+      <script type="text/javascript" src="__JS__/owl.carousel.min.js"></script>
+      <script>var owl = $(".owl-carousel"); owl.owlCarousel({items : 7,itemsDesktop : [1730, 6],itemsDesktopSmall : [1440, 5],itemsTablet: false,itemsMobile: false,rewindNav: false,scrollPerPage: true,navigation: true,navigationText : ["<i class='iconfont'>&#xe638;</i>", "<i class='iconfont'>&#xe629;</i>"],});{eq name="shi" value="1"}identitytips();{/eq}</script>
+     </div> 
+    </div>
+   {/block}

@@ -1,0 +1,139 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+	<div class="layui-fluid">
+	<div class="layui-row layui-col-space15">
+	<div class="layui-col-md12">
+	<div class="layui-card">
+		<div class="layui-tab" lay-filter="test1">
+		  <div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+			  <div class="layui-card-body ">
+				<form class="layui-form layui-col-space5" >
+							  <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="uid" placeholder="SHOPID" autocomplete="off" class="layui-input">
+								</div>
+								<div class="layui-inline layui-show-xs-block">
+								<input type="text" name="name" placeholder="用户名|手机号" autocomplete="off" class="layui-input">
+								</div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn" type="button" lay-submit="" lay-filter="sreach" lay-skin="select" lay-filter="type">
+                                        <i class="layui-icon">&#xe615;</i></button>
+									<button class="layui-btn layui-btn-danger" type="button" lay-submit="" lay-filter="all" lay-skin="select" lay-filter="type">
+                                        全部</button>
+                                </div>
+							</form>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table" id="mlist" lay-filter="mlist">
+                                <thead>
+                                    <tr>
+                                </thead>
+                            </table>
+                        </div>
+			</div>
+			
+		  </div>
+		</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		</div>
+{/block}
+{block name="js"}
+    <script>
+	layui.use(['table','form','laydate','element'], function() {
+        var table = layui.table,form = layui.form, $ = layui.jquery,laydate = layui.laydate,element = layui.element;;
+        tableIn = table.render({
+            elem: '#mlist',
+            url: "{:url('/HangCard/pressShop')}",
+            method: 'post',
+			page:true,
+			totalRow:true,
+            data:[],
+            cols: [[
+                {field:'shopid',title:"商户ID", align: 'center', sort: true,width:110,totalRowText: '合计：'},
+				{field:'ids',title: '待处理订单笔数',align: 'center',totalRow: true,minWidth:150},
+				{field:'money',title: '待处理面额(万)',align: 'center',totalRow: true,minWidth:150},
+                {field:'laids',title: '处理中笔数',align: 'center',totalRow: true,minWidth:150},
+				{field:'lamoney',title: '处理中面额(万)',align: 'center',totalRow: true,minWidth:150},
+				{field:'sc',title: '合计笔数',align: 'center',totalRow: true,minWidth:100},
+                {field:'sn',title: '合计面额(万)',align: 'center',totalRow: true,minWidth:110},
+                {field:'time',title: '最长处理时间',align: 'center',minWidth:150},
+                {field:'yuti',title: '预提比例(%)',align: 'center',minWidth:110},
+                {field:'umoney',title: '余额(元)',align: 'center',minWidth:100},
+
+            ]],
+			limit:15,
+			limits:[15,20,50,60],
+			parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.total, //解析数据长度
+                  "data": res.data.data //解析数据列表
+                };
+            }, done: function () {
+                fnSetNoDouble();//这里调用删除小数点
+            }
+        });
+
+        function fnSetNoDouble() {
+            setTimeout(function () {
+                fnGetTotalDiv(1);
+                fnGetTotalDiv(3);
+                fnGetTotalDiv(5);
+                //删除数据所在列
+            }, 10);
+        }
+
+        function fnGetTotalDiv(id) {
+            var div = '.layui-table-total div:eq(' + id + ')';
+            var a = $(div).html();
+            if(a!= null)a =  a.replace(".00","");
+            $(div).html(a);
+        }
+
+        element.on('tab(test1)', function(){
+			$("#start").val('');
+			$("#end").val('');
+		  });
+		form.on('submit(sreach)', function(obj){
+
+			var index = layer.load(3, {
+					  shade: [0.1,'#fff'] //0.1透明度的白色背景
+					});
+                 tableIn.reload({
+				     url: "{:url('/HangCard/pressShop')}",
+					page:{curr:1},
+                     where:{
+						 Uid:$("input[name=uid]").val(),
+						 Name:$("input[name=name]").val()
+                     }
+                 });
+				 layer.close(index);
+        });
+		form.on('submit(all)', function(obj){
+
+			$("input[name=uid]").val('');
+			$("input[name=name]").val('');
+
+			var index = layer.load(3, {
+					  shade: [0.1,'#fff'] //0.1透明度的白色背景
+					});
+                 tableIn.reload({
+				     url: "{:url('/HangCard/pressShop')}",
+					 page:{curr:1},
+                     where:{
+						 Uid:'',
+						 Name:''
+                     }
+                 });
+				 layer.close(index);
+        });
+
+      });
+	  
+    </script>
+{/block}

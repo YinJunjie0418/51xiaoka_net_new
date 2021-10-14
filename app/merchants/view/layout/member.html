@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  {block name="titile"}
+  <title>{$C['sitename']}-{$C['title']} </title>
+  <meta name="keywords" content="{$C['keywords']}" />
+  <meta name="description" content="{$C['description']}" />
+  {/block}
+  <meta name="robots" content="all" />
+  <link href="__CSS__/animate.css?20191011" rel="stylesheet" />
+  <link href="__CSS__/common.css?2020327" rel="stylesheet" />
+  <link href="__CSS__/base.css?20203127" rel="stylesheet" />
+  <script type="text/javascript" src="__JS__/j_lipin.js?20190520"></script>
+  <script type="text/javascript" src="__JS__/library.js?20190"></script>
+  <script type="text/javascript" src="__JS__/common.js?20209823"></script>
+  <!--[if lt IE 8]>
+	<script src="__JS__/browserIE.js?201906142"></script>
+	<![endif]--><!--[if lt IE 9]>
+	<script src="__JS__/html5shiv.min.js"></script>
+	<script src="__JS__/respond.min.js"></script>
+	<![endif]-->
+ </head>
+ <style>
+	 .kuang{
+		 border: 1px #ff2323 dashed;
+		 border-radius: 8px;
+		 text-align: left;
+		 padding: 10px;
+		 color: #252525;
+	 }
+	 .kuang div>span:first-child{
+		 color: #cccccc;
+	 }
+ </style>
+ <body>
+   <div class="hide" id="identitytips">
+	<div class="modal-prompt">
+		<div class="prompt prompt-warning">
+			<div class="prompt-img">
+				<img src="__IMG__/sprites/identity-hand.png" alt="">
+			</div>
+			<div class="prompt-cont">
+				<h4>为了资金安全，请实名认证</h4>
+				<p>
+					为了有效保障您的{$C['sitename']}账户的资金安全，实名认证之后才可以提现哦！
+				</p>
+				<div class="action">
+					<a class="btn btn-sm btn-primary" href="{:url('home/Account/index')}">立即去认证</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+  <div id="modal-dialog" class="modal hide"></div>
+  <div class="modal-cover hide" id="modal-dialog-cover"></div>
+  <div class="header" id="header">
+   <div class="navbar " id="navbar" data-navbar="">
+    <div class="container-fluid">
+     <div class="navbar-brand" id="logo">
+      <a href="/"><span class="logo"><img src="{$C['logo']}" alt="{$C['sitename']}" style="display:block;margin: auto;width:200px" /></span></a>
+     </div>
+    </div>
+   </div>
+  </div>
+
+<div id="bank-dialog" class="modal hide">
+</div>
+<div class="view-framework">
+	{include file="layout/user_menu" /}
+	<div class="view-framework-body">
+	{block name="content"}内容视图{/block}
+
+		
+		<dl class="toolbar" id="toolbar">
+			<dt data-hover="dropdown"><a href="tencent://message/?uin={$C.qq}&Site=Sambow&Menu=yes" target="_blank" id="zhiCustomBtn"><i class="iconfont iconfont-service ">&#xe63f;</i><span class="iconfont-text">在线咨询</span></a>
+			<div class="dropdown-menu dropdown-menu-call animated fadeInRight">
+				<h5>您也可以拨打客服电话：</h5>
+				<p class="text-red h2">
+					{$C.kefu}
+				</p>
+				<p class="text-light h6">
+					（08:00-次日01:00）
+				</p>
+			</div>
+			</dt>
+			<dd data-hover="dropdown" class="hidden"><a href="javascript:;"><i class="iconfont iconfont-call">&#xe636;</i><span class="iconfont-text">客服<br>
+			电话</span></a>
+			<div class="dropdown-menu dropdown-menu-call animated fadeInRight">
+				<h5>平台客服咨询电话：</h5>
+				<p class="text-red h2">
+				</p>
+				<p class="text-light h6">
+					（08:00-次日01:00）
+				</p>
+			</div>
+			</dd>
+			{notempty name="wx.wxewm"}
+			<dd data-hover="dropdown"><a href="javascript:;"><i class="iconfont iconfont-weixin">&#xe7e5;</i><span class="iconfont-text">关注<br>
+			微信</span></a>
+			<div class="dropdown-menu dropdown-menu-weixin animated fadeInRight">
+				<img src="{$wx.wxewm}" alt="">
+				<p class="text-light h6">
+					扫码关注微信公众号
+				</p>
+			</div>
+			</dd>
+			{/notempty}
+			<dd><a href="{:url('home/Index/feedback')}" target="_blank"><i class="iconfont iconfont-feedback">&#xe644;</i><span class="iconfont-text">建议<br>
+			反馈</span></a></dd><dd id="totop"><a href="#top"><i class="iconfont iconfont-top">&#xe60c;</i><span class="iconfont-text">回到<br>
+			顶部</span></a></dd>
+		</dl>
+	</div>
+</div>
+{block name="js"}{/block}
+</body>
+</html>

@@ -1,0 +1,164 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+	<div class="layui-fluid">
+	<div class="layui-row layui-col-space15">
+	<div class="layui-col-md12">
+	<div class="layui-card">
+		<div class="layui-tab" lay-filter="test1">
+		  <div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+			  <div class="layui-card-body ">
+				<form class="layui-form layui-col-space5" >
+							  <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="uid" placeholder="SHOPID" autocomplete="off" class="layui-input">
+								</div>
+								<div class="layui-inline layui-show-xs-block">
+								<input type="text" name="name" placeholder="用户名|手机号" autocomplete="off" class="layui-input">
+								</div>
+								<div class="layui-inline layui-show-xs-block">
+                                <input class="layui-input"  autocomplete="off" placeholder="开始日期" name="start" value="{:date('Y-m-d 00:00:00')}" id="start">
+								</div>
+								<div class="layui-inline layui-show-xs-block">
+									<input class="layui-input"  autocomplete="off" placeholder="截止日期" name="end" value="{:date('Y-m-d 23:59:59')}" id="endtime">
+								</div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn" type="button" lay-submit="" lay-filter="sreach" lay-skin="select" lay-filter="type">
+                                        <i class="layui-icon">&#xe615;</i></button>
+									<button class="layui-btn layui-btn-danger" type="button" lay-submit="" lay-filter="all" lay-skin="select" lay-filter="type">
+                                        全部</button>
+                                </div>
+								</form>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table" id="mlist" lay-filter="mlist">
+                                <thead>
+                                    <tr>
+                                </thead>
+                            </table>
+                        </div>
+			</div>
+			
+		  </div>
+		</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		</div>
+{/block}
+{block name="js"}
+    <script>
+	layui.use(['table','form','laydate','element'], function() {
+        var table = layui.table,form = layui.form, $ = layui.jquery,laydate = layui.laydate,element = layui.element;;
+        tableIn = table.render({
+            elem: '#mlist',
+            url: "",
+            data:[],
+            method: 'post',
+			page:true,
+			totalRow:true,
+            cols: [[
+			   {type: 'checkbox',width:30,minWidth:30},
+				{field:'day',title:"日期", align: 'center', width:130,totalRowText: '合计：'},
+			    {field:'cid',title: '订单总数',align: 'center',totalRow: true},
+				{field:'money',title: '提交面额',align: 'center',totalRow: true},
+					{field:'loadid',title: '待处理',align: 'center',totalRow: true},
+						{field:'paying',title: '处理中',align: 'center',totalRow: true},
+							{field:'failed',title: '失败',align: 'center',totalRow: true},
+				{field:'amt',title: '成功面额',align: 'center',totalRow: true},
+				{field:'su',title: '用户金额',align: 'center',totalRow: true},
+				{field:'supr',title: '系统金额',align: 'center',totalRow: true},
+				{field:'spr',title: '获利金额',align: 'center',totalRow: true}
+            ]],
+			limit:15,
+			limits:[10,20,50,60],
+			parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.total, //解析数据长度
+                  "data": res.data.data //解析数据列表
+                };
+            }
+        });		
+		element.on('tab(test1)', function(){
+			$("#start").val('');
+			$("#endtime").val('');
+		  });
+		form.on('submit(sreach)', function(obj){
+            var st=$("#start").val(),se=$("#endtime").val();
+            
+			var index = layer.load(3, {
+					  shade: [0.1,'#fff'] //0.1透明度的白色背景
+					});
+                 tableIn.reload({
+				     url: "{:url('/apitongji/todata')}",
+					page:{curr:1},
+                     where:{
+						 STime:st,
+						 ETime:se,
+						 Uid:$("input[name=uid]").val(),
+						 Name:$("input[name=name]").val()
+                     }
+                 });
+				 layer.close(index);
+        });
+		form.on('submit(all)', function(obj){
+            var st=$("#start").val(),se=$("#endtime").val();
+			$("input[name=uid]").val('');
+			$("input[name=name]").val('');
+            
+			var index = layer.load(3, {
+					  shade: [0.1,'#fff'] //0.1透明度的白色背景
+					});
+                 tableIn.reload({
+				     url: "{:url('/apitongji/todata')}",
+					 page:{curr:1},
+                     where:{
+                         STime:st,
+                         ETime:se,
+						 Uid:'',
+						 Name:''
+                     }
+                 });
+				 layer.close(index);
+        });
+		var nowTime=new Date();    
+		var startTime=laydate.render({
+			elem:'#start',
+			type:'datetime',
+			btns: ['confirm'],
+			max:'23:59:59',//默认最大值为当前日期
+			done:function(value,date){
+				endTime.config.min={    	    		
+					year:date.year,
+					month:date.month-1,//关键
+					date:date.date,
+					hours:date.hours,
+					minutes:date.minutes,
+					seconds:date.seconds
+				};
+                
+				
+			}
+		})
+			var endTime=laydate.render({
+			elem:'#endtime',
+			type:'datetime',
+			btns: ['confirm'],
+			max:'23:59:59',
+			done:function(value,date){   	   
+				startTime.config.max={
+						year:date.year,
+						month:date.month-1,//关键
+						date:date.date,
+				};
+
+				
+			}
+		})
+      });
+	  
+    </script>
+{/block}

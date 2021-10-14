@@ -1,0 +1,173 @@
+{extend name="layout/member" /} 
+{block name="content"}
+<style>
+.gray-box{
+    display: block;
+    line-height: 50px;
+    padding: 8px 15px;
+    border: 1px solid #007dfe;
+    border-radius: 3px;
+}
+.gray-box i{
+ margin:0 5px
+}
+.font16{
+  font-size:16px;
+  margin-bottom: 5px;
+}
+.alert-yellow {
+        color: #666;
+    background-color: #ffffff;
+    border-color: #f04848;
+    border-radius: 0 0 4px 4px;
+    padding: 20px 30px 34px;
+    margin-top: 5px;
+	}
+.link-box {
+    display: inline-block;
+    min-width: 680px;
+    height: 50px;
+    line-height: 50px;
+    background: #fffff2;
+    border: 1px solid #ffdd99;
+    padding: 0 15px 0 18px;
+    margin-right: 18px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.tubiao{
+    background:url(/static/home/images/level/1.jpg) no-repeat
+  }
+  .act1{
+        width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-position: -8px -16px;
+  }
+  .act2{
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-position: -8px -48px;
+  }
+  .act3{
+        width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-position: -8px -79px;
+  }
+  #input {position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;}
+</style>
+    <div class="view-framework-body">
+   <div class="view-framework-main"> 
+   <div class="box tab-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-caption">
+                <h2>
+                    {gt name="res.level" value="0"}当前级别：<span class="tubiao act{$res.level}"></span>{else/}不满足一级推广资格{/gt}<span class="sep">|</span>
+                    <span class=""><font class="color666 font16">已获得佣金：</font> <font class="text-orange">￥{$yong}</font></span>
+                    <a class="text-blue font16 m-l-sm" href="{:url('home/Member/memberlog')}">账户流水&gt;&gt;</a>
+                    {lt name="$res.xia" value="4"}<span class="color999 font14">{gt name="res.you" value="0"}(还需邀请{$res.you}个有效下级，{else/}(有效下级满足升级条件，{/gt}{gt name="res.money" value="0"}下级流水还需{$res.money}{/gt}即可升级<span class="tubiao act{$res.xia}"></span>，享受更高的佣金返现)</span>{/lt}
+                </h2>
+            </div>
+            <div class="gray-box">
+                <span class="m-r-100"><font class="color666 font16">邀请下级总人数：</font><font class="text-blue font20">{$res.num}</font>人</span>
+                <span>
+                    <font class="color666 font16">有效下级：</font>
+                    <font class="text-blue font20">{$res.r}</font>人
+                    <font class="color999 font14">(达到销卡总面值为<i class="text-orange">￥{$C.xiaok}</i>元以上，即为有效下级)</font>
+                </span>
+            </div>
+            <div class="alert alert-yellow">
+                <p class="font16">邀请好友注册并销卡，即可获得<span class="text-orange">现金奖励</span>哦！</p>
+                                <div class="invite-link-box">
+                    
+					{eq name="shi" value="1"}
+					<div class="link-box font14 color666">只有通过实名认证，才有专属邀请链接哦~</div>
+                    <a class="btn btn-primary" style="margin-top:-2px" href="{:url('home/Member/realname')}">去实名认证</a>
+					{else/}
+					<div class="link-box font14 color666" id="urltext">{$url}</div>
+					<textarea id="input" ></textarea>
+					<a class="btn btn-green" style="margin-top:-2px" href="javascript:void(0);" onclick="copyText()">复制链接</a>
+					{/eq}
+                </div>
+                            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="box">
+		  <div class="form-filter">
+			<form action="{:url('home/Member/assets')}" method="get" id="formsubmit">
+				<div class="form-group">
+					<label class="control-label" for="qStartTime">注册时间：</label>
+					<input type="text" class="form-control form-datetime" id="qStartTime" name="starttime" value="{$starttime|default=''}" autocomplete="off">
+					<span class="control-label">-</span>
+					<input type="text" class="form-control form-datetime mr10" id="qEndTime" name="endtime" value="{$endtime|default=''}" autocomplete="off">
+					<a class="item {eq name="$day" value="0"}selected{/eq}" href="{:url('home/Apiface/consign')}">全部</a>
+					<a class="item {eq name="$day" value="1"}selected{/eq}" href="javascript:;" onclick="submitset('day',1)">今天</a>
+                  <a class="item {eq name="$day" value="7"}selected{/eq}" href="javascript:;" onclick="submitset('day',7)">最近7天</a>
+                  <a class="item {eq name="$day" value="30"}selected{/eq}" href="javascript:;" onclick="submitset('day',30)">1个月</a>
+                  <a class="item {eq name="$day" value="60"}selected{/eq}" href="javascript:;" onclick="submitset('day',60)">2个月</a>
+                  <a class="item {eq name="$day" value="90"}selected{/eq}" href="javascript:;" onclick="submitset('day',90)">3个月</a>
+                  <a class="item {eq name="$day" value="365"}selected{/eq}" href="javascript:;" onclick="submitset('day',365)">1年</a>
+					  <input type="hidden" name="day" value="{$day|default=''}">
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="rekey">编号查询:</label>
+					<input type="text" class="form-control input-long mr10" name="shopid" id="rekey" value="{:input('shopid')}" placeholder="请输入下级用户编号">
+					<!-- <select name="setype" class="form-control mr10" style="width:130px">
+						<option value="" selected="selected">全部</option>
+                        <option value="0">未生效下级</option>
+                        <option value="1">有效下级</option>
+					</select> -->
+					<button class="btn btn-primary btn-sm btn-square px30" onclick="$('[name=day]').val('');" type="submit">搜索</button>
+				</div>
+			</form>
+		</div>
+          <table id="dataTable" class="table table-bordered dataTable space-l-30">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width:180px">注册时间</th>
+                        <th class="text-center" style="width:180px">用户编号</th>
+						<th class="text-center" style="width:180px">下级类型</th>
+                        <th class="text-center m_sort sorting" cursort="sorting" sorthideid="priceOrder">销卡总面值</th>
+                        <th class="text-center m_sort sorting" cursort="sorting" sorthideid="commisionOrder">佣金</th>
+                    </tr>
+                </thead>
+                <tbody class="dataWraper">
+				{volist name="list" id="p" empty="$em"}
+				 <tr class="empty">
+				 <td  class="text-center">{$p.create_time}</td>
+				 <td  class="text-center">{$p.shopid}</td>
+				 <td  class="text-center">{$p.xiao}</td>
+				 <td class="text-center">{$p.money}</td>
+				 <td  class="text-center">{$p.yong}</td>
+				 </tr>
+				{/volist}
+				</tbody>
+                
+            </table>
+        </div>
+		<div class="pb20">
+			  {$list|raw}
+       </div>
+    </div>
+</div>
+		
+	</div>
+</div>
+<script type="text/javascript">
+    function copyText() {
+      var text = document.getElementById("urltext").innerText;
+      var input = document.getElementById("input");
+      input.value = text; // 修改文本框的内容
+      input.select(); // 选中文本
+      document.execCommand("copy"); // 执行浏览器复制命令
+      alert("复制成功");
+    }
+  </script>
+   {/block}

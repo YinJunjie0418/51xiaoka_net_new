@@ -1,0 +1,30 @@
+{extend name="base" /}
+{block name="body"}
+<form action="" class="layui-form layui-form-pane" method="post">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	  <legend>身份证正面</legend>
+	</fieldset>
+    <div class="layui-form-item" style="height:200px">
+            <img src="{$data.positive_img|default=''}" class="layui-input" tb-img style="height: 100%;width: auto;margin:auto">
+    </div>
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	  <legend>身份证背面</legend>
+	</fieldset>
+    <div class="layui-form-item" style="height:200px">
+            <img src="{$data.back_img|default=''}" class="layui-input" tb-img style="height: 100%;width: auto;margin:auto">
+    </div>
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	  <legend>手持身份证</legend>
+	</fieldset>
+    <div class="layui-form-item" style="height:200px">
+            <img src="{$data.hand_img|default=''}" class="layui-input" style="height: 100%;width: 50%;margin:auto">
+    </div>
+</form>
+<script>
+    // 点击图片放大
+        $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
+            layer.photos({photos: {data: [{src: $(this).attr('src')}]}, shade: .9, closeBtn: true});
+        });
+</script>
+
+{/block}

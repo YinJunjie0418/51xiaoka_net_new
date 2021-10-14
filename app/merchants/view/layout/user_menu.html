@@ -1,0 +1,34 @@
+<div class="view-framework-sidebar"> 
+    <div class="sidebar-body">
+     <div class="sidebar-nav">
+      <ul class="sidebar-items"> 
+       <li {if $action=="index" && $contr=="Member"}class="current"{/if}><a href="{:url('merchants/Member/index')}"><i class="iconfont"></i>账户总览</a></li>
+       <li {if ($action=="index" || $action=="bank" || $action=="weixin" ) && $contr=="Cash"}class="current"{/if}><a href="{:url('merchants/Cash/index')}"><i class="iconfont"></i>我要加款</a></li>
+       <li {if $action=="cashrecords" && $contr=="Cash" }class="current"{/if}><a href="{:url('merchants/Cash/cashrecords')}"><i class="iconfont"></i>加款记录</a></li>
+      </ul>
+     </div>
+     <div class="sidebar-nav">
+      <ul class="sidebar-items">
+       <li {if $action=="index" && $contr=="CashApi"}class="current"{/if}><a href="{:url('merchants/CashApi/index')}"><i class="iconfont">&#58962;</i>API管理</a></li>
+        <li {if $action=="sellpay" && $contr=="CashApi"}class="current"{/if}><a href="{:url('merchants/CashApi/sellpay')}"><i class="iconfont">&#58962;</i>在线充值</a></li>
+       <li {if $action=="consign" && $contr=="CashApi"}class="current"{/if}><a href="{:url('merchants/CashApi/consign')}"><i class="iconfont"></i>充值记录</a></li>
+       <li {if $action=="statistics" && $contr=="CashApi"}class="current"{/if}><a href="{:url('merchants/CashApi/statistics')}"><i class="iconfont">&#59178;</i>充值统计</a></li>
+      </ul>
+     </div>
+
+     <div class="sidebar-nav">
+      <ul class="sidebar-items">
+       <li {if $action!="index" && $contr=="Member" && $action!="memberlog" && $action!="assets"}class="current"{/if}><a href="{:url('merchants/Member/profile')}"><i class="iconfont"></i>资料管理</a></li>
+       <li {if $action=="memberlog"}class="current"{/if}><a href="{:url('merchants/Member/memberlog')}"><i class="iconfont"></i>资金日志</a></li>
+      </ul>
+     </div>
+     <div class="sidebar-functional">
+      <a href="tencent://message/?uin={$C.qq}&Site=Sambow&Menu=yes"  target="_blank"><i class="iconimg iconimg-qq">在线咨询</i></a>
+     </div>
+     <div class="sidebar-call">
+      <h5>客服电话</h5>
+      <p>{$C.kefu}</p>
+      <small>（08:00-次日01:00）</small>
+     </div>
+    </div> 
+   </div>

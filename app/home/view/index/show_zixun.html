@@ -1,0 +1,90 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$res['title']} </title>
+  <meta name="keywords" content="{$res['keywords']}" />
+  <meta name="description" content="{$res['description']}" />
+{/block}
+{block name="content"}
+<style>
+    .dyquick-link {
+        padding-top: 20px;
+        font: 16px/180% "Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 16px;
+        color: #666;
+        text-decoration: none;
+        border-top: 1px solid #eee;
+    }
+    .dylist {
+        padding: 4%;
+    }
+    .dylist ul {
+        list-style: none;
+    }
+    .dylist ul li {
+        padding: 5px 0;
+        position: relative;
+    }
+    .dylist ul li a {
+        display: block;
+        width: 78%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-left: 10px;
+        font: 16px/180% "Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 16px;
+        color: #666;
+        text-decoration: none;
+    }
+    .dylist ul li .date {
+        position: absolute;
+        right: 0;
+        top: 6px;
+        color: #bebebe;
+    }
+    .dylist ul li:before {
+        display: block;
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 47%;
+        border-radius: 50%;
+        width: 4px;
+        height: 4px;
+        background: #bebebe;
+    }
+</style>
+<div style="width:80%; height:auto;overflow:hidden;margin:10px 10%;">
+    <div style="width:72%; height: auto; float: left">
+        <div class="zixun" style="width:100%;text-align: left;height:auto">{$res.title}</div>
+        <div class="zixun-bottom" style="width:100%;text-align: left">
+          <div class="abs" style="width:100%;text-align:left;padding-bottom:50px;margin-bottom:50px;border-bottom:1px solid #eee;">
+            <span>作者：admin</span>
+            <span>更新时间：{:date("m-d H:i",strtotime($res.update_time))}</span>
+          </div>
+        </div>
+        <div class="zixun-content" style="width:100%; margin:auto auto 30px auto">
+          {$res.content|raw}
+        </div>
+        <div class="dyquick-link">
+            <p>上一篇：{empty name="preda"}没有上一篇了{else/}<a href="{:url('home/helpfaq/danye',['id'=>$preda.id])}">{$preda.title}</a>{/empty}</p>
+            <p>下一篇：{empty name="nextda"}没有下一篇了{else/}<a href="{:url('home/helpfaq/danye',['id'=>$nextda.id])}">{$nextda.title}</a>{/empty}</p>
+        </div>
+    </div>
+    <div style="width:26%;float:right;border: 1px solid #eee;box-sizing: border-box;margin-top: 50px">
+        <div style="width:100%;height:50px;">
+            <h3 style="line-height: 50px;font-size:22px;color:#333; font-weight:bolder;border-bottom: 1px solid #eee;box-sizing: border-box;text-indent:1em">
+                最新资讯
+                <a href="{:url('home/Helpfaq/zixun')}" style="width:30%;height:50px;line-height:50px;float:right;font-size:18px;color:#333;text-align:center">+more</a>
+            </h3>
+        </div>
+        <div class="dylist">
+            <ul>
+                {volist name="list" id="p"}
+                <li><a href="{:url('home/helpfaq/danye',['id'=>$p.id])}">{$p.title}</a><span class="date">{:date("m/d",strtotime($p.update_time))}</span></li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,0 +1,481 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="/static/simple/css/admin.css">
+<style>
+#tf{
+ width: 80%;
+    float: left;
+    margin-top: 8px;
+}
+#tf h3, #tf cite, #cf h3, #cf cite{
+color:#FFF
+}
+#bf{
+    width: 80%;
+    float: left;
+    margin-top: 8px;
+}
+
+#cf{
+    width: 37%;
+    float: left;
+    margin-top: 8px;
+	margin-right:20px
+}
+#fft h3,#fft cite{
+color:#FFF
+}
+#liw{
+  width:50%
+}
+@media screen and (min-width: 992px){
+	#liw{
+	 width:12.5%
+	}
+}
+.layui-col-md2{
+	width:20%;
+	    min-width: 200px;
+}
+.x-admin-backlog-body p cite{
+	font-size:18px
+}
+</style>
+{/block}
+{block name="body"}
+   <div class="layui-col-md8">
+      <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+          <div class="layui-card">
+            <div class="layui-card-header">快捷方式</div>
+            <div class="layui-card-body">
+              <div class="layui-carousel layadmin-carousel layadmin-shortcut" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                <div carousel-item="">
+                  <ul class="layui-row layui-col-space10 layui-this">
+				      <li class="layui-col-xs3">
+                        <a ew-href="{:url('/user/index')}">
+                          <i class="layui-icon layui-icon-user"></i>
+                          <cite>用户管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a ew-href="{:url('/Cash/index')}">
+                          <i class="layui-icon layui-icon-console"></i>
+                          <cite>提现审核</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a ew-href="{:url('/UserAuth/index')}">
+                          <i class="layui-icon layui-icon-chart"></i>
+                          <cite>实名认证</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a ew-href="{:url('/Order/index')}">
+                          <i class="layui-icon layui-icon-template-1"></i>
+                          <cite>点卡订单</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a ew-href="{:url('/Apiorder/index')}">
+                          <i class="layui-icon layui-icon-chat"></i>
+                          <cite>企业订单</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a ew-href="{:url('/Card/index')}">
+                          <i class="layui-icon layui-icon-find-fill"></i>
+                          <cite>接口管理</cite>
+                        </a>
+                      </li>
+                      <li class="layui-col-xs3">
+                        <a ew-href="{:url('/Card/index')}">
+                          <i class="layui-icon layui-icon-survey"></i>
+                          <cite>卡类管理</cite>
+                        </a>
+                      </li>
+                      
+                      <li class="layui-col-xs3">
+                        <a ew-href="{:url('/Config/param')}">
+                          <i class="layui-icon layui-icon-set"></i>
+                          <cite>参数设置</cite>
+                        </a>
+                      </li>
+                    </ul>
+                </div>
+                <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+                  <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="layui-col-md6">
+          <div class="layui-card">
+            <div class="layui-card-header">待办事项</div>
+            <div class="layui-card-body">
+              <div class="layui-carousel layadmin-carousel layadmin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 280px;">
+                <div carousel-item="">
+                  <ul class="layui-row layui-col-space10 layui-this">
+                    <li class="layui-col-xs6">
+                      <a ew-href="{:url('/UserAuth/index')}" class="layadmin-backlog-body">
+                        <h3>实名待审</h3>
+                        <p><cite>{$da['real']}</cite></p>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs6">
+                      <a ew-href="{:url('/Cash/index')}" class="layadmin-backlog-body">
+                        <h3>提现待审</h3>
+                        <p><cite>{$da['cash']}</cite></p>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs6">
+                      <a ew-href="{:url('/Order/index')}" class="layadmin-backlog-body">
+                        <h3>订单待审</h3>
+                        <p><cite>{$da['order']|default=0}</cite></p>
+                      </a>
+                    </li>
+                    <li class="layui-col-xs6">
+                      <a ew-href="{:url('/Apiorder/index')}" class="layadmin-backlog-body">
+                        <h3>API待审</h3>
+                        <p><cite>{$da['api']|default=0}</cite></p>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                  <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+                  <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+		<div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">数据统计</div>
+                        <div class="layui-card-body ">
+                            <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+							 <li class="layui-col-md2 layui-col-xs6">
+                                   <a href="javascript:;" class="x-admin-backlog-body" id="tf" style="background:#ff5722">
+                                        <h3>总会员</h3>
+                                        <p>
+                                            <cite>{$f.user|setNumberOne}</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body" id="tf" style="background:#1e9fff">
+                                        <h3>销卡总计</h3>
+                                        <p>
+                                            <cite>{$f.card_num|setNumberOne}元 / {$f.card_count|setNumberOne}笔</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body" id="tf" style="background:#32c5d2">
+                                        <h3>成功总计</h3>
+                                        <p>
+                                            <cite>{$f.secc_num|setNumberOne}元 / {$f.secc_count|setNumberOne}笔</cite></p>
+                                    </a>
+									
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body" id="tf" style="background:#8E44AD">
+                                        <h3>失败总计</h3>
+                                        <p>
+                                            <cite>{$f.err_num|setNumberOne}元 / {$f.err_count|setNumberOne}笔</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body" id="tf" style="background:#322ece">
+                                        <h3>利润总计</h3>
+                                        <p>
+                                            <cite>{$f.profit|setNumberOne}元</cite></p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+				<div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">今日数据统计</div>
+                        <div class="layui-card-body ">
+                            <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+							<li class="layui-col-md2 layui-col-xs6">
+                                   <a href="javascript:;" class="x-admin-backlog-body" id="bf" >
+                                        <h3 style="color:#ff5722">今日注册</h3>
+                                        <p>
+                                            <cite style="color:#ff5722">{$f.d_user|setNumberOne}</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body" id="bf">
+                                        <h3 style="color:#1e9fff">销卡总计</h3>
+                                        <p>
+                                            <cite style="color:#1e9fff">{$f.d_card_num|setNumberOne}元 / {$f.d_card_count|setNumberOne}笔</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body" id="bf">
+                                        <h3 style="color:#32c5d2">成功总计</h3>
+                                        <p>
+                                            <cite style="color:#32c5d2">{$f.d_secc_num|setNumberOne}元 / {$f.d_secc_count|setNumberOne}笔</cite></p>
+                                    </a>
+									
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body" id="bf" >
+                                        <h3 style="color:#8E44AD">失败总计</h3>
+                                        <p>
+                                            <cite style="color:#8E44AD">{$f.d_err_num|setNumberOne}元 / {$f.d_err_count|setNumberOne}笔</cite></p>
+                                    </a>
+                                </li>
+                                <li class="layui-col-md2 layui-col-xs6">
+                                    <a href="javascript:;" class="x-admin-backlog-body" id="bf" >
+                                        <h3 style="color:#322ece">利润总计</h3>
+                                        <p>
+                                            <cite style="color:#322ece">{$f.d_profit|setNumberOne}元</cite></p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+          <div class="layui-col-md12">
+              <div class="layui-card">
+                  <div class="layui-card-header">充值统计</div>
+                  <div class="layui-card-body ">
+                      <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+                          <li class="layui-col-md2 layui-col-xs6">
+                              <a href="javascript:;" class="x-admin-backlog-body" id="tf" style="background:#1e9fff">
+                                  <h3>充值总计</h3>
+                                  <p>
+                                      <cite>{$df.card_num|setNumberOne}元 / {$df.card_count|setNumberOne}笔</cite></p>
+                              </a>
+                          </li>
+                          <li class="layui-col-md2 layui-col-xs6">
+                              <a href="javascript:;" class="x-admin-backlog-body" id="tf" style="background:#32c5d2">
+                                  <h3>成功总计</h3>
+                                  <p>
+                                      <cite>{$df.secc_num|setNumberOne}元 / {$df.secc_count|setNumberOne}笔</cite></p>
+                              </a>
+                          </li>
+                          <li class="layui-col-md2 layui-col-xs6">
+                              <a href="javascript:;" class="x-admin-backlog-body" id="tf" style="background:#8E44AD">
+                                  <h3>失败总计</h3>
+                                  <p>
+                                      <cite>{$df.err_num|setNumberOne}元 / {$df.err_count|setNumberOne}笔</cite></p>
+                              </a>
+                          </li>
+                          <li class="layui-col-md2 layui-col-xs6">
+                              <a href="javascript:;" class="x-admin-backlog-body" id="tf" style="background:#322ece">
+                                  <h3>利润总计</h3>
+                                  <p>
+                                      <cite>{$df.profit|setNumberOne}元</cite></p>
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          <div class="layui-col-md12">
+              <div class="layui-card">
+                  <div class="layui-card-header">今日数据统计</div>
+                  <div class="layui-card-body ">
+                      <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+                          <li class="layui-col-md2 layui-col-xs6">
+                              <a href="javascript:;" class="x-admin-backlog-body" id="bf">
+                                  <h3 style="color:#1e9fff">充值总计</h3>
+                                  <p>
+                                      <cite style="color:#1e9fff">{$df.d_card_num|setNumberOne}元 / {$df.d_card_count|setNumberOne}笔</cite></p>
+                              </a>
+                          </li>
+                          <li class="layui-col-md2 layui-col-xs6">
+                              <a href="javascript:;" class="x-admin-backlog-body" id="bf">
+                                  <h3 style="color:#32c5d2">成功总计</h3>
+                                  <p>
+                                      <cite style="color:#32c5d2">{$df.d_secc_num|setNumberOne}元 / {$df.d_secc_count|setNumberOne}笔</cite></p>
+                              </a>
+                          </li>
+                          <li class="layui-col-md2 layui-col-xs6">
+                              <a href="javascript:;" class="x-admin-backlog-body" id="bf" >
+                                  <h3 style="color:#8E44AD">失败总计</h3>
+                                  <p>
+                                      <cite style="color:#8E44AD">{$df.d_err_num|setNumberOne}元 / {$df.d_err_count|setNumberOne}笔</cite></p>
+                              </a>
+                          </li>
+                          <li class="layui-col-md2 layui-col-xs6">
+                              <a href="javascript:;" class="x-admin-backlog-body" id="bf" >
+                                  <h3 style="color:#322ece">利润总计</h3>
+                                  <p>
+                                      <cite style="color:#322ece">{$df.d_profit|setNumberOne}元</cite></p>
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+        <div class="layui-col-md12">
+          <div class="layui-card">
+               <div class="layui-card-header">周数据统计</div>
+                    <div class="layui-card-body" style="min-height: 280px;">
+                        <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
+                    </div>
+               </div>
+        </div>
+      </div>
+    </div>
+	<div class="layui-col-md4">
+
+	  <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">API数据统计</div>
+                <div class="layui-card-body ">
+                    <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+                        <li class="layui-col-md2 layui-col-xs6" style="width: 100%;">
+                            <a href="javascript:;" class="x-admin-backlog-body" id="cf" style="background:#ff5722">
+                                <h3 >销卡总计</h3>
+                                <p>
+                                    <cite >{$ff.card_num|setNumberOne}元 / {$ff.card_count|setNumberOne}笔</cite></p>
+                            </a>
+                            <a href="javascript:;" class="x-admin-backlog-body" id="cf">
+                                <h3 style="color:#1e9fff">今日销卡</h3>
+                                <p>
+                                    <cite style="color:#1e9fff">{$ff.d_card_num|setNumberOne}元 / {$ff.d_card_count|setNumberOne}笔</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6" style="width: 100%;">
+                            <a href="javascript:;" class="x-admin-backlog-body" id="cf" style="background:#32c5d2">
+                                <h3>成功总计</h3>
+                                <p>
+                                    <cite>{$ff.secc_num|setNumberOne}元 / {$ff.secc_count|setNumberOne}笔</cite></p>
+                            </a>
+                             <a href="javascript:;" class="x-admin-backlog-body" id="cf">
+                                <h3 style="color:#32c5d2">今日成功</h3>
+                                <p>
+                                    <cite style="color:#32c5d2">{$ff.d_secc_num|setNumberOne}元 / {$ff.d_secc_count|setNumberOne}笔</cite></p>
+                            </a>
+
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6" style="width: 100%;">
+                            <a href="javascript:;" class="x-admin-backlog-body" id="cf" style="background:#8E44AD" >
+                                <h3>失败总计</h3>
+                                <p>
+                                    <cite>{$ff.err_num|setNumberOne}元 / {$ff.err_count|setNumberOne}笔</cite></p>
+                            </a>
+                            <a href="javascript:;" class="x-admin-backlog-body" id="cf" >
+                                <h3 style="color:#8E44AD">今日失败</h3>
+                                <p>
+                                    <cite style="color:#8E44AD">{$ff.d_err_num|setNumberOne}元 / {$ff.d_err_count|setNumberOne}笔</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6" style="width: 100%;">
+                            <a href="javascript:;" class="x-admin-backlog-body" id="cf" style="background:#322ece" >
+                                <h3>利润总计</h3>
+                                <p>
+                                    <cite>{$ff.profit|setNumberOne}元</cite></p>
+                            </a>
+                            <a href="javascript:;" class="x-admin-backlog-body" id="cf" >
+                                <h3 style="color:#322ece">今日利润</h3>
+                                <p>
+                                    <cite style="color:#322ece">{$ff.d_profit|setNumberOne}元</cite></p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+	<style id="LAY_layadmin_theme">.layui-side-menu,.layadmin-pagetabs .layui-tab-title li:after,.layadmin-pagetabs .layui-tab-title li.layui-this:after,.layui-layer-admin .layui-layer-title,.layadmin-side-shrink .layui-side-menu .layui-nav>.layui-nav-item>.layui-nav-child{background-color:#20222A !important;}.layui-nav-tree .layui-this,.layui-nav-tree .layui-this>a,.layui-nav-tree .layui-nav-child dd.layui-this,.layui-nav-tree .layui-nav-child dd.layui-this a{background-color:#009688 !important;}.layui-layout-admin .layui-logo{background-color:#20222A !important;}</style>
+{/block}
+{block name="js"}
+<script src="/static/simple/hqui/libs/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+		$.post("{:url('/index/getDa')}",{},function(e){
+		       // 指定图表的配置项和数据
+			   var myChart = echarts.init(document.getElementById('main1'));
+			var option = {
+				grid: {
+					top: '15%',
+					right: '1%',
+					left: '1%',
+					bottom: '5%',
+					containLabel: true
+				},
+				tooltip: {
+					trigger: 'axis'
+				},
+				xAxis: {
+					type: 'category',
+					data: e.data.t
+				},
+				yAxis: {
+					type: 'value'
+				},
+				legend: {
+					data: ['提现','订单','API','利润','充值']
+				},
+				series: [{
+					name:'提现',
+					data: e.data.user,
+					type: 'line',
+					itemStyle: {
+						normal: {
+							areaStyle: {
+								type: "default"
+							}
+						}
+					},
+					smooth: true
+				},{
+					name:'订单',
+					data: e.data.rech,
+					type: 'line',
+					itemStyle: {
+						normal: {
+							areaStyle: {
+								type: "default"
+							}
+						}
+					},
+					smooth: true
+				},{
+					name:'API',
+					data: e.data.pay,
+					type: 'line',
+					itemStyle: {
+						normal: {
+							areaStyle: {
+								type: "default"
+							}
+						}
+					},
+					smooth: true
+				},{
+					name:'利润',
+					data: e.data.lirun,
+					type: 'line',
+					itemStyle: {
+						normal: {
+							areaStyle: {
+								type: "default"
+							}
+						}
+					},
+					smooth: true
+				},{
+                    name:'充值',
+                    data: e.data.cash,
+                    type: 'line',
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                type: "default"
+                            }
+                        }
+                    },
+                    smooth: true
+                }]
+			};
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+			});
+</script>
+{/block}

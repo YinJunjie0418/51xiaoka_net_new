@@ -1,0 +1,44 @@
+<div class="view-framework-sidebar"> 
+    <div class="sidebar-body">
+     <div class="sidebar-nav">
+      <ul class="sidebar-items"> 
+       <li {if $action=="index" && $contr=="Member"}class="current"{/if}><a href="{:url('home/Member/index')}"><i class="iconfont"></i>账户总览</a></li>
+       <li {if ($action=="index" || $action=="bank" || $action=="weixin" ) && $contr=="Cash"}class="current"{/if}><a href="{:url('home/Cash/index')}"><i class="iconfont"></i>我要出款</a></li>
+       <li {if $action=="cashrecords" && $contr=="Cash" }class="current"{/if}><a href="{:url('home/Cash/cashrecords')}"><i class="iconfont"></i>出款记录</a></li>
+      </ul>
+     </div>
+     <div class="sidebar-nav">
+      <ul class="sidebar-items">
+       <li {if $action=="index" && $contr=="Sellcard"}class="current"{/if}><a href="{:url('home/Sellcard/index')}"><i class="iconfont icon-sell"></i>我要卖卡</a></li>
+       <li {if ($action=="order" || $action=="selldetailinfo") && $contr=="Sellcard"}class="current"{/if}><a href="{:url('home/Sellcard/order')}"><i class="iconfont"></i>卖卡记录</a></li>
+       <li {if $action=="statistics" && $contr=="Sellcard"}class="current"{/if}><a href="{:url('home/Sellcard/statistics')}"><i class="iconfont"></i>统计记录</a></li>
+      </ul>
+     </div>
+     {if condition="($user['userReal']['retype']==2) OR ($user['apilib'] == 1 and $user['type']==0) "}
+	 <div class="sidebar-nav">
+      <ul class="sidebar-items">
+	    <li {if $action=="apiindex" && $contr=="Apiface"}class="current"{/if}><a href="{:url('home/Apiface/apiindex')}"><i class="iconfont">&#58962;</i>API管理</a></li>
+        <li {if $action=="consign" && $contr=="Apiface"}class="current"{/if}><a href="{:url('home/Apiface/consign')}"><i class="iconfont"></i>收单记录</a></li>
+        <li {if $action=="statistics" && $contr=="Apiface"}class="current"{/if}><a href="{:url('home/Apiface/statistics')}"><i class="iconfont">&#59178;</i>收单统计</a></li>
+      </ul>
+     </div>
+     {/if}
+
+     <div class="sidebar-nav">
+      <ul class="sidebar-items">
+	  {eq name="$C.yaostate" value="on"}
+	  <li {if $action=="assets"}class="current"{/if}><a href="{:url('home/Member/assets')}"><i class="iconfont"></i>邀请管理</a></li>{/eq}
+       <li {if $action!="index" && $contr=="Member" && $action!="memberlog" && $action!="assets"}class="current"{/if}><a href="{:url('home/Member/profile')}"><i class="iconfont"></i>资料管理</a></li>
+       <li {if $action=="memberlog"}class="current"{/if}><a href="{:url('home/Member/memberlog')}"><i class="iconfont"></i>资金日志</a></li>
+      </ul>
+     </div>
+     <div class="sidebar-functional">
+      <a href="tencent://message/?uin={$C.qq}&Site=Sambow&Menu=yes"><i class="iconimg iconimg-qq">在线咨询</i></a>
+     </div>
+     <div class="sidebar-call">
+      <h5>客服电话</h5>
+      <p>{$C.kefu}</p>
+      <small>（08:00-次日01:00）</small>
+     </div>
+    </div> 
+   </div>

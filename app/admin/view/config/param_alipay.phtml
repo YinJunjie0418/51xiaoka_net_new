@@ -1,0 +1,93 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">参数配置</div>
+    <div class="layui-card-body" pad15>
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li><a href="{:url('/config/param',['model'=>'qiniu'])}">七牛配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'qq'])}">QQ登陆配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxapp'])}">APP配置</a></li>
+                <li ><a href="{:url('/config/param',['model'=>'wxpay'])}">微信支付</a></li>
+                <li class="layui-this"><a href="{:url('/config/param',['model'=>'alipay'])}">支付宝配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'qcloudsms'])}">短信配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'baiduapp'])}">百度数据</a></li>
+                <li><a href="{:url('/config/param',['model'=>'email'])}">邮件配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'cash'])}">提现配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'aly'])}">认证配置</a></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form action="{:url('/config/param',['model'=>'alipay'])}" class="layui-form" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">支付宝应用ID</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <input type="text" name="appid" value="{$list.appid|default=''}" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline layui-input-company"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">支付宝USERID</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <input type="text" name="userid" value="{$list.userid|default=''}" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline layui-input-company"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">转账备注</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <input type="text" name="bei" value="{$list.bei|default=''}" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">转账理由</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <input type="text" name="remarks" value="{$list.remarks|default=''}" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">开发者私钥</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <textarea placeholder="请输入内容" name="alimach" class="layui-textarea">{$list.alimach|default=''}</textarea>
+                            </div>
+                            <div class="layui-input-inline layui-input-company"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">应用证书</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <input type="text" name="appCertPublicKey" value="{$list.appCertPublicKey|default=''}" class="layui-input">
+                                <button type="button" class="layui-btn ajax-file" style="margin-top:5px" ><i class="layui-icon"></i>上传文件</button>
+                            </div>
+                            <div class="layui-input-inline layui-input-company"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">公钥证书</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <input type="text" name="alipayCertPublicKey" value="{$list.alipayCertPublicKey|default=''}" class="layui-input">
+                                <button type="button" class="layui-btn ajax-file" style="margin-top:5px" ><i class="layui-icon"></i>上传文件</button>
+                            </div>
+                            <div class="layui-input-inline layui-input-company"></div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">根证书</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <input type="text" name="alipayRootCert" value="{$list.alipayRootCert|default=''}" class="layui-input">
+                                <button type="button" class="layui-btn ajax-file" style="margin-top:5px" ><i class="layui-icon"></i>上传文件</button>
+                            </div>
+                            <div class="layui-input-inline layui-input-company"></div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit  lay-filter="*">确认保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{/block}

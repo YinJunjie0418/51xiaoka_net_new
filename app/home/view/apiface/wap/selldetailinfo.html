@@ -1,0 +1,129 @@
+ {include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">API订单详情</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="card-gradient">
+		<div class="card sellrecord-info">
+			<div class="cell">
+				<div class="cell-bd">
+					<h5 class="text-success" style="font-size: 18px;font-weight: 600;">{$p.title}{$p.money}元</h5>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+						<span class="text-light">系统订单：</span><span style="color:#0085fe">{$p.orderno}</span>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+						<span class="text-light">商户订单：</span><span style="color:#a800ff">{$p.tmporder}</span>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+						<span class="text-light">卡号：</span>{$p.card_no}
+					</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+						<span class="text-light">密码：</span>{$p.card_key}
+					</p>
+					{notempty name="p.seccode"}
+					<p>
+						<span class="text-light">验证码：</span>{$p.seccode|default=''}
+					</p>
+					{/notempty}
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+				<span class="text-light">实际面值：</span>
+					<span class="text-success">{$p.settle_amt}</span>
+				</div>
+			</div>
+		    <div class="cell">
+				<div class="cell-bd">
+				<span class="text-light">实际到账：</span>
+				   {gt name="p.amount" value="0"}
+					<span class="text-success">{$p.amount}</span>
+					{else/}
+					<span class="text-red">{$p.amount}</span>
+					{/gt}
+					
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+				<span class="text-light">状态：</span>
+				   {:orderType($p['state'])}
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+				<span class="text-light">备注：</span>
+				   {$p['remarks']}
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-ft">
+				<span class="text-light">回掉路径：</span>
+					<span class="text-success">{$p.notify|default='回掉路径为空'}</span>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-ft">
+				<span class="text-light">通知：</span>
+					<span class="text-success">{$p.tongzhi|default=''}</span>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-ft">
+				<span class="text-light">处理耗时：</span>
+					<span class="text-success">{$p.haos}</span>
+				</div>
+			</div>
+			<div class="myaction-wrapper">
+					<div class="btn-group">
+						<button class="btn btn-primary" type="button" da-href="{:url('home/Apiface/xiafa')}" da-id="{$p.id}" onclick="setXiafa(this)" name="formbtn">再次下发</button>
+					</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</section>
+ <script>
+	  function setXiafa(a){
+	     loading(!0);
+		 var opt=$(a).attr('da-href'),id=$(a).attr('da-id');
+	    $.post(opt,{id:id},function(e){
+		   loading(!1);
+		   if(e.code==1){
+		     $("#modal-dialog").html(e.msg).width(360).modal({
+				title: "提示",
+				modal: !0,
+				timeout: 300
+			});
+		   }else{
+		      $("#modal-dialog").html(e.msg).width(360).modal({
+				title: "提示",
+				modal: !0,
+				timeout: 300
+			});
+		   }
+		})
+	  }
+	  </script>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>

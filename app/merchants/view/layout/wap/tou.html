@@ -1,0 +1,68 @@
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no, initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta http-equiv="Cache-Control" content="no-cache, no-store">
+<title>{$C['sitename']}-{$C['title']}</title>
+<meta name="keywords" content="{$C['keywords']}">
+<meta name="description" content="{$C['description']}">
+<link rel="stylesheet" href="__CSSM__/owlui.animate.css?2019101">
+<link rel="stylesheet" href="__CSSM__/owlui.icon.css?2019101">
+<link rel="stylesheet" href="__CSSM__/owlui.css?202052">
+<link rel="stylesheet" href="__CSSM__/base.css?2020621">
+<script src="__JS__/j_lipin.js?20190521"></script>
+<script src="__JS__/library.js?20190521"></script>
+<script src="__JS__/jquery.cookie.js?20181116"></script>
+<script src="__JSM__/touchslide.js"></script>
+<script src="__JSM__/base.js?20268058"></script>
+</head>
+<body class="" ontouchstart="">
+<div class="modal hide" id="modal-dialog">
+</div>
+<div class="modal-cover hide" id="modal-dialog-cover">
+</div>
+<section class="myapp" id="myapp">
+<div class="matte pullup" id="service">
+	<div class="pullup-content">
+		<div class="pullup-title">
+			<p class="actionsheet-title-text">
+				请选择{$C['sitename']}客服
+			</p>
+		</div>
+		<div class="pullup-list">
+		 {eq name="wxn" value="1"}
+			<a class="cell" href="tencent://message/?uin={$C.qq}&Site=Sambow&Menu=yes" id="zhiCustomBtn"  target="_blank" rel="external nofollow">
+			<div class="cell-bd">
+				<i class="iconfont iconfont-xiaoxi"></i>在线客服咨询
+			</div>
+			</a>
+			{else/}
+			<a class="cell" href="tencent://message/?uin={$C.qq}&Site=Sambow&Menu=yes" id="zhiCustomBtn"  target="_blank" rel="external nofollow">
+			<div class="cell-bd">
+				<i class="iconfont iconfont-xiaoxi"></i>在线客服咨询
+			</div>
+			</a>
+			{/eq}
+			<a class="cell" href="tel:{$C.kefu}">
+			<div class="cell-bd">
+				<i class="iconfont iconfont-call"></i>在线客服电话
+			</div>
+			</a><a class="cell" href="/">
+			<div class="cell-bd">
+				<i class="iconfont iconfont-home"></i>返回首页
+			</div>
+			</a>
+		</div>
+	</div>
+	<div class="pullup-content">
+		<a class="cell" href="javascript:;" data-dismiss="matte" data-target="#service">
+		<div class="cell-bd">
+			取消
+		</div>
+		</a>
+	</div>
+</div>

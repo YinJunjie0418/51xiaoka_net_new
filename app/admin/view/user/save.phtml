@@ -1,0 +1,108 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="mobile" value="{$data.mobile|default=''}" autocomplete="off" placeholder="请输入手机号" lay-verify="required|phone|number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择商户组</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-filter="modelshop" >
+                        <option value="0" {eq name="$data['type']|default=''" value="0"} selected="selected"{/eq} >寄售商户</option>
+                        <option value="1" {eq name="$data['type']|default=''" value="1"} selected="selected"{/eq} >充值商户</option>
+                    </select>
+                </div>
+            </div>
+           <div class="layui-form-item" id="buyshop" {eq name="$data.type|default='0'" value="1"}style="display:none"{/eq} >
+                <label class="layui-form-label">设置寄售费率组</label>
+                <div class="layui-input-block">
+                    <select name="rategroup" id="model" {eq name="$data.type|default='0'" value="1"}disabled="disabled" {/eq}>
+                        <option value="0">请选择</option>
+                        {foreach name="ratelist" item="r"}
+                        <option value="{$r.id}" {eq name="$r['id']" value="$data.rategroup|default=''"} selected="selected"{/eq} >{$r.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" {eq name="$data.type|default='0'" value="0"}style="display:none"{/eq} id="sellshop">
+                <label class="layui-form-label">设置充值费率组</label>
+                <div class="layui-input-block">
+                    <select name="rategroup" id="model" {eq name="$data.type|default='0'" value="0"}disabled="disabled" {/eq}>
+                        <option value="0">请选择</option>
+                        {foreach name="shopgroup" item="r"}
+                        <option value="{$r.id}" {eq name="$r['id']" value="$data.rategroup|default=''"} selected="selected"{/eq} >{$r.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" id="company" {eq name="$data.type|default='0'" value="0"}style="display:none"{/eq}>
+                <label class="layui-form-label">主体名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="company" value="{$data.company|default=''}" autocomplete="off" placeholder="请输入公司名称"  class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">联系QQ</label>
+                <div class="layui-input-block">
+                    <input type="text" name="qq" value="{$data.qq|default=''}" autocomplete="off" placeholder="请输入qq"  class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">推广人SHOPID</label>
+                <div class="layui-input-block">
+                    <input type="text" name="assets" value="{$data.assets|default=''}" autocomplete="off" placeholder="推广人SHOPID"  class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">登陆密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" value="" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                </div>
+				{notempty name="$data.password"}
+				<div class="layui-form-mid layui-word-aux">不修改留空</div>{/notempty}
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">安全密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="tradepwd" value="" autocomplete="off" placeholder="请输入密码" class="layui-input">
+                </div>
+				{notempty name="$data.tradepwd"}
+				<div class="layui-form-mid layui-word-aux ">不修改留空</div>{/notempty}
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    form.on('select(modelshop)', function (data) {
+       if(data.value==1) {
+           $("#buyshop").hide();
+           $("#buyshop").find("select[name=rategroup]").attr("disabled",true);
+           $("#sellshop").show();
+           $("#sellshop").find("select[name=rategroup]").attr("disabled",false);
+           $("#company").show();
+       }else{
+            $("#buyshop").show();
+            $("#buyshop").find("select[name=rategroup]").attr("disabled",false);
+            $("#sellshop").hide();
+           $("#sellshop").find("select[name=rategroup]").attr("disabled",true);
+            $("#company").hide();
+        }
+        form.render('select');
+    });
+
+</script>
+
+{/block}

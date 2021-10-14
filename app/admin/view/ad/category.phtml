@@ -1,0 +1,59 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('/ad/category_add')}" class="layui-btn ajax-iframe" data-width="430px" data-height="200px"><i class="fa fa-plus-circle"></i> 添加</a>
+        </div>
+        </div>
+        <table id="tableList" lay-filter="tableList"></table>
+        <!-- 表格操作列 -->
+        <script type="text/html" id="tableTBTrack">
+            <a href="{:url('/ad/category_edit')}?id={{d.id}}" class="layui-btn layui-btn-sm ajax-iframe" data-width="430px" data-height="200px">修改</a>
+            <a href="{:url('/ad/category_del')}?id={{d.id}}" class="layui-btn  layui-btn-sm layui-btn-danger ajax-delete">删除</a>
+        </script>
+        <!-- 权限列 -->
+        <script type="text/html" id="sort_order">
+            <input type="text" value="get_ad({{d.id}},'desc')" autocomplete="off" class="layui-input" disabled>
+        </script>
+    
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+
+        // 渲染回访表格
+        var insTb = table.render({
+            elem: '#tableList',
+            url: "{:url('/ad/category_json')}",
+            page: false,
+            cellMinWidth: 100,
+            size:'lg',even:true,
+            cols: [[
+                {type:'numbers',title:'#'},
+                {field: 'name', align: 'left', sort: true, title: '分类名称',width:150},
+                {align: 'center', sort: true, title: '调用代码',templet:'#sort_order'},
+                {align: 'center', toolbar: '#tableTBTrack', title: '操作', width: 150}
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data, //解析数据长度
+                  "data": res.data //解析数据列表
+                };
+            }
+        });
+
+    });
+
+</script>
+{/block}

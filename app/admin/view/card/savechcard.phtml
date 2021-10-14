@@ -1,0 +1,97 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">点卡名称</label>
+                <div class="layui-input-block">
+                    <input type="text" value="【{$cardname|default=""}】" autocomplete="off" disabled class="layui-input layui-btn-disabled">
+                </div>
+            </div>
+			 <div class="layui-form-item">
+                <label class="layui-form-label">面值费率</label>
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" lay-filter="addin" lay-submit=""><i class="layui-icon"></i></button>
+                </div>
+            </div>
+			<div class="layui-form-item" id="inpu">
+			  {volist name="$data|default=''" id="p"}
+			    <div id="nuh">
+				   <div class="layui-inline" style="margin-left: 40px;">
+				     <label class="layui-form-label" style="width:40px">面值代码</label>
+					 <div class='layui-input-inline' style='width: 90px;'>
+					    <input type='text' name='content[{$i-1}][type]' value="{$p.type|default=''}" autocomplete='off' placeholder="没有可不填" class='layui-input'>
+					</div>
+				 </div>
+				  <div class="layui-inline" >
+				     <label class="layui-form-label" style="width:40px">面值</label>
+					 <div class='layui-input-inline' style='width: 90px;'>
+					    <input type='text' name='content[{$i-1}][mianzhi]' value="{$p.mianzhi}" lay-verify='required' autocomplete='off' class='layui-input layui-disabled'>
+					</div>
+				 </div>
+				 <div class="layui-inline">
+				    <label class="layui-form-label" style="width:40px">费率</label>
+					<div class='layui-input-inline' style='width: 90px;'>
+					   <input type='number' name='content[{$i-1}][feilv]' value="{$p.feilv}" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d\.]/g,'')" autocomplete='off' class='layui-input'>
+					</div>
+					<button type="button" onclick="jian(this,{$p.id})" class="layui-btn layui-btn-primary"><i class="layui-icon"></i></button>
+				</div>
+			   </div>
+				{/volist}
+                    </div>
+					<div class="layui-input-block">
+				  <div class="layui-form-mid layui-text text-warning">更新到用户只有更改费率才会生效</div>
+				   <div class="layui-form-mid layui-text text-warning">面值代码由销卡渠道提供，如没有要求可以不填，有要求必填！</div>
+				</div>
+            <div class="layui-form-item">
+			    
+                <div class="layui-input-block">
+				     <div class="layui-input-inline">
+					  <input type="checkbox" name="geng" lay-skin="primary" title="是否更新到用户" ><div class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary"><span>是否更新到用户</span><i class="layui-icon layui-icon-ok"></i></div>
+					</div>
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+     function jian(p,id){
+         if(id!=0){
+             var index=layer.load();
+             $.post("{:url('/card/delChanel')}",{id:id},function(e){
+                 layer.close(index);
+                 if(e.code==1){
+                     $(p).parent().parent().remove();
+                 }
+                 layer.msg(e.msg);
+             })
+         }else{
+             $(p).parent().parent().remove();
+         }
+
+	}
+
+	form.on('submit(addin)',
+			function addin(){
+			 var num=$("#inpu #nuh").length;
+			 var html='<div id="nuh">';
+			 html +='<div class="layui-inline" style="margin-left: 40px;">';
+			 html +='<label class="layui-form-label" style="width:40px">面值代码</label>';
+			 html +="<div class='layui-input-inline' style='width: 90px;'><input type='text' name='content["+num+"][type]' autocomplete='off' placeholder='没有可不填' class='layui-input'>";
+			 html +='</div></div><div class="layui-inline">';
+			 html +='<label class="layui-form-label" style="width:40px">面值</label>';
+			 html +="<div class='layui-input-inline' style='width:90px'><input type='text' lay-verify='required'  name='content["+num+"][mianzhi]' autocomplete='off' class='layui-input'>";
+			 html +='</div></div><div class="layui-inline"><label class="layui-form-label" style="width:40px">费率</label>';
+			 html +="<div class='layui-input-inline' style='width:90px'><input type='text' onkeyup='this.value=this.value.replace(/[^\d\.]/g,'')' onafterpaste='this.value=this.value.replace(/[^\d\.]/g,'')' lay-verify='required' name='content["+num+"][feilv]' autocomplete='off' class='layui-input'>";
+			 html +='</div><button type="button" onclick="jian(this,0)" class="layui-btn layui-btn-primary"><i class="layui-icon"></i></button></div></div>';
+			 $("#inpu").append(html);
+			}
+	);
+</script>
+{/block}
+

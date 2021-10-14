@@ -1,0 +1,57 @@
+{include file="layout/wap/tou" /}
+<div class="myheader" id="myheader">
+	<header class="header header-floorbar"><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/helpa')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">全部卡券回收</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<style>
+.hide29,.hide59,.hide61,.hide67,.hide71,.hide97,.hide104{display: none!important;}
+</style>
+<div class="mycontent mycontent-hasfooter mycontent-hastabs" id="mycontent">
+	<div class="categorys-slider" id="categorys-slider">
+		<div class="myfixed">
+			<div class="tabs navbar navbar-inverse">
+			  {volist name="cardModel" id="p" }
+			    {eq name="p.istype" value="0"}
+				<a class='tab-item {eq name="i" value="1"}class="active"{/eq}'><span>{:substr($p.title,0,6)}</span></a>
+				{/eq}
+			  {/volist}
+			</div>
+		</div>
+		<div class="tempWrap" style="overflow:hidden; position:relative;">
+			<div class="categorys clearfix" id="category-card" style="width: 2442px; position: relative; overflow: hidden; padding: 0px; margin: 0px; transition-duration: 200ms; transform: translate(0px, 0px) translateZ(0px); height: 2430px;">
+			{volist name="cardModel" id="k"}
+			  {eq name="k.istype" value="0"}
+				<div class="categorys-item" style="display: table-cell; vertical-align: top; width: 407px;">
+					<ul class="cardlists">
+					  {volist name="k.comments" id="b"}
+						<li class="hide{$b.id}"><a class="cell cell-access cardlist cardlist-{$b.id}" href="{:url('home/card/index',['id'=>$b.id])}">
+						<div class="cell-hd">
+							<span class="brand"><img src="{$b.phoneRecycleIcon}"></span>
+						</div>
+						<div class="cell-bd">
+							<h5 class="title">{$b.title}</h5>
+							<p class="discount">
+								{:hasTone($b.tid,$b.type)}
+							</p>
+						</div>
+						<div class="cell-ft">
+						</div>
+						</a></li>
+						{/volist}
+					</ul>
+				</div>
+				{/eq}
+				{/volist}
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">$(document).ready(function(){TouchSlide({ slideCell: "#categorys-slider",titCell: ".myfixed a",mainCell: ".categorys",titOnClassName: "active",startFun:function(i){ var cheight = $("#category-card > .categorys-item:eq("+i+") > .cardlists").outerHeight();$("#category-card").css("height",cheight);}});});</script>
+
+{include file="layout/wap/butmenu" /}
+</section>
+</body>
+</html>

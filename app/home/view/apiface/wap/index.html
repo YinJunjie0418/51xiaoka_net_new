@@ -1,0 +1,94 @@
+ {include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title"><span class="header-toggle" data-toggle="matte" data-target="#calendar">卖卡记录 <i class="iconfont iconfont-filter"></i></span></h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="card-gradient">
+	{volist name="list" id="f"}
+		<div class="card">
+			<div class="cell cell-access">
+				<a class="cell-bd" href="{:url('home/Sellcard/selldetailinfo',['id'=>$f.id])}">
+				<h5><span class="text-light">单号：</span>{$f.batchno}</h5>
+				<p>
+					<span class="text-light">时间：</span>{$f.create_time}
+				</p>
+				<p>
+					<span class="text-light">面值：</span>¥ {$f.money} （可得<span class="text-success">¥ {$f.amount}</span>）
+				</p>
+				<p>
+					<span class="text-light">状态：</span><span class="text-red">{:htmlspecialchars_decode($f.state)}</span>
+				</p>
+				</a><a class="cell-ft" href="{:url('home/Sellcard/selldetailinfo',['id'=>$f.id])}"></a>
+			</div>
+		</div>
+		{/volist}
+		<div class="card">
+			{$list|raw}
+		</div>
+	</div>
+	<div class="matte actionsheet" id="calendar">
+		<div class="actionsheet-header">
+			<h4>选择时间查询</h4>
+			<button class="close" type="button" data-dismiss="matte"></button>
+		</div>
+		<div class="actionsheet-body">
+			<form action="{:url('home/Sellcard/order')}" method="get" id="formsubmit">
+				<div class="filters">
+					<div class="cells-title">
+						关键字筛选
+					</div>
+					<div class="cells filter-search">
+						<div class="cell cell-select-before">
+							<div class="cell-hd">
+								<select name="setype" class="form-select">
+									<option value="batchno">订单号</option>
+									<option value="card_no">卡号</option>
+									<option value="card_key">卡密</option>
+								</select>
+							</div>
+							<div class="cell-bd">
+								<input type="text" class="form-control" name="rekey" id="rekey" value="" placeholder="请输入关键字搜索" null="请输入关键词" data-input="clear">
+							</div>
+							<div class="cell-ft">
+								<button class="btn btn-link" type="submit">搜索</button>
+							</div>
+						</div>
+					</div>
+					<div class="cells-title">
+						时间筛选
+					</div>
+					<div class="grids grids-tabs filter-date">
+						<a class="grid " href="javascript:;" onclick="submitset('day',1)"><span>今天</span></a><a class="grid " href="javascript:;" onclick="submitset('day',7)"><span>7天</span></a><a class="grid " href="javascript:;" onclick="submitset('day',30)"><span>1个月</span></a><a class="grid " href="javascript:;" onclick="submitset('day',60)"><span>2个月</span></a><a class="grid " href="javascript:;" onclick="submitset('day',90)"><span>3个月</span></a><a class="grid " href="javascript:;" onclick="submitset('day',365)"><span>1年</span></a>
+					</div>
+					<div class="cells-title">
+						导出数据
+					</div>
+					<div class="grids grids-tabs filter-export">
+						<a class="grid" href="javascript:;" data-href="{:url('home/Sellcard/export')},href,,get">导出Excel</a><a class="grid" href="javascript:;" data-href="{:url('home/Sellcard/export',['status'=>3])},href,,get">只导出卖卡成功的Excel</a>
+					</div>
+					<input type="hidden" name="day" value="0">
+				</div>
+			</form>
+		</div>
+		<div class="actionsheet-action">
+			<div class="btn-group">
+				<a class="btn btn-primary" href="{:url('home/Sellcard/order')}">全部卖卡记录</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+</section>
+
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>

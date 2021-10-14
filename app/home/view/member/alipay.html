@@ -1,0 +1,64 @@
+{extend name="layout/member" /} 
+{block name="content"}
+    <div class="view-framework-body">
+   <div class="view-framework-main"> 
+    <div class="tabnavs">
+     {include file="layout/info_menu" /}
+    </div> 
+   <div class="box tab-content">
+	<div class="userform">
+	    <div class="form-group">
+			<label class="form-label">&nbsp;</label>
+			<div class="form-element">
+				<ul class="btn-group clearfix" id="banktype-group">
+					{eq name="pei.alitype" value="1"}<li id="setcash1" class="active"><a class="btn" href="{:url('home/Member/alipay')}"><i class="iconfont iconfont-alipay"></i>支付宝管理</a></li>{/eq}
+					{eq name="pei.banktype" value="1"}
+					<li id="setcash2" ><a class="btn" href="{:url('home/Member/setcash')}"><i class="iconfont iconfont-bank"></i>银行卡管理</a></li>{/eq}
+					{eq name="pei.wxtype" value="1"}
+					<li id="setcash3" ><a class="btn" href="{:url('home/Member/weixin')}"><i class="iconfont iconfont-bank">&#59365;</i>微信管理</a></li>{/eq}
+				</ul>
+			</div>
+		</div>
+	    {empty name="$user['userReal']['retype']"}
+			<div class="form-group">
+				<label class="form-label">支付宝帐号：</label>
+				<div class="form-element">
+					<ul class="cashcard-group" id="cashcard-bank">
+					</ul>
+					<div class="alert alert-warning form-alert">
+						<p>
+							您还没有进行实名认证，无法添加支付宝
+						</p>
+						<a class="btn btn-primary" href="{:url('home/Account/index')}">前往实名认证</a>
+					</div>
+				</div>
+			</div>
+		{else/}
+		<div class="form-group">
+			<label class="form-label">支付宝帐号：</label>
+			<div class="form-element">
+				<ul class="cashcard-group" id="cashcard-alipay">
+				   {volist name="list" id="p"}
+					<li>
+					<div class="cashcard-name">
+						<span><strong>{:tfen($p.accounts,2,5)}</strong></span><i class="iconimg iconimg-alipay">支付宝</i>
+					</div>
+					<div class="cashcard-action">
+						<a href="###" data-dialog="{:url('home/Bank/addalipay',['id'=>$p.id])},600,编辑支付宝账户">编辑</a><span class="sep">|</span><a href="###" data-dialog="{:url('home/Bank/del',['id'=>$p.id])},350">删除</a>
+					</div>
+					</li>
+					{/volist}
+				</ul>
+				<a class="cashcard-add" href="javascript:;" data-dialog="{:url('home/Bank/addalipay')},600,添加支付宝账户"><span class="plus"><s class="across"></s><s class="erect"></s></span>
+				<p>
+					添加支付宝帐号
+				</p>
+				</a>
+			</div>
+		</div>
+		{/empty}
+		
+		
+	</div>
+</div>
+   {/block}

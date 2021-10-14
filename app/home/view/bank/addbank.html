@@ -1,0 +1,150 @@
+<div class="userform">
+	<form action="{:request()->url()}" method="post" id="submit">
+	   {eq name="$user.userReal.retype" value="1"}
+		<div class="form-group mb10">
+			<label class="form-label">开户人姓名：</label>
+			<div class="form-element">
+				<strong>{$user.userReal.name}</strong>
+			</div>
+		</div>
+		<div class="form-group mb10">
+			<label class="form-label">身份证号码：</label>
+			<div class="form-element">
+				<strong>{:tfen($user.userReal.idcard,4,12)}</strong>
+			</div>
+		</div>
+		{else/}
+		<div class="form-group mb10">
+			<label class="form-label">公司名称：</label>
+			<div class="form-element">
+				<strong>{$user.userReal.company_name}</strong>
+			</div>
+		</div>
+		{/eq}
+		<div class="form-group">
+			<label class="form-label"><em>*</em> 请选择银行：</label>
+			<div class="form-element">
+				<select class="form-control" name="tobanka" id="tobank">
+					<option value="">请选择银行</option>
+					{volist name="banks" id="p"}
+						<option value="{$p.id}|{$p.procode}"  {eq name="$p.id" value="$res.bankid"}selected = selected{/eq}>{$p.bankName}</option>
+					{/volist}
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="form-label"><em>*</em>银行名称：</label>
+			<div class="form-element">
+				<input class="form-control" name="bankname" id="bankname" placeholder="银行名称最好具体到分行" type="text" value="{$res.bankname|default=''}"  null="请填写银行名称"  autocomplete="off">
+				<div class="help-block">
+					<p>
+						请认真填写！
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="form-label"><em>*</em>银行所在地：</label>
+			<div class="form-element">
+				<input class="form-control" name="bankaddress" id="bankaddress" placeholder="开户行所在城市" type="text" value="{$res.bankaddress|default=''}"  null="请填写银行所在地"  autocomplete="off">
+				<div class="help-block">
+					<p>
+						比如:深圳市！
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="sr-only">
+			<input type="text" name="fakeusernameremembered"><input type="password" name="fakepasswordremembered">
+			<p>
+				防止浏览器自动乱填充表单
+			</p>
+		</div>
+		<div class="form-group">
+			<label class="form-label"><em>*</em> 银行卡卡号：</label>
+			<div class="form-element">
+				<input class="form-control" name="accounts" type="text" id="accounts" value="{$res.accounts}" reg="^[0-9]{12,20}$" null="请输入正确的银行卡卡号" err="银行卡格式不正确" autocomplete="off">
+				<div class="help-block">
+					<p>
+					{eq name="$user.userReal.retype" value="1"}
+						请认真填写，持卡人必须与【<span class="text-dark">{$user.userReal.name}</span>】身份一致！
+					{else/}
+						请认真填写，持卡人必须与【<span class="text-dark">{$user.userReal.company_name}</span>】身份一致！
+					{/eq}
+					</p>
+				</div>
+			</div>
+		</div>
+		{empty name="$res.accounts"}
+		<div class="form-group">
+			<label class="form-label"><em>*</em> 确认卡号：</label>
+			<div class="form-element">
+				<input class="form-control" name="verifyacc" id="verifyacc" type="text" value="" reg="^[0-9]{12,20}$" null="请再次填写银行卡卡号" err="银行卡格式不正确" autocomplete="off">
+			</div>
+		</div>
+		{/empty}
+		<div class="form-group">
+		 {:token_field()}
+		    <input type="hidden" name="id" value="{$res.id}">
+			<input type="hidden" name="tobank" value="{$res.bankid}">
+			<label class="form-label">&nbsp;</label><button  id="anjian" class="btn btn-primary mr20" type="button" data-form="top-left,json" name="submit">确认，提交</button><a class="btn btn-default" href="javascript:;" data-dismiss="modal">返回</a>
+		</div>
+	</form>
+</div>
+<script>
+	var data;
+	$(function(){
+		var id="{$res.cityid|default=''}",region="{$res.region|default=''}";
+			$.post("{:url('home/Bank/getcity')}", function (result) {
+				data=result;
+				var str="<option value=''>请选择地区</option>";
+				for (var i = 0; i < result.length; i++) {
+					if(region==result[i].code){
+						str += "<option value=" + i + " selected>" + result[i].region + "</option>";
+					}else{
+						str += "<option value=" + i + ">" + result[i].region + "</option>";
+					}
+				}
+				$("#tobaccoId").empty().html(str);
+			})
+	})
+	$("#tobank").change(function(){
+		var da=$(this).val();
+		var str=da.split("|");
+		$("input[name=tobank]").val(str[0]);
+		var citys=$("#tocity").val();
+		getPro(str[1],citys);
+	})
+	$("#tobaccoId").change(function(){
+		var id=$(this).val();
+		da=data[id]['regionEntitys'];
+		var str="<option value=''>请选择地区</option>";
+		for (var i = 0; i < da.length; i++) {
+			str += "<option value=" + da[i].code + ">" + da[i].region + "</option>";
+		}
+		$("#tocity").empty().html(str);
+	})
+
+	$("#tocity").change(function(){
+		var da=$("#tobank").val();
+		var str=da.split("|");
+		var bankid=$(this).val(),procode=str[1];
+		getPro(procode,bankid);
+	})
+
+	function getPro(procode,bankid){
+		$.post("{:url('home/Bank/getcode')}",{bankcode:procode,cityid:bankid},function (result) {
+			var da=result.data,str = "<option value=''>请选择开户行</option>";
+			for (var i = 0; i < da.length; i++) {
+				str += "<option value=" + da[i].prcptcd + ">" + da[i].bankname + "</option>";
+			}
+			$("#tobankcode").empty().html(str);
+		})
+	}
+	$("#tobankcode").change(function(){
+		var hang=$(this).val();
+		$("#bankline").val(hang);
+	})
+
+
+</script>

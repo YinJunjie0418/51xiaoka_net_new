@@ -1,0 +1,152 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">参数配置</div>
+    <div class="layui-card-body" pad15>
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li><a href="{:url('/config/param',['model'=>'qiniu'])}">七牛配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'qq'])}">QQ登陆配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxapp'])}">APP配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxpay'])}">微信支付</a></li>
+				 <li><a href="{:url('/config/param',['model'=>'alipay'])}">支付宝配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'qcloudsms'])}">短信配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'baiduapp'])}">百度数据</a></li>
+				<li><a href="{:url('/config/param',['model'=>'email'])}">邮件配置</a></li>
+				<li class="layui-this"><a href="{:url('/config/param',['model'=>'cash'])}">提现配置</a></li>
+				<li><a href="{:url('/config/param',['model'=>'aly'])}">认证配置</a></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form action="{:url('/config/param',['model'=>'cash'])}" class="layui-form" method="post">
+					<fieldset class="layui-elem-field layui-field-title">
+					<legend>银行提现配置</legend>	</fieldset>
+						<div class="layui-form-item">
+							<label class="layui-form-label">开关状态</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="checkbox" name="banktype" lay-skin="switch" lay-text="开启|关闭" {if isset($list.banktype) && $list.banktype=='1'} checked{/if}>
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">提现审核</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="checkbox" name="banksh" lay-skin="switch" lay-text="开启审核|直接到账" {if isset($list.banksh) && $list.banksh=='1'} checked{/if}>
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+						<div class="layui-form-item">
+                        <label class="layui-form-label">银行接口</label>
+                        <div class="layui-input-block">
+                            {volist name="banks" id="p"}
+						  <input type="radio" name="txclass" value="{$p.class}" title="{$p.name}" {eq name="list.txclass|default=''" value='$p.class'}checked=""{/eq}><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>{$p.name}</div></div>
+						 {/volist}
+						</div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">选择银行接口</div>
+                    </div>
+						 <div class="layui-form-item">
+							<label class="layui-form-label">提现费率</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="number" name="bankfeilv" value="{$list.bankfeilv|default=""}" class="layui-input">
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">单笔限额</label>
+							  <div class="layui-input-inline" style="width: 100px;">
+								<input type="number" name="bank_min" placeholder="最低"  value="{$list.bank_min|default=''}" autocomplete="off" class="layui-input">
+							  </div>
+							  <div class="layui-form-mid">-</div>
+							  <div class="layui-input-inline" style="width: 100px;">
+								<input type="number" name="bank_max" placeholder="最高" value="{$list.bank_max|default=''}" autocomplete="off" class="layui-input">
+							  </div>
+						</div>
+
+				
+					
+					<fieldset class="layui-elem-field layui-field-title">
+					<legend>支付宝提现配置</legend></fieldset>
+						<div class="layui-form-item">
+							<label class="layui-form-label">开关状态</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="checkbox" name="alitype" lay-skin="switch" lay-text="开启|关闭" {if isset($list.alitype) && $list.alitype=='1'} checked{/if}>
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">提现审核</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="checkbox" name="alish" lay-skin="switch" lay-text="开启审核|直接到账" {if isset($list.alish) && $list.alish=='1'} checked{/if}>
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+						 <div class="layui-form-item">
+							<label class="layui-form-label">提现费率</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="number" name="alifeilv" value="{$list.alifeilv|default=""}" class="layui-input">
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">单笔限额</label>
+							  <div class="layui-input-inline" style="width: 100px;">
+								<input type="number" name="ali_min" placeholder="最低" value="{$list.ali_min|default=''}" autocomplete="off" class="layui-input">
+							  </div>
+							  <div class="layui-form-mid">-</div>
+							  <div class="layui-input-inline" style="width: 100px;">
+								<input type="number" name="ali_max" placeholder="最高" value="{$list.ali_max|default=''}" autocomplete="off" class="layui-input">
+							  </div>
+						</div>
+					
+					
+					<fieldset class="layui-elem-field layui-field-title">
+					<legend>微信提现配置</legend>
+										</fieldset>
+						<div class="layui-form-item">
+							<label class="layui-form-label">开关状态</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="checkbox" name="wxtype" lay-skin="switch" lay-text="开启|关闭" {if isset($list.wxtype) && $list.wxtype=='1'} checked{/if}>
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">提现审核</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="checkbox" name="wxsh" lay-skin="switch" lay-text="开启审核|直接到账" {if isset($list.wxsh) && $list.wxsh=='1'} checked{/if}>
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+						 <div class="layui-form-item">
+							<label class="layui-form-label">提现费率</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="number" name="wxfeilv" value="{$list.wxfeilv|default=""}" class="layui-input">
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">单笔限额</label>
+							  <div class="layui-input-inline" style="width: 100px;">
+								<input type="number" name="wx_min" placeholder="最低" value="{$list.wx_min|default=''}" autocomplete="off" class="layui-input">
+							  </div>
+							  <div class="layui-form-mid">-</div>
+							  <div class="layui-input-inline" style="width: 100px;">
+								<input type="number" name="wx_max" placeholder="最高" value="{$list.wx_max|default=''}" autocomplete="off" class="layui-input">
+							  </div>
+						</div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit  lay-filter="*">确认保存</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+{/block}
+

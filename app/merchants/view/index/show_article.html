@@ -1,0 +1,9 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$res['title']} </title>
+  <meta name="keywords" content="{$res['keywords']}" />
+  <meta name="description" content="{$res['description']}" />
+{/block}
+{block name="content"}
+  {:htmlspecialchars_decode($res.content)}
+{/block}

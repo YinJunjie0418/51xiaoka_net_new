@@ -1,0 +1,169 @@
+{include file="layout/wap/tou" /}
+<div class="myheader" id="myheader">
+	<header class="header header-floorbar"><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/Helpfaq/helpa')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">{$C['sitename']}</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent mycontent-hasfooter" id="mycontent">
+	<div class="slider-panel">
+		<!--<div class="arch-mask">
+		</div>-->
+		<div class="slider" id="slider">
+			<div class="slider-pager">
+				<ul class="pager-0">
+					
+				</ul>
+			</div>
+			<div class="tempWrap" style="overflow:hidden; position:relative;">
+				<ul class="slider-imgs" >
+				    {volist name=":get_link(8,'desc')" id="p"}
+					<li ><a href="{$p.url}"><img class="shadow-blue" src="{$p.image}"></a></li>
+					{/volist}
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="card card-margin">
+		<ul class="typeicon-group clearfix">
+			<li><a href="{:url('home/card/index',['cid'=>33])}">
+			    <span class="typeicon typeicon-bg-red"><i class="iconfont iconfont-type-ecard"></i></span><span>电商购物</span></a></li>
+			<li><a href="{:url('home/card/index',['cid'=>32])}">
+			    <span class="typeicon typeicon-bg-purple"><i class="iconfont iconfont-type-mobile"></i></span><span>话费充值卡</span></a></li>
+			<li><a href="{:url('home/card/index',['cid'=>36])}">
+			    <span class="typeicon typeicon-bg-pink"><i class="iconfont iconfont-type-oil"></i></span><span>加油充值卡</span></a></li>
+			<li><a href="{:url('home/card/index',['cid'=>34])}">
+			    <span class="typeicon typeicon-bg-cyan"><i class="iconfont iconfont-type-game"></i></span><span>游戏点卡</span></a></li>
+			<li><a href="{:url('home/card/index',['cid'=>35])}">
+			    <span class="typeicon typeicon-bg-orange"><i class="iconfont iconfont-type-foods"></i></span><span>美食出行</span></a></li>
+			<li><a href="{:url('home/card/index',['cid'=>37])}">
+			     <span class="typeicon typeicon-bg-green"><i class="iconfont iconfont-type-video"></i></span><span>视频音乐</span></a></li>
+			<!--<li><a href="{:url('home/xiaxian/index')}"><span class="typeicon typeicon-bg-brow" style="font-size: .28rem;"><i class="iconfont iconfont-company-full"></i></span><span>同城交易</span></a></li>-->
+			<li><a href="#"><span class="typeicon typeicon-bg-yellow"><i class="iconfont iconfont-type-more"></i></span><span>我要买卡</span></a></li>
+		</ul>
+	</div>
+	<div class="card card-margin">
+		<a class="cell cell-access kaka-notice" href="{:url('home/helpfaq/index')}">
+		<div class="cell-hd">
+			<img src="__IMG__/bulletin.png" alt="">
+		</div>
+		<div class="cell-bd">
+			<p class="ellipsis">
+				{$new.title}
+			</p>
+		</div>
+		<div class="cell-ft hidden">
+			{:date("m-d",strtotime($new.update_time))}
+		</div>
+		</a>
+	</div>
+	<div class="card card-margin hotcards">
+		<div class="panel-heading text-center">
+			热门回收
+		</div>
+		<div class="panel-body">
+			<div class="grids">
+			{volist name="remen" id="b"}
+				<a class="grid" href="{:url('home/card/index',['id'=>$b.id])}"><img src="{$b.phoneRecycleIcon}"><span class="title">{$b.title}</span><span class="discount">{:hasTone($b.tid,$b.type)}</span></a>
+			{/volist}
+			</div>
+		</div>
+		<div class="panel-footer">
+			<a class="cell cell-access cell-condensed" href="{:url('home/Index/category')}">
+			<div class="cell-bd">
+				<p class="text-blue text-center">
+					查看更多礼品卡在线回收
+				</p>
+			</div>
+			<div class="cell-ft">
+			</div>
+			</a>
+		</div>
+	</div>
+	{notempty name="wx.appimg"}
+	<div class="card card-appdown" id="appdownload" style="display: none;">
+		<button class="close" type="button" onclick="closeclick();"></button><a class="cell" href="{:url('home/index/app')}">
+		<div class="cell-hd">
+			<img class="img-48 img-radius" src="{$wx.appimg}" alt="">
+		</div>
+		<div class="cell-bd">
+			<h4>{$C['sitename']}App</h4>
+			<p>
+				更简单、更快捷、更安全
+			</p>
+		</div>
+		</a>
+	</div>
+	<script type="text/javascript">
+	function cookiesave(n, v, mins, dn, path) {
+			if (n) {
+				if (!mins) mins = 365 * 24 * 60;
+				if (!path) path = "/";
+				var date = new Date();
+				date.setTime(date.getTime() + (mins * 60 * 1000));
+				var expires = "; expires=" + date.toGMTString();
+				if (dn) dn = "domain=" + dn + "; ";
+				document.cookie = n + "=" + v + expires + "; " + dn + "path=" + path;
+			}
+		}
+		function cookieget(n) {
+			var name = n + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+				if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+			}
+			return "";
+		}
+		function closeclick() {
+			document.getElementById('appdownload').style.display = 'none';
+			cookiesave('closeclick', 'closeclick', '', '', '');
+		}
+		function clickclose() {
+			if (cookieget('closeclick') == 'closeclick') {
+				document.getElementById('appdownload').style.display = 'none';
+			} else {
+				document.getElementById('appdownload').style.display = 'block';
+			}
+		}
+		window.onload = clickclose;
+</script>
+	{/notempty}
+	<div class="footer text-center">
+		{$C['copyright']}
+		</p>
+	</div>
+</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			TouchSlide({
+				slideCell: "#slider",
+				titCell: ".slider-pager ul",
+				mainCell: ".slider-imgs",
+				autoPage: true,
+				autoPlay: true,
+				interTime: 5000,
+				delayTime: 300,
+				startFun: function(i, c) {
+					$(".slider-pager ul").attr("class", "pager-" + i);
+				}
+			});
+		});
+	</script>
+{include file="layout/wap/butmenu" /}
+</section>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+<script>
+  {:htmlspecialchars_decode($C['tongji'])}
+  </script>
+</body>
+</html>

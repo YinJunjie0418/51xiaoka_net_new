@@ -1,0 +1,85 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">提现帐号管理</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent mycontent-hastabs" id="mycontent">
+	<div class="myfixed">
+		<div class="tabs navbar navbar-inverse">
+		{eq name="pei.alitype" value="1"}
+			<a id="setcash1" class="tab-item " href="{:url('home/Member/alipay')}"><span>支付宝账号管理</span></a>{/eq}
+			{eq name="pei.banktype" value="1"}
+			<a id="setcash2" class="tab-item " href="{:url('home/Member/setcash')}"><span>银行卡账号管理</span></a>{/eq}
+			{eq name="pei.wxtype" value="1"}
+			<a id="setcash3" class="tab-item active" href="{:url('home/Member/weixin')}"><span>微信账号管理</span></a>{/eq}
+		</div>
+	</div>
+	<div class="card cashcards">
+		<div class="cell cell-condensed">
+			<div class="cell-bd">
+				我的微信
+			</div>
+			<div class="cell-ft">
+				户名{eq name="$user.userReal.retype" value="1"}{$user.userReal.name}{else/}{$user.userReal.company_name}{/eq}
+			</div>
+		</div>
+		<div class="cashcards-group">
+		  
+			{volist name="list" id="p" empty="$empty"}
+			<div class="cell cell-access cashcard-6" data-dialog="{:url('home/Bank/del',['id'=>$p.id])},350">
+				<div class="cell-hd">
+					<img src="__IMG__/banks/weixin.png" alt="">
+				</div>
+				<div class="cell-bd">
+					<h5>{$p.bankname}</h5>
+					<p>
+						{:tfen($p.accounts,2,5)}
+					</p>
+				</div>
+				<div class="cell-ft">
+				</div>
+			</div>
+			{/volist}
+		</div>
+	</div>
+	<div class="myaction-wrapper">
+		<div class="myaction">
+			<div class="btn-group">
+				<button class="btn btn-primary" type="button" data-dialog="{:url('home/Bank/addweixin')},600,添加微信你账号">添加微信账号</button>
+			</div>
+		</div>
+	</div>
+	{if condition="($user['userReal']['retype']!=1 && $user['userReal']['retype']!=2)"}
+	<div class="matte actionsheet in">
+		<div class="actionsheet-body">
+			<div class="messager">
+				<div class="messager-icon">
+					<i class="owlicon owlicon-safe-warn"></i><i class="avatar avatar-default"></i>
+				</div>
+				<div class="messager-text">
+					<div class="messager-desc">
+						为了账号资金安全，提现前必须实名认证
+					</div>
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-primary" href="{:url('home/Member/realname')}">前往实名认证</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="backdrop in" id="backdrop">
+	</div>
+	{/if}
+</div>
+</section>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>

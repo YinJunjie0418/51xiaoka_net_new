@@ -1,0 +1,20 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$res['title']} </title>
+  <meta name="keywords" content="{$res['keywords']}" />
+  <meta name="description" content="{$res['description']}" />
+{/block}
+{block name="content"}
+  <div class="content">
+   <div class="container help-center">
+    <div class="help-aside">
+     <div class="help-aside-inner" id="side-float">
+      {include file="layout/tomenu" /}
+     </div> 
+    </div>
+    <script src="__JS__/jquery.fixed.js"></script>
+    <script>$(document).ready(function(){$("#side-float").smartFloat({classname: 'fixed',reference: $("#footer").offset().top - 135});});</script>
+    {:htmlspecialchars_decode($res.content)}
+   </div>
+  </div>
+{/block}

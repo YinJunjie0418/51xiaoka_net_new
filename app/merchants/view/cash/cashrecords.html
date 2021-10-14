@@ -1,0 +1,109 @@
+{extend name="layout/member" /} 
+{block name="content"}
+<style>
+.lay-span{
+    padding: 3px 10px;
+    color: #FFF;
+    border-radius: 5px;
+}
+</style>
+    <div class="view-framework-body">
+   <div class="view-framework-main">
+	<div class="box">
+		<h2 class="box-caption">我的加款记录<span class="h4 text-red pl10">（如遇提现失败，请联系客服了解详情！客服电话：{$C.kefu}）</span></h2>
+		<div class="form-filter">
+			<div class="form-group">
+				<form action="{:request()->url()}" method="get" id="formsubmit">
+					<label class="control-label" for="qStartTime">日期筛选</label>
+					  <input type="text" class="form-control form-datetime" id="qStartTime" name="starttime" value="{$starttime|default=''}" autocomplete="off">
+					  <span class="control-label">-</span>
+					  <input type="text" class="form-control form-datetime mr10" id="qEndTime" name="endtime" value="{$endtime|default=''}" autocomplete="off">
+					  <button class="btn btn-primary btn-sm btn-square" type="submit" onclick="return formtest(this);">查询</button>
+					  <a class="item" href="{:url('merchants/Cash/cashrecords')}">全部</a>
+					  <a class="item {eq name="$day" value="1"}selected{/eq}" href="javascript:;" onclick="submitset('day',1)">今天</a>
+                  <a class="item {eq name="$day" value="7"}selected{/eq}" href="javascript:;" onclick="submitset('day',7)">最近7天</a>
+                  <a class="item {eq name="$day" value="30"}selected{/eq}" href="javascript:;" onclick="submitset('day',30)">1个月</a>
+                  <a class="item {eq name="$day" value="60"}selected{/eq}" href="javascript:;" onclick="submitset('day',60)">2个月</a>
+                  <a class="item {eq name="$day" value="90"}selected{/eq}" href="javascript:;" onclick="submitset('day',90)">3个月</a>
+                  <a class="item {eq name="$day" value="365"}selected{/eq}" href="javascript:;" onclick="submitset('day',365)">1年</a>
+					  <input type="hidden" name="day" value="{$day|default=''}">
+				</form>
+			</div>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-custom cash-records">
+			<thead>
+			<tr>
+			    <th class="date">
+					订单号
+				</th>
+				<th class="date">
+					日期
+				</th>
+				<th class="paysum">
+					加款金额(元)
+				</th>
+				<th class="paysum">
+					加款银行
+				</th>
+				<th class="paysum">
+					加款账户
+				</th>
+				<th class="state">
+					截图
+				</th>
+				<th class="state">
+					状态
+				</th>
+				<th class="note">
+					说明
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+			  {volist name="list" id="p"}
+				  <tr>
+				    <th class="date">{$p.order}</th>
+                    <th class="date">{$p.create_time}</th>
+                    <th class="paysum" style="color: #0085fe">{$p.money}</th>
+					<th class="paysum" style="color: #46be8a">{$p.bankName}</th>
+					<th class="paysum" style="color: #f30">{$p.cs}</th>
+					  <th class="paysum" style="color: #f30"><span class='lay-span' style='background: #ff5a27;cursor: pointer;' onclick="lookpic('{$p.content}')">查看图片</span></th>
+                    <th class="state">{$p.status|raw}</th>
+                    <th class="note">{$p.remarks}</th>
+				</tr>
+			 {/volist}
+			</tbody>
+			</table>
+			{empty name="list"}{$empty|raw}{/empty}
+			<tfoot>
+			<tr>
+				<td colspan="5">
+					<p class="text-left">
+						<label>加款成功金额：</label><span class="text-primary">¥{$success}</span>
+						<label>处理中金额：</label><span class="text-success">¥{$money}</span>
+						<label>加款失败金额：</label><span class="text-purple">¥{$fail}</span>
+					</p>
+				</td>
+			</tr>
+			</tfoot>
+		</div>
+		<div class="pb20">
+			  {$list|raw}
+       </div>
+	</div>
+</div>
+</div>
+<script>
+	function lookpic(r){
+		loading(!0);
+		$.get("{:url('merchants/Cash/lookpic')}?url=" + r, function(a) {
+			$("#modal-dialog").html(a).width(500).modal({
+				title: "查看提交付款凭证",
+				modal: !0
+			}).ajaxsubmit();
+			loading(!1)
+		})
+	}
+</script>
+   {/block}

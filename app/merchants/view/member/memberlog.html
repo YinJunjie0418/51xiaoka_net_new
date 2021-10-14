@@ -1,0 +1,79 @@
+{extend name="layout/member" /} 
+{block name="content"}
+<style>
+.lay-span{
+    padding: 3px 10px;
+    color: #FFF;
+    border-radius: 5px;
+}
+</style>
+    <div class="view-framework-body">
+   <div class="view-framework-main">
+	<div class="box">
+	    {empty name="data"}
+		<div class="nodata">
+				<i class="iconfont icon-nodata"></i><br>
+				抱歉，没有找到任何相关的数据！
+			</div>
+		{else/}
+		<h2 class="box-caption">账户资金日志</h2>
+		<div class="table-responsive">
+			<table class="table table-custom log-records">
+			<thead>
+			<tr>
+				<th class="time">
+					日期
+				</th>
+				<th class="ips">
+					操作类型
+				</th>
+				<th class="amount">
+					变动金额
+				</th>
+				<th class="types">
+					变动前余额
+				</th>
+				<th class="info">
+					关联订单
+				</th>
+				<th class="info">
+					信息
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+			{volist name="data" id="p"}
+			<tr>
+				<td class="time">
+					{$p.addtime}
+				</td>
+				<td class="ips">
+					{$p.type}
+				</td>
+				<td class="amount" {gt name="p.price" value="0"}style="color:#46be8a"{else}style="color:#c30"{/gt}>
+					{$p.price}
+				</td>
+				<td class="types">
+					{$p.money}
+				</td>
+				<td class="info">
+					{$p.orderno|default='--'}
+				</td>
+				<td class="info">
+					{$p.data|default='--'}
+				</td>
+			</tr>
+			{/volist}
+			</tbody>
+			</table>
+		</div>
+		<div>
+			<div class="page">
+				{$data|raw}
+			</div>
+		</div>
+		{/empty}
+	</div>
+</div>
+</div>
+   {/block}

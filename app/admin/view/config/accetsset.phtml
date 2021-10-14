@@ -1,0 +1,110 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">推广参数配置</div>
+    <div class="layui-card-body" pad15>
+        <div class="layui-tab">
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form action="" class="layui-form" method="post">
+                    <div class="layui-form-item">
+							<label class="layui-form-label">开关状态</label>
+							<div class="layui-input-inline" style="width: 400px;">
+								<input type="checkbox" name="yaostate" lay-skin="switch" lay-text="开启活动|关闭活动" {if isset($list.yaostate) && $list.yaostate=='on'} checked{/if}>
+							</div>
+							<div class="layui-input-inline layui-input-company"></div>
+						</div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">有效下级金额</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="xiaok" value="{$list.xiaok|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填300表示要成功销卡300的下级才是有效下级</div>
+                    </div>
+					<fieldset class="layui-elem-field">
+					  <legend>一级推广员设置</legend>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">一级推广</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="onerate" value="{$list.onerate|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填小数如0.1表示0.1%</div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">有效下级人数</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="onenum" value="{$list.onenum|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填2表示需要2个有效下级,无限制填0</div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">下级总成功</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="oneok" value="{$list.oneok|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填200表示同时需要下级总成功面值200，无限制填0</div>
+                    </div>
+					</fieldset>
+					<fieldset class="layui-elem-field">
+					  <legend>二级推广员设置</legend>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">二级推广</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="tworate" value="{$list.tworate|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填小数如0.1表示0.1%</div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">有效下级人数</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="twonum" value="{$list.twonum|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填2表示需要2个有效下级，无限制填0</div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">下级总成功</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="twook" value="{$list.twook|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填200表示同时需要下级总成功面值200，无限制填0</div>
+                    </div>
+					</fieldset>
+					<fieldset class="layui-elem-field">
+					  <legend>三级推广员设置</legend>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">三级推广</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="threerate" value="{$list.threerate|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填小数如0.1表示0.1%</div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">有效下级人数</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="threenum" value="{$list.threenum|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填2表示需要2个有效下级，无限制填0</div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">下级总成功</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="threeok" value="{$list.threeok|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">填200表示同时需要下级总成功面值200，无限制填0</div>
+                    </div>
+					</fieldset>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+						     <input name="type" type="hidden" value="assets">
+                            <button class="layui-btn" lay-submit  lay-filter="*">确认保存</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+{/block}

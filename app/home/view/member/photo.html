@@ -1,0 +1,29 @@
+{extend name="layout/member" /} 
+{block name="content"}
+    <div class="view-framework-body">
+   <div class="view-framework-main"> 
+    <div class="tabnavs">
+     {include file="layout/info_menu" /}
+    </div> 
+    <div class="box tab-content">
+            <div class="status-hint">
+              <div class="status-hint-icon">
+                <i class="iconfont text-green">&#xe89a;</i></div>
+              <div class="status-hint-text">
+                <h3 class="text-green">当前状态：已绑定手机（{:tfen($user.mobile,3,4)}）</h3>
+                <p class="fsz16">绑定手机可以用于安全身份验证、找回密码等重要操作</p>
+                <p class="fsz16">如有问题，请联系客服咨询</p>
+                <a class="btn btn-primary btn-sm" href="{:url('home/Mobile/upphoto')}">更改绑定手机</a>
+            </div>
+            <div class="userform-tips">
+              <h5>温馨提示：</h5>
+              <ul>
+                <li>1、您的手机绑定之后，即可享受手机登录、找回密码等服务，让您的网上购物体验更安全更便捷</li>
+                <li>2、若您的手机可正常使用但无法接收到验证码短信，可能是由于通信网络异常造成的，请您稍后重新尝试操作。</li>
+                <li>3、如果您的手机已经无法正常使用，请提供用户名，手机号，身份证号，点击联系平台
+                  <a class="text-blue" href="javascript:;" onclick="chatinit();">在线客服</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+   {/block}

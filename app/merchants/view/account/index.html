@@ -1,0 +1,130 @@
+{extend name="layout/member" /}
+{block name="content"}
+<div class="view-framework-main">
+    {include file="layout/info_menu" /}
+    <div class="box tab-content realname-content">
+        <div class="alert alert-icon alert-warning hidden">
+            <div class="icon">
+                <i class="iconfont">&#xe61c;</i></div>
+            <div class="text">
+                <h4>您还未进行实名身份认证，请填写以下信息进行认证。</h4>
+                <p>实名认证：是由{$C.sitename}提供的一项身份识别服务，只有实名认证之后才可进行余额提现操作。</p>
+            </div>
+        </div>
+        <form id="uploadImage" method="post" >
+            <div class="userform userform-narrow">
+                <div class="form-group mb20">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="form-element">
+                        <ul class="btn-group btn-group-long clearfix" id="realname-group">
+                            <li  class="active">
+                                <a class="btn" href="{:url('merchants/Account/index')}">
+                                    <i class="iconfont iconfont-phone">&#58903;</i>人脸识别(自动)</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="username">
+                        <em>*</em>真实姓名：</label>
+                    <div class="form-element">
+                        <input type="text" class="form-control form-control-short" id="username" name="username" value="" null="请输入真实姓名" reg="[\u4e00-\u9fa5]{2,10}">
+                        <div class="form-tips">
+                            <p>请输入与身份证一致的真实姓名</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="idcard">
+                        <em>*</em>身份证号码：</label>
+                    <div class="form-element">
+                        <input type="text" class="form-control" id="idcard" name="idcard" value="" null="请输入正确的身份证号码" reg="^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$">
+                        <div class="help-block">
+                            <p>请输入与您真实姓名一致的身份证号</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <em>*</em>证件图片：</label>
+                    <div class="form-element">
+                        <p class="text-light">照片支持jpg、gif、bmp、png格式，图片最大不要超过5M。</p>
+                        <div class="realname-panel clearfix">
+                            <dl class="realname-info">
+                                <dt>
+                                    <p class="text-dark">身份证正面照</p>
+                                    <p>需要能看清姓名、身份证号码等信息。</p>
+                                </dt>
+                                <dd>
+                                    <div class="realname-preview" id="preview_0">{empty name="$da.positive_img|default=''"}暂无图片{else/}<img src="{$da.positive_img}">{/empty}</div>
+                                    <div class="btn btn-green realname-uploadfile" id="uploadfile_0"></div>
+                                    <div class="realname-status hide" id="status_0">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-success"></div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="idjust" id="idjust" value="{$da.positive_img|default=''}">
+                                </dd>
+                                <dd>
+                                    <div class="realname-preview" data-tip='<img width="350" src="__IMG__/idcard0.jpg"><p class="text-center">身份证正面照需要能看清姓名、身份证号码等信息。</p>|bottom-left'>
+                                        <img src="__IMG__/sprites/identity-front.png" alt=""></div>
+                                    <p>示例</p>
+                                </dd>
+                            </dl>
+                            <dl class="realname-info">
+                                <dt>
+                                    <p class="text-dark">身份证反面照</p>
+                                    <p>需要看清签发机关、有效期限等信息。</p>
+                                </dt>
+                                <dd>
+                                    <div class="realname-preview" id="preview_1">{empty name="$da.back_img"}暂无图片{else/}<img src="{$da.back_img}">{/empty}</div>
+                                    <div class="btn btn-green realname-uploadfile" id="uploadfile_1"></div>
+                                    <div class="realname-status hide" id="status_1">
+
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-success"></div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="idback" id="idback" value="{$da.back_img|default=''}">
+                                </dd>
+                                <dd>
+                                    <div class="realname-preview" data-tip='<img width="350" src="__IMG__/idcard1.jpg"><p class="text-center">身份证反面照需要看清签发机关、有效期限等信息。</p>|bottom-right'>
+                                        <img src="__IMG__/sprites/identity-back.png" alt=""></div>
+                                    <p>示例</p>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div id="recycle-check">
+                    <div class="form-group">
+                        <div class="col-xs-11 col-xs-offset-1">
+                            <label class="checkbox" for="protocol"><input type="checkbox" id="protocol" />
+                                <span class="checkbox-text"> 您需对注册信息的真实性、合法性、有效性承担全部责任；天天收卡账户<span style="color:red">仅限本人使用</span>，不得冒用他人信息进行注册，<p>否则本平台有权立即停止向您提供服务并保留追究法律责任的权利</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="realname-tabs">
+                    <div class="form-group-btn pt10 clearfix">
+                        {:token_field()}
+                        <input id="btna" class="btn btn-green make-alipay pull-left btn-disabled" disabled="disabled" type="button"  name="wxname" value="开始认证" onclick="wxtocheck('#uploadImage',this)"/></div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    var url = "{:url('merchants/Account/uploadImage')}";
+    $("#protocol").click(function(e){
+        var isok=$("input[type='checkbox']").is(':checked');
+        if(isok){
+            $("#btna").attr('disabled',false).removeClass('btn-disabled');
+        }else{
+            $("#btna").attr('disabled',true).addClass('btn-disabled');
+        }
+
+    })
+</script>
+<script src="__JS__/webuploader.min.js"></script>
+<script src="__JS__/jquery.img.js?v=103"></script>
+{/block}

@@ -1,0 +1,288 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/Helpfaq/helpa')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">实名认证</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+{empty name="user.mobile"}
+  <div class="matte actionsheet in">
+		<div class="actionsheet-body">
+			<div class="messager">
+				<div class="messager-icon">
+					<i class="owlicon owlicon-safe-warn"></i><i class="avatar avatar-default"></i>
+				</div>
+				<div class="messager-text">
+					<div class="messager-desc">
+						为了账号资金安全，请先绑定手机
+					</div>
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-primary" href="{:url('home/Mobile/setphoto')}">前往绑定手机</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="backdrop in" id="backdrop">
+	</div>
+{else/}
+{switch name="$user['userReal']['retype']"}
+		{case value="1"}
+	<div class="realname-status arch-mask">
+		<div class="realname-status-icon">
+			<h2>实名认证成功</h2>
+		</div>
+		<div class="realname-status-text">
+			<h5>您已通过实名认证</h5>
+		</div>
+	</div>
+	<div class="card realname-show">
+		<div class="cell">
+			<div class="cell-bd">
+				真实姓名
+			</div>
+			<div class="cell-ft">
+				{$user.userReal.name}
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				身份证
+			</div>
+			<div class="cell-ft">
+				{:tfen($user.userReal.idcard,4,12)}
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				绑定手机
+			</div>
+			<div class="cell-ft">
+				{:tfen($user.mobile,3,4)} 
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				认证状态
+			</div>
+			<div class="cell-ft">
+				<span class="text-success">已实名认证</span>
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				认证日期
+			</div>
+			<div class="cell-ft">
+				{:date("Y-m-d",strtotime($user.userReal.create_time))}
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				认证渠道
+			</div>
+			<div class="cell-ft">
+				{switch name="user.userReal.hastype"}
+					          {case value="0"}API认证{/case}
+					          {case value='1'}{$C.sitename}认证{/case}
+					          {default/}
+					          微信认证
+					          {/switch}
+			</div>
+		</div>
+		<div class="status-hint-text" style="width: 50%; margin: auto;" >
+				<a class="btn btn-default btn-sm" style="padding: 8px 40px;background: #ec0a8f;color: #FFF;border-color: #ff4bb5;" href="{:url('home/Account/enterprise')}">升级企业认证</a>
+			</div>
+	</div>
+	<div class="myaction-wrapper">
+		<div class="myaction">
+			<div class="btn-group">
+				<a class="btn btn-primary" href="{:url('home/Member/index')}">返回我的账户</a>
+			</div>
+		</div>
+	</div>
+	{/case}
+	{case value="2"}
+	   <div class="realname-status arch-mask">
+		<div class="realname-status-icon">
+			<h2>实名认证成功</h2>
+		</div>
+		<div class="realname-status-text">
+			<h5>您已通过企业实名认证</h5>
+		</div>
+	</div>
+	<div class="card realname-show">
+		<div class="cell">
+			<div class="cell-bd">
+				公司名称
+			</div>
+			<div class="cell-ft">
+				{$user['userReal']['company_name']}
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				营业执照
+			</div>
+			<div class="cell-ft">
+				{:tfen($user.userReal.canada,4,8)}
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				绑定手机
+			</div>
+			<div class="cell-ft">
+				{:tfen($user.mobile,3,4)} 
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				认证状态
+			</div>
+			<div class="cell-ft">
+				<span class="text-success">已实名认证</span>
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				认证日期
+			</div>
+			<div class="cell-ft">
+				{:date("Y-m-d",strtotime($user.userReal.create_time))}
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				认证渠道
+			</div>
+			<div class="cell-ft">
+				{eq name="user.userReal.hastype" value="1"}API认证{else/}{$C.sitename}认证{/eq}
+			</div>
+		</div>
+	</div>
+	<div class="myaction-wrapper">
+		<div class="myaction">
+			<div class="btn-group">
+				<a class="btn btn-primary" href="{:url('home/Member/index')}">返回我的账户</a>
+			</div>
+		</div>
+	</div>
+	{/case}
+	{case value="3"}
+	  <div class="realname-status arch-mask realname-status-verify">
+		<div class="realname-status-icon">
+			<h2>实名认证审核中</h2>
+		</div>
+		<div class="realname-status-text">
+			<h5>实名认证审核中..</h5>
+		</div>
+	</div>
+	<div class="card realname-show">
+		<div class="cell">
+			<div class="cell-bd">
+				真实姓名
+			</div>
+			<div class="cell-ft">***
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				身份证
+			</div>
+			<div class="cell-ft">
+				***
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				绑定手机
+			</div>
+			<div class="cell-ft">
+				***
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				认证状态
+			</div>
+			<div class="cell-ft">
+				<span class="text-warning">审核中...</span>
+			</div>
+		</div>
+	</div>
+	<div class="myaction-wrapper">
+		<div class="myaction">
+			<div class="btn-group">
+				<a class="btn btn-danger" href="{:url('home/Member/index')}">返回我的账户</a>
+			</div>
+		</div>
+	</div>
+	{/case}
+	{case value="4"}
+	 <div class="realname-status arch-mask realname-status-failed">
+		<div class="realname-status-icon">
+			<h2>实名认证失败</h2>
+		</div>
+		<div class="realname-status-text">
+			<h5>实名认证审核中..</h5>
+			<p>
+				失败原因：{$user.userReal.remarks}
+			</p>
+		</div>
+	</div>
+	<div class="card realname-show">
+		<div class="cell">
+			<div class="cell-bd">
+				真实姓名
+			</div>
+			<div class="cell-ft">{$user.userReal.name}
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				身份证
+			</div>
+			<div class="cell-ft">
+				***
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				绑定手机
+			</div>
+			<div class="cell-ft">
+				***
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				认证状态
+			</div>
+			<div class="cell-ft">
+				<span class="text-red">认证失败</span>
+			</div>
+		</div>
+	</div>
+	<div class="myaction-wrapper">
+		<div class="myaction">
+			<div class="btn-group">
+				<a class="btn btn-danger" href="{:url('home/Account/index',['cz'=>'toset'])}">重新实名认证</a>
+			</div>
+		</div>
+	</div>
+	{/case}
+	{/switch}
+	{/empty}
+</div>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>
+</html>

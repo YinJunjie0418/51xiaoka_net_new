@@ -1,0 +1,176 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header header-default"><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/Helpfaq/helpa')}"><i class="iconfont iconfont-book"></i></a>
+		<div class="header-title">
+			<h1 class="title">实名认证</h1>
+		</div>
+		<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent mycontent-hastabs" id="mycontent">
+	<div class="myfixed">
+		<div class="tabs navbar navbar-inverse">
+
+			<a class="tab-item active" href="{:url('merchants/Account/index')}"><span>人脸识别</span></a>
+		</div>
+	</div>
+	<form id="uploadImage" method="post" action="{:request()->url()}">
+		<div class="card">
+			<div class="cell">
+				<div class="cell-hd">
+					<label class="control-label" for="truename">真实姓名</label>
+				</div>
+				<div class="cell-bd">
+					<input type="text" class="form-control" id="username" name="username" value="" null="请输入真实姓名" placeholder="请输入真实姓名" reg="[\u4e00-\u9fa5]{2,10}" data-input="clear">
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-hd">
+					<label class="control-label" for="idcard">身份证号</label>
+				</div>
+				<div class="cell-bd">
+					<input type="text" class="form-control" id="idcard" name="idcard" value="" null="请输入正确的身份证号码" placeholder="请输入您的身份证号码" reg="^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$" data-input="clear">
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+					<ul class="realname-upload-group clearfix">
+						<li>
+							<h5>身份证正面照（<a class="text-blue" href="javascript:;" data-toggle="matte" data-target="#idcardFront">示例</a>）</h5>
+							<div class="realname-upload">
+								<div class="realname-upload-preview" id="preview_0">
+									<div class="realname-upload-tips realname-upload-tips-{empty name='da.positive_img'}front{else/}again{/empty}">
+										<div class="camera">
+											<i class="iconfont iconfont-camera"></i>
+										</div>
+									</div>
+									<img src="{$da.positive_img|default=''}">
+								</div>
+								<div class="realname-upload-btn webuploader-container" id="uploadfile_0">
+									<div class="webuploader-pick" style="">
+										上传图片
+									</div>
+									<div id="rt_rt_1efocqa5t1r9enhpcae1rfr16mf1" style="position: absolute; top: -250px; left: -16px; width: 195px; height: 98px; overflow: hidden; bottom: auto; right: auto;">
+										<input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="image/*"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label>
+									</div>
+
+								</div>
+								<div class="realname-upload-status hide" id="status_0">
+									<div class="progress">
+										<div class="progress-bar progress-bar-success">
+										</div>
+									</div>
+
+								</div>
+								<input type="hidden" name="idjust" id="idjust" value="{$da.positive_img}">
+							</div>
+						</li>
+						<li>
+							<h5>身份证反面照（<a class="text-blue" href="javascript:;" data-toggle="matte" data-target="#idcardBack">示例</a>）</h5>
+							<div class="realname-upload">
+								<div class="realname-upload-preview" id="preview_1">
+									<div class="realname-upload-tips realname-upload-tips-{empty name='da.back_img'}front{else/}again{/empty}">
+										<div class="camera">
+											<i class="iconfont iconfont-camera"></i>
+										</div>
+									</div>
+									<img src="{$da.back_img|default=''}">
+								</div>
+								<div class="realname-upload-btn webuploader-container" id="uploadfile_1">
+									<div class="webuploader-pick" style="">
+										上传图片
+									</div>
+									<div id="rt_rt_1efocqa5v1mhrd571mn41qrodn35" style="position: absolute; top: -250px; left: -227px; width: 195px; height: 98px; overflow: hidden; bottom: auto; right: auto;">
+										<input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="image/*"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label>
+									</div>
+								</div>
+								<div class="realname-upload-status hide" id="status_1">
+									<div class="progress">
+										<div class="progress-bar progress-bar-success">
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="idback" id="idback" value="{da.back_img}">
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="text-center">
+			<p class="text-light">
+				请输入与您真实的姓名和身份证号，需要通过微信人脸识别是否与本人一致
+			</p>
+		</div>
+		<div class="cells" id="recycle-former-checkk">
+			<label class="cell cell-label" for="protocol">
+				<div class="cell-hd">
+					<input class="icheck" type="checkbox" id="protocol" onclick="kaishi(this)" ><i class="owlicon owlicon-checked"></i>
+				</div>
+				<div class="cell-bd">
+					<p>
+						您需对注册信息的真实性、合法性、有效性承担全部责任；天天收卡账户<span style="color:red">仅限本人使用</span>，不得冒用他人信息进行注册，否在本平台有权立即停止向您提供服务并保留追究法律责任的权利
+					</p>
+				</div>
+			</label>
+		</div>
+		<div class="myaction-wrapper realname-alipay" id="realname-alipay">
+			<div class="myaction">
+				<div class="btn-group">
+					{:token_field()}
+					<button class="btn btn-primary btn-disabled" disabled="disabled" type="button" id="btna" name="uploadImage" onclick="wxtocheck('#uploadImage',this)">开始认证</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+{empty name="user.mobile" }
+<div class="matte actionsheet in" id="realname-mobile">
+	<div class="actionsheet-body">
+		<div class="messager">
+			<div class="messager-icon">
+				<i class="iconfont iconfont-safe-phone"></i>
+			</div>
+			<div class="messager-text">
+				<div class="messager-desc">
+					为了账号安全，请先绑定手机号码
+				</div>
+			</div>
+			<div class="verify-module">
+				<form id="submitmobile">
+					<div class="sign-form">
+						<div class="form-group">
+							<input class="form-control" id="phoneno" type="tel" name="phoneno" reg="^1[3|4|5|7|8][0-9]{9}$" null="请输入手机号码" value="" placeholder="请输入手机号码" data-input="clear">
+						</div>
+						<div class="form-group">
+							<input class="form-control" id="codeno" name="codeno" type="number" null="请输入短信验证码" reg="[0-9]{6}" placeholder="请输入短信验证码">
+							<div class="form-action">
+								<a class="text-blue" href="javascript:;" data-href="{:url('merchants/Api/sendMsg',['scene'=>'setphoto','tip'=>'phoneno'])},,top-right,post" id="mcode">获取验证码</a>
+							</div>
+						</div>
+						<div class="form-tips">
+							<p>
+								短信验证码5分钟内有效,若失效或未收到,请重新获取
+							</p>
+						</div>
+
+						<div class="form-group btn-group">
+							<button class="btn btn-primary" type="button" data-href="{:url('merchants/Mobile/setphoto')},,top-left,post">提交绑定</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="backdrop in" id="backdrop">
+</div>
+{/empty}
+
+<script src="__JS__/webuploader.min.js"></script>
+<script src="__JS__/jquery.img.js"></script>
+<script>
+	var url = "{:url('merchants/Account/uploadImage')}";
+</script>
+</body>
+</html>

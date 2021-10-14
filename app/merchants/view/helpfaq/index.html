@@ -1,0 +1,38 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$C['title']} </title>
+  <meta name="keywords" content="{$res['keywords']}" />
+  <meta name="description" content="{$res['description']}" />
+{/block}
+{block name="content"}
+  <div class="content">
+   <div class="container help-center">
+    <div class="help-aside">
+     <div class="help-aside-inner" id="side-float">
+      {include file="layout/tomenu" /}
+     </div> 
+    </div>
+    <script src="__JS__/jquery.fixed.js"></script>
+    <script>$(document).ready(function(){$("#side-float").smartFloat({classname: 'fixed',reference: $("#footer").offset().top - 135});});</script>
+    <div class="help-main">
+	<h2>平台公告</h2>
+	<div class="timeline notice-timeline">
+		<s class="timeline-line"></s>
+		<ul class="timeline-listing">
+		{volist name="list" id="p"}
+			<li class="timeline-item">
+			<div class="timeline-date">
+				<i class="dot"></i>{:date("m-d",strtotime($p.update_time))}<span>{:date("Y",strtotime($p.update_time))}</span>
+			</div>
+			<div class="timeline-main">
+				<h5>{$p.title}</h5>
+				{:htmlspecialchars_decode($p.content)}
+			</div>
+			</li>
+			{/volist}
+		</ul>
+	</div>
+</div>
+   </div>
+  </div>
+{/block}

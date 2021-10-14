@@ -1,0 +1,55 @@
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no, initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+ {include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">绑定手机</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="sign-form">
+		<form id="submitemail">
+			<div class="form-group">
+				<input class="form-control" id="phoneno" type="tel" name="phoneno" reg="^1[3|4|5|6|7|8][0-9]{9}$" null="请输入手机号码" placeholder="请输入手机号码" value="" data-input="clear">
+			</div>
+			<div class="form-group">
+				<input class="form-control" id="codeno" name="codeno" type="number" null="请输入短信验证码" placeholder="请输入短信验证码" reg="[0-9]{6}">
+				<div class="form-action">
+					<a class="text-blue" href="javascript:;" data-href="{:url('home/Api/sendMsg',['scene'=>'setphoto','tip'=>'phoneno'])},,top-right,post" id="mcode">获取验证码</a>
+				</div>
+			</div>
+			<div class="form-tips">
+				<p>
+					短信验证码5分钟内有效,若失效或未收到,请重新获取
+				</p>
+			</div>
+			<div class="form-group">
+			 {:token_field()}
+				<button class="btn btn-primary" type="button" data-href="{:url('home/Mobile/setphoto')},,top-left,post">提交绑定</button>
+			</div>
+		</form>
+	</div>
+	<div class="warm-prompt">
+		<ul class="list list-disc">
+			<li>您的手机绑定之后，即可享受手机登录、找回密码等服务，让您的网上购物体验更安全更便捷；</li>
+			<li>若您的手机可正常使用但无法接收到验证码，可能是由于通信网络异常造成的，请您稍后重新尝试操作；</li>
+			<li>如果您的手机已经无法正常使用，请提供用户名，手机号，身份证号，联系平台在线客服。</li>
+		</ul>
+	</div>
+</div>
+</section>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>
+</html>

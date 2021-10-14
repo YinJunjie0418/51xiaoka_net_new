@@ -1,0 +1,57 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .layui-form-item {
+        margin-bottom: 1px;
+    }
+</style>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">商户号</label>
+                 <div class="layui-form-mid layui-word-aux text-primary">{$shopid}</div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">实名认证</label>
+                 <div class="layui-form-mid layui-word-aux text-primary">{$data['user']}</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">提现账户</label>
+               <div class="layui-form-mid layui-word-aux text-primary">{$data['bankname']}---{$data['accounts']}</div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">实际金额</label>
+               <div class="layui-form-mid layui-word-aux text-danger">{$data['money']}-{$data['price']}={$data['money']-$data['price']}</div>
+            </div>
+            {eq name="isdisplay" value="1"}
+            <div class="layui-form-item">
+                <label class="layui-form-label">付款余额</label>
+               <div class="layui-form-mid layui-word-aux text-danger">{$money}</div>
+            </div>
+            {/eq}
+			<div class="layui-form-item">
+				<label class="layui-form-label">操作摘要</label>
+				<div class="layui-input-inline" style="width:300px">
+					<textarea name="content" placeholder="请输入内容" rows="3" class="layui-textarea">{$data['content']|default=""}</textarea>
+				</div>
+                <div class="layui-form-mid layui-word-aux text-danger" style="margin-left: 130px;">手动打款请填写摘要,失败请填写原因</div>
+                {lt name="$money" value="$data['money']"}<div class="layui-form-mid layui-word-aux text-danger" style="margin-left: 130px;">余额不足，不能进行自动操作</div>{/lt}
+			</div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type" value="shou" title="手动打款" ><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>手动打款</div></div>
+                <input type="radio" name="type" value="fail" title="设为失败" ><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon "></i><div>设为失败</div></div>
+                <input type="radio" name="type" value="auto" title="自动处理" {lt name="$money" value="$data['money']"} disabled=""{/lt} ><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>自动处理</div></div>
+            </div>
+            </div>
+            <div class="layui-form-item" style="margin-top:20px">
+                <div class="layui-input-block">
+				<button class="layui-btn" lay-filter="i" lay-submit="">提交操作</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

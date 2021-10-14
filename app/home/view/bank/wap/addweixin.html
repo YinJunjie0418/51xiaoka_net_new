@@ -1,0 +1,17 @@
+<div class="form-primary">
+	<form action='' method="post" id="submit">
+		<div class="alert alert-alt alert-warning text-center">
+			使用实名认证下的微信号，关注“{$C['sitename']}”公众号，即可自动添加微信帐号
+		</div>
+		<div class="form-group">
+			<div class="codeBox_Img" style="text-align:center">
+	        	<img id="qrious" src ='{$url}' style="width: 200px;margin: auto;" alt="{$C['sitename']}二维码">
+	        </div>
+	       	<p class='text-center text-red font16'>扫码关注，关注后请勿取关，否则无法提现！</p>
+		</div>
+		<div class="form-group">
+		  {notempty name="id"}
+			<button class="btn btn-link text-red" type="button" data-dialog='{:url('home/Bank/del',['id'=>$id])},350'>删除此微信账号</button>{/notempty}
+		</div>
+	</form>
+</div>

@@ -1,0 +1,116 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">{$title}</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+   {neq name="isup" value="1"}
+	<div class="sign-form">
+		<div class="messager">
+			<div class="messager-icon">
+				<i class="owlicon owlicon-safe-warn"></i><i class="avatar avatar-default"></i>
+			</div>
+			<div class="messager-text">
+				<div class="messager-desc">
+					为了账号安全，请先验证身份
+				</div>
+			</div>
+			<div class="verify-module">
+				<div id="mobile-verify" style="display: block;">
+					<form id="submitmobile">
+						<div class="form-group">
+							<input class="form-control" type="tel" value="{:tfen($user.mobile,3,4)}" readonly="">
+						</div>
+						<div class="form-group">
+							<input class="form-control" id="codeno" name="codeno" type="number" reg="[0-9]{6}" null="请输入短信验证码" placeholder="请输入短信验证码">
+							<div class="form-action">
+								<a class="text-blue" href="javascript:;" data-href="{:url('home/Api/sendMsg',['scene'=>'tradepwd','tip'=>'codeno'])},,top-right,post" id="mcode">获取验证码</a>
+							</div>
+						</div>
+						<div class="form-tips">
+							<p>
+								短信验证码5分钟内有效,若失效或未收到,请重新获取
+							</p>
+						</div>
+						<div class="form-group">
+						{:token_field()}
+							<button class="btn btn-primary" type="button" data-href="{:url('home/Member/checkPCode',['type'=>'uppass'])},,top-left,post">下一步</button>
+						</div>
+					</form>
+				</div>
+				<div id="email-verify" style="display: none;">
+					<form id="submitemail">
+						<div class="form-group">
+							<input class="form-control" type="text" value="{:tfen($user.email,3,4)}" readonly="">
+						</div>
+						<div class="form-group">
+							<input class="form-control" id="ecodeno" name="ecodeno" type="text" placeholder="请输入邮箱验证码">
+							<div class="form-action">
+								<a class="text-blue" href="javascript:;" data-href="{:url('home/Api/sendEmail',['scene'=>'upemail','tip'=>'ecodeno'])},,top-right,post" id="emcode">获取验证码</a>
+							</div>
+						</div>
+						<div class="form-tips">
+							<p>
+								邮箱验证码5分钟内有效,若失效或未收到,请重新获取
+							</p>
+						</div>
+						<div class="form-group">
+							{:token_field()}<button class="btn btn-primary" type="button" data-href="{:url('home/Member/checkECode',['type'=>'uppass'])},,top-left,post">下一步</button>
+						</div>
+					</form>
+				</div>
+				<div class="verify-tabs" id="verifyTabs">
+				   {notempty name="$user.mobile"}
+					<a class="tab-item active" onclick="selectVerifyType(this,1);" href="javascript:;">使用手机验证</a>{/notempty}
+					{notempty name="$user.email"}
+					<a class="tab-item" onclick="selectVerifyType(this,2);" href="javascript:;">使用邮箱验证</a>{/notempty}
+				</div>
+			</div>
+		</div>
+		<div class="warm-prompt">
+			<ul class="list list-disc">
+				<li>为保障您的账户信息安全，在变更账户中的重要信息时需要进行身份验证，感谢您的理解和支持；</li>
+				<li>验证身份遇到问题？请提供用户名，手机号，身份证号，联系平台在线客服。</li>
+			</ul>
+		</div>
+	</div>
+	{else/}
+	  <div class="sign-form">
+		<form id="submitemail">
+			<div class="form-group">
+				<input class="form-control" id="newpsw" type="password" name="newpsw" reg="^[A-Za-z0-9_-~!@#$%^&amp;*()\[\]_+-={}?,.\/]{6,20}$" null="请输入密码" placeholder="请输入密码"  err="密码长度6~20为数组字母组合" data-input="clear">
+			</div>
+			<div class="form-group">
+				<input class="form-control" id="verifypsw" name="verifypsw" type="text" null="请再次输入新密码" placeholder="确认新密码">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" id="verifycode" name="verifycode" maxlength="5" null="请输入验证码" placeholder="请输入验证码" tabindex="4">
+				<div class="form-action">
+					<img src="{:captcha_src()}" class="verifyimg code pull-left" onclick="this.src=this.src+'?'+Math.random()" title="点击图片刷新验证码">
+				</div>
+			</div>
+			<div class="form-group">
+				{:token_field()}<button class="btn btn-primary" type="button" data-href="{:url('home/Editpass/index')},,top-left,post">提交</button>
+			</div>
+		</form>
+	</div>
+	{/neq}
+</div>
+
+</section>
+<div class="tooltip top-right" id="tooltip" style="left: 298px; top: 291px; display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+		发送成功，请等待！
+	</div>
+</div>
+<div id="loading" class="loading loading-inverse loading-notext" style="display: none;">
+	<i class="iconimg"></i><span></span>
+</div>
+</body>
+</html>

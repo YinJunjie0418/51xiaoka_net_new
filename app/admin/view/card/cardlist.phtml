@@ -1,0 +1,124 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <div class="layui-btn-group" >
+            <a href="{:url('/card/addcard')}" class="layui-btn ajax-iframe" data-width="750px" data-height="690px"><i class="fa fa-plus-circle"></i> 添加点卡</a>
+            <span id="mbutton">
+			<button class="layui-btn {neq name="id" value="0"}layui-btn-primary{else/}layui-btn-danger{/neq}"  type="button" id="moneyClick" lay-type="0" >全部卡类</button> 
+			{foreach $fenlei as $v}
+				<button class="layui-btn {neq name="id" value="$v.id"}layui-btn-primary{else/}layui-btn-danger{/neq}" type="button" id="moneyClick" lay-type="{$v['id']}" >{$v['title']}</button> 
+			{/foreach}
+            </span>
+        </div>
+		<input name="field" type="hidden" value="{$id}" lay-name="cid">
+    </div>
+    <table id="tableList" lay-filter="tableList"></table>
+    <!-- 表格操作列 -->
+    <script type="text/html" id="tableTBTrack">
+        <a href="{:url('/card/editcard')}?id={{d.id}}" class="layui-btn layui-btn-normal ajax-iframecan" data-width="750px" data-height="690px">编辑</a>
+		<a href="{:url('/card/editRateCard')}?id={{d.id}}" class="layui-btn layui-btn-warm ajax-iframecan" data-width="750px" data-height="690px">费率</a>
+        <a href="{:url('/card/delcard')}?id={{d.id}}" class="layui-btn layui-btn-danger ajax-delete">删除</a>
+    </script>
+	<script type="text/html" id="lei">
+	<div class="layui-btn-group">
+		<button type="button" class="layui-btn {{#  if(d.batch == 1){ }}layui-btn-danger{{#  } else { }}layui-btn-primary{{#  } }}" lay-event="batch">批量</button>
+		<button type="button" class="layui-btn {{#  if(d.single == 1){ }}layui-btn-danger{{#  } else { }}layui-btn-primary{{#  } }}" lay-event="single">单卡</button>
+		<button type="button" class="layui-btn {{#  if(d.iscode == 1){ }}layui-btn-danger{{#  } else { }}layui-btn-primary{{#  } }} " lay-event="iscode">二维</button>
+		<button type="button" class="layui-btn {{#  if(d.isentity == 1){ }}layui-btn-danger{{#  } else { }}layui-btn-primary{{#  } }} " lay-event="isentity">图片</button>
+		</div>
+	</script>
+     <script type="text/html" id="status">
+                <input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="正常|维护" data-url="{:url('/card/editis')}?id={{d.id}}" {{d.status==1?'checked':''}}>
+            </script>
+	<script type="text/html" id="image">
+		<img src="{{d.iconurl}}">
+	</script>
+	<script type="text/html" id="name">
+	 {{#  if(d.name =="" || d.name==null){ }}
+	    <span style="color:#c60">未配置通道</span>
+	  {{#  } else { }}
+	    {{d.name}}
+	   {{# }}}
+	  </script>
+	<script type="text/html" id="ishot">
+          <input type="checkbox" name="is_hot" lay-skin="switch" lay-filter="*" lay-text="热门|取消" data-url="{:url('/card/editis')}?id={{d.id}}" {{d.is_hot==1?'checked':''}}>
+    </script>
+    <!-- 权限列 -->
+    <script type="text/html" id="sort">
+        <input type="text" name="sort_order" value="{{d.sort_order}}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('/card/editis')}?id={{d.id}}">
+    </script>
+    
+    
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+		var insTb = table.render({
+            elem: '#tableList',
+            url: "{:url('/card/cardlist')}",
+            where:{id:$("input[name=field]").val()},
+            page: true,
+            limit:15,
+            limits:[15,30,45,60,75,90],
+            cellMinWidth: 100,
+            cols: [[
+                {type:'numbers',title:'#'},
+                {field: 'title',align: 'center', sort: true, title: '名称',width:190},
+                {field: 'type', align: 'center', title: '通道标识',width:90},
+				{field: 'cid', align: 'center', title: '所属分类'},
+				{toolbar: '#name', align: 'center', title: '销卡渠道'},
+				{field: 'sysrate', align: 'center', title: '系统费率'},
+				{field: 'rate', align: 'center', title: '用户费率',width:300},
+				{align: 'center',  title: '是否热门',templet:'#ishot'},
+                {align: 'center',  title: '是否维护',templet:'#status'},
+				{align: 'center',  title: '图标',templet:'#image'},
+                {align: 'center', toolbar: '#tableTBTrack', title: '操作', minWidth: 280}
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.total, //解析数据长度
+                  "data": res.data.data //解析数据列表
+                };
+            }
+        });
+		 table.on('tool(tableList)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+			var data = obj.data //获得当前行数据
+			,layEvent = obj.event; //获得 lay-event 对应的值
+			toshu(data.id,layEvent,insTb);
+			function toshu(id,type,table){
+				$.post("{:url('/card/stedit')}",{id:id,type:type},function(e){
+					layer.msg(e.msg);
+					table.reload();
+				})
+			}
+		  });
+		  $("#mbutton").on("click","#moneyClick",function(){
+		    var e=$(this);
+			e.siblings().removeClass("layui-btn-danger").addClass("layui-btn-primary");
+			e.removeClass("layui-btn-primary").addClass('layui-btn-danger');
+            var name=e.attr('lay-type');
+			$("input[name=field]").val(name);
+                 insTb.reload({
+                    where:{
+						 id:name
+                     }
+                 });
+		});
+  
+       
+    });
+
+</script>
+{/block}

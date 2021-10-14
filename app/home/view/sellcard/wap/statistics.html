@@ -1,0 +1,99 @@
+ {include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title"><span class="header-toggle" data-toggle="matte" data-target="#calendar">我的统计 <i class="iconfont iconfont-filter"></i></span></h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="card-gradient">
+	{volist name="list" id="p" empty="$empty"}
+		<div class="card">
+			<div class="cell-title">
+				统计日期：{$p.datetime}
+			</div>
+			<ul class="grids statistics-group clearfix">
+				<li class="grid">
+				<h5>总提笔数</h5>
+				<p>
+					<strong class="text-info">{$p.id}</strong>
+				</p>
+				</li>
+				<li class="grid">
+				<h5>总提金额</h5>
+				<p>
+					<strong class="text-info">{$p.summoney}</strong>
+				</p>
+				</li>
+				<li class="grid">
+				<h5>成功笔数</h5>
+				<p>
+					<strong class="text-pink">{$p.okcount}</strong>
+				</p>
+				</li>
+				<li class="grid">
+				<h5>成功面额</h5>
+				<p>
+					<strong class="text-red">{$p.okmian}</strong>
+				</p>
+				</li>
+				<li class="grid">
+				<h5>成功入账</h5>
+				<p>
+					<strong class="text-success">{$p.okmoney}</strong>
+				</p>
+				</li>
+				<li class="grid">
+				<h5>失败笔数</h5>
+				<p>
+					<strong class="text-orange">{$p.failcount}</strong>
+				</p>
+				</li>
+				<li class="grid">
+				<h5>失败面额</h5>
+				<p>
+					<strong class="text-dark">{$p.failmian}</strong>
+				</p>
+				</li>
+				<li class="grid">
+				<h5>待处理</h5>
+				<p>
+					<strong class="text-orange">{$p.loadcount}笔/¥{$p.loadmian}</strong>
+				</p>
+				</li>
+			</ul>
+		</div>
+		{/volist}
+		<div class="card">
+		{$list|raw}
+		</div>
+	</div>
+	<div class="matte actionsheet" id="calendar">
+		<div class="actionsheet-header">
+			<h4>选择时间查询</h4>
+			<button class="close" type="button" data-dismiss="matte"></button>
+		</div>
+		<form action="{:url('home/Sellcard/statistics')}" method="get" id="formsubmit">
+			<div class="filters">
+				<div class="grids grids-tabs filter-date">
+					<a class="grid " href="javascript:;" onclick="submitset('day',1)"><span>今天</span></a><a class="grid " href="javascript:;" onclick="submitset('day',7)"><span>7天</span></a><a class="grid " href="javascript:;" onclick="submitset('day',30)"><span>1个月</span></a><a class="grid " href="javascript:;" onclick="submitset('day',60)"><span>2个月</span></a><a class="grid " href="javascript:;" onclick="submitset('day',90)"><span>3个月</span></a><a class="grid " href="javascript:;" onclick="submitset('day',365)"><span>1年</span></a><input type="hidden" name="day" value="0">
+				</div>
+			</div>
+		</form>
+		<div class="actionsheet-action">
+			<div class="btn-group">
+				<a class="btn btn-primary" href="{:url('home/Sellcard/statistics')}">全部统计记录</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>

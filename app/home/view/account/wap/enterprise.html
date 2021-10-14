@@ -1,0 +1,175 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header header-default"><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/Helpfaq/helpa')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">企业实名认证</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	{switch name="user.userReal.retype"}
+		{case value="2"}
+		<div class="alert alert-icon alert-success">
+            <div class="text">
+                <h4>认证成功。</h4> 
+				<p>企业认证成功可以使用API功能。</p>
+            </div>
+        </div>
+		{/case}
+		{case value="4"}
+		  <div class="alert alert-icon alert-danger">
+            <div class="text">
+                <h4>审核失败</h4> 
+				<p>{$user.userReal.remarks}</p>
+            </div>
+         </div>
+		{/case}
+		{default /}
+        <div class="alert alert-icon alert-warning">
+            <div class="text">
+                <h4>进行企业认证，可以开通API功能。</h4> 
+				<p>实名认证的个人信息必须是企业的法人，不然审核不通过。</p>
+            </div>
+        </div>
+		{/switch}
+	<form id="uploadImage" method="post" action="">
+		<div class="card">
+			<div class="cell">
+				<div class="cell-hd">
+					<label class="control-label" for="company_name">企业名称</label>
+				</div>
+				<div class="cell-bd">
+					<input type="text" class="form-control" id="company_name" name="company_name" value="{$da.company_name}" null="请输入公司名称" placeholder="请输入公司名称" reg="[\u4e00-\u9fa5]{2,10}" data-input="clear">
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-hd">
+					<label class="control-label" for="canada">信用代码</label>
+				</div>
+				<div class="cell-bd">
+					<input type="text" class="form-control" id="canada" name="canada" value="{$da.canada}" null="请输入正确的统一社会信用代码" placeholder="请输入正确的统一社会信用代码" data-input="clear">
+				</div>
+			</div>
+		</div>
+		<div class="realname-identity" id="realname-identity">
+			<div class="card">
+				<div class="cell">
+					<div class="cell-bd">
+						<ul class="realname-upload-group clearfix">
+							<li id="zhizhao">
+							<h5>营业执照（<a class="text-blue" href="javascript:;" data-toggle="matte" data-target="#idcardHand">示例</a>）</h5>
+							<div class="realname-upload" >
+								<div class="realname-upload-preview" id="preview_2" >
+									<div class="realname-upload-tips realname-upload-tips-{empty name='da.canada_img'}front{else/}again{/empty}" >
+										<div class="camera">
+											<i class="iconfont iconfont-camera"></i>
+										</div>
+									</div>
+									<img src="{$da.canada_img|default=''}">
+								</div>
+								<div class="realname-upload-btn webuploader-container" id="uploadfile_2">
+									<div class="webuploader-pick" style="">
+										上传图片
+									</div>
+									<div id="rt_rt_1efocqa6014vodo1fv1fe21bhm8" style="position: absolute; top: -382px; left: -16px; width: 195px; height: 98px; overflow: hidden; bottom: auto; right: auto;">
+										<input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="image/*"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label>
+									</div>
+								</div>
+								<div class="realname-upload-status hide" id="status_2">
+									<div class="progress" >
+										<div class="progress-bar progress-bar-success">
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="canada_img" id="canada_img" value="{$da.canada_img}">
+							</div>
+							</li>
+							<li>
+							<h5>&nbsp;</h5>
+							<ul class="list list-circle realname-upload-desc">
+								<li>营业执照必须在有效期内，没有作假痕迹；</li>
+								<li>营业执照信息清晰可见，无遮挡；</li>
+								<li>营业执照法人必须和实名认证身份证吻合，一致；</li>
+							</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="cell">
+					<div class="cell-bd">
+						<ul class="realname-upload-group clearfix">
+							<li id="zhizhao">
+							<h5>开户许可证（<a class="text-blue" href="javascript:;" data-toggle="matte" data-target="#idcardHand">示例</a>）</h5>
+							<div class="realname-upload" >
+								<div class="realname-upload-preview" id="preview_0" >
+									<div class="realname-upload-tips realname-upload-tips-{empty name='da.xuke_img'}front{else/}again{/empty}" >
+										<div class="camera">
+											<i class="iconfont iconfont-camera"></i>
+										</div>
+									</div>
+									<img src="{$da.xuke_img|default=''}">
+								</div>
+								<div class="realname-upload-btn webuploader-container" id="uploadfile_0">
+									<div class="webuploader-pick" style="">
+										上传图片
+									</div>
+									<div id="rtrt1e" style="position: absolute; top: -382px; left: -16px; width: 195px; height: 98px; overflow: hidden; bottom: auto; right: auto;">
+										<input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="image/*"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label>
+									</div>
+								</div>
+								<div class="realname-upload-status hide" id="status_0">
+									<div class="progress" >
+										<div class="progress-bar progress-bar-success">
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="xuke_img" id="canada_img" value="{$da.xuke_img}">
+							</div>
+							</li>
+							<li>
+							<h5>&nbsp;</h5>
+							<ul class="list list-circle realname-upload-desc">
+								<li>开户许可证必须在有效期内，没有作假痕迹；</li>
+								<li>开户许可证信息清晰可见，无遮挡；</li>
+							</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="cells-tips text-center">
+				<p class="text-light">
+					您提供的照片信息仅作为{$C.sitename}实名认证使用，<br>
+					我们不会泄露用户任何隐私！
+				</p>
+			</div>
+		</div>
+		<div class="myaction-wrapper realname-identity">
+			<div class="myaction">
+				<div class="btn-group">
+				 {:token_field()}
+					<button class="btn btn-primary" type="button" data-form="top-left,json" name="uploadImage">确认，提交上传</button>
+				</div>
+			</div>
+		</div>
+		<script src="__JS__/webuploader.min.js"></script>
+		<script src="__JS__/jquery.img.js"></script>
+		<div class="matte modal" id="idcardHand">
+			<button class="close modal-close" type="button" data-dismiss="matte"></button>
+			<div class="modal-body">
+				<p class="text-center h6 pb5">
+					请确保“营业执照”相关信息全部清晰
+				</p>
+				<img class="img-response img-radius" src="__IMG__/sprites/yingye.png" alt="">
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+            var url = "{:url('home/Account/uploadImage')}";
+        </script>
+</body>
+</html>

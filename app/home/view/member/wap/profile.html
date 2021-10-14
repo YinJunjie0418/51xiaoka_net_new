@@ -1,0 +1,159 @@
+     {include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">资料管理</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="card-gradient">
+		<div class="card">
+			<div class="cell">
+				<div class="cell-bd">
+					用户账号
+				</div>
+				<div class="cell-ft">
+					{$user.username}
+				</div>
+			</div>
+			
+			{switch name="$user['userReal']['retype']"} 
+		    {case value="1"}
+			<a class="cell cell-access" href="{:url('home/Member/realname')}">
+			<div class="cell-bd">
+				真实姓名&nbsp; <span class="label label-success">已实名认证</span>
+			</div>
+			<div class="cell-ft">
+				<span class="h6 text-light">{$user['userReal']['name']}</span>
+			</div>
+			</a>
+			{/case}
+		   {case value="2"}
+		   <a class="cell cell-access" href="{:url('home/Member/realname')}">
+		    <div class="cell-bd">
+				法人姓名&nbsp; <span class="label label-success">法人认证</span>
+			</div>
+			<div class="cell-ft">
+				<span class="h6 text-light">{$user['userReal']['name']}</span>
+			</div>
+			</a><a class="cell cell-access" href="{:url('home/Member/realname')}">
+			<div class="cell-bd">
+				企业名称&nbsp; <span class="label label-info">企业认证</span>
+			</div>
+			<div class="cell-ft">
+				<span class="h6 text-light">{$user['userReal']['company_name']} </span>
+			</div></a>
+			{/case}
+		   {default /}
+		   <a class="cell cell-access" href="{:url('home/Member/realname')}">
+		    <div class="cell-bd">
+				真实姓名&nbsp; <span class="label label-primary">未实名认证</span>
+			</div>
+			<div class="cell-ft">
+				<span class="h6 text-light">未实名</span>
+			</div>
+			</a>
+		   {/switch}
+			
+			<a class="cell cell-access" href="{:url('home/Member/setcash')}">
+			<div class="cell-bd">
+				提现账号
+			</div>
+			<div class="cell-ft">
+				<span class="h6 text-light">管理</span>
+			</div>
+			</a><a class="cell cell-access" href="javascript:;" onclick="geteditqq();">
+			<div class="cell-bd">
+				联系QQ
+			</div>
+			<div class="cell-ft">
+			    {empty name="$user.qq"}
+			    <span class="h6 text-blue">设置QQ号码</span>
+				{else/}
+				<span class="h6 text-light">{$user.qq|default=''}</span>
+				{/empty}
+			</div>
+			</a>
+		</div>
+		<div class="card">
+			<a class="cell cell-access" href="{:url('home/Member/password')}">
+			<div class="cell-bd">
+				登录密码
+			</div>
+			<div class="cell-ft">
+				<span class="h6 text-light">修改登录密码</span>
+			</div>
+			</a>
+			{eq name="$user.type" value="1"}
+			<a class="cell cell-access" href="javascript:;" onclick="geteditip();">
+				<div class="cell-bd">
+					IP白名单
+				</div>
+				<div class="cell-ft">
+					{empty name="$user.ip"}
+					<span class="h6 text-red">修改IP</span>
+					{else/}
+					<span class="h6 text-light">{$user.ip}</span>
+					{/empty}
+				</div>
+			</a>
+			{/eq}
+			<a class="cell cell-access hidden" href="{:url('home/Member/password')}">
+			<div class="cell-bd">
+				安全密码
+			</div>
+			<div class="cell-ft">
+				<span class="h6 text-light">修改安全密码</span>
+			</div>
+			</a>
+			<a class="cell cell-access" href="{:url('home/Member/photo')}">
+			<div class="cell-bd">
+				手机号码
+			</div>
+			<div class="cell-ft">
+			{empty name="$user.mobile"}
+			     <span class="h6 text-red">绑定手机</span>
+			{else/}
+				<span class="h6 text-light">{:tfen($user.mobile,3,4)}</span>
+				{/empty}
+			</div>
+			</a><a class="cell cell-access" href="{:url('home/Member/email')}">
+			<div class="cell-bd">
+				邮箱地址
+			</div>
+			<div class="cell-ft">
+			{empty name="$user.email"}
+			     <span class="h6 text-red">绑定邮箱</span>
+			{else/}
+				<span class="h6 text-light">{:tfen($user.email,3,4)}</span>
+				{/empty}
+			</div>
+			</a>
+			<div class="cell">
+				<div class="cell-bd">
+					注册时间
+				</div>
+				<div class="cell-ft">
+					<span class="h6 text-light">{$user.create_time}</span>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<a class="cell" href="{:url('home/Login/logout')}">
+			<div class="cell-bd text-center text-primary">
+				退出账号
+			</div>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>
+</html>

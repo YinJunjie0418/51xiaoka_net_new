@@ -1,0 +1,150 @@
+ {extend name="layout/member" /} 
+ {block name="content"}
+<div class="view-framework-main">
+    {include file="layout/info_menu" /}
+    <div class="box tab-content realname-content">
+	    {switch name="user.userReal.retype"}
+		{case value="2"}
+		<div class="alert alert-icon alert-success">
+            <div class="icon">
+                <i class="iconfont">&#xe61c;</i></div>
+            <div class="text">
+                <h4>认证成功。</h4> 
+				<p>企业认证成功可以使用API功能。</p>
+            </div>
+        </div>
+		{/case}
+		{case value="4"}
+		  <div class="alert alert-icon alert-danger">
+            <div class="icon">
+                <i class="iconfont">&#xe61c;</i></div>
+            <div class="text">
+                <h4>审核失败</h4> 
+				<p>{$user.userReal.remarks}</p>
+            </div>
+         </div>
+		{/case}
+		{default /}
+        <div class="alert alert-icon alert-warning">
+            <div class="icon">
+                <i class="iconfont">&#xe61c;</i></div>
+            <div class="text">
+                <h4>进行企业认证，可以开通API功能。</h4> 
+				<p>实名认证的个人信息必须是企业的法人，不然审核不通过。</p>
+            </div>
+        </div>
+		{/switch}
+        <form id="uploadImage" method="post" action=''>
+            <div class="userform userform-narrow">
+                <div class="form-group">
+                    <label class="form-label" for="company_name" style="width:160px">
+                    <em>*</em>企业名称：</label>
+                    <div class="form-element">
+                        <input type="text" class="form-control form-control-short" id="company_name" name="company_name" value="{$user.userReal.company_name}" null="请输入公司名称" reg="[\u4e00-\u9fa5]{2,20}">
+                        <div class="form-tips">
+                            <p>请输入公司名称</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="idcard" style="width:160px">
+                    <em>*</em>统一社会信用代码：</label>
+                    <div class="form-element">
+                        <input type="text" class="form-control" id="canada" name="canada" value="{$user.userReal.canada}" null="请输入正确的统一社会信用代码" ></div>
+                </div>
+                <div class="realname-tabs">
+                    <div class="form-group">
+                        <label class="form-label" style="width:160px"><em>*</em>营业执照：</label>
+                        <div class="form-element">
+                            <p class="text-light">照片支持jpg、gif、bmp、png格式，图片最大不要超过5M。</p>
+                            <div class="realname-panel realname-panel-inhand clearfix" id="zhizhao">
+                                <dl class="realname-info">
+                                    <dt>
+                            <p class="text-red">
+                              <strong>请拍摄或扫描</strong>营业执照</p></dt>
+                                    <dd>
+                                        <div class="realname-preview" id="preview_0">{empty name="$user.userReal.canada_img"}暂无图片{else/}<img src="{$user.userReal.canada_img}">{/empty}</div>
+                                        <div class="btn btn-green realname-uploadfile" id="uploadfile_0"></div>
+                                        <div class="realname-status hide" id="status_0">
+
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="canada_img" id="canada_img" value="{$user.userReal.canada_img}">
+                                    </dd>
+                                    <dd>
+                                        <div class="realname-preview" data-tip='<img height="360" src="__IMG__/sprites/yingye.png" alt=""><p class="text-center">请确保“营业执照”相关信息全部清晰。<p>|right'>
+                                            <img src="__IMG__/sprites/yingye.png" style="height: 100%;" alt=""></div>
+                                        <p>示例</p>
+                                    </dd>
+                                </dl>
+                                <dl class="realname-info">
+                                    <dd>
+                                        <ul class="list list-decimal">
+                                            <li>营业执照必须在有效期内，没有作假痕迹；</li>
+                                            <li>营业执照信息清晰可见，无遮挡；</li>
+                                            <li>营业执照法人必须和实名认证身份证吻合，一致；</li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="help-block">
+                                <p>您的照片信息仅在审核时作为{$C.sitename}实名认证依据，我们不会保留原始图片及泄露用户任何隐私！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="width:160px"><em>*</em>开户许可证：</label>
+                        <div class="form-element">
+                            <p class="text-light">照片支持jpg、gif、bmp、png格式，图片最大不要超过5M。</p>
+                            <div class="realname-panel realname-panel-inhand clearfix" id="zhizhao">
+                                <dl class="realname-info">
+                                    <dt>
+                                        <p class="text-red">
+                                            <strong>请拍摄或扫描</strong>开户许可证</p></dt>
+                                    <dd>
+                                        <div class="realname-preview" id="preview_1">{empty name="$user.userReal.canada_img"}暂无图片{else/}<img src="{$user.userReal.xuke_img}">{/empty}</div>
+                                        <div class="btn btn-green realname-uploadfile" id="uploadfile_1"></div>
+                                        <div class="realname-status hide" id="status_1">
+
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-success"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="xuke_img" id="xuke_img" value="{$user.userReal.xuke_img}">
+                                    </dd>
+                                    <dd>
+                                        <div class="realname-preview" data-tip='<img height="360" src="__IMG__/sprites/yingye.png" alt=""><p class="text-center">请确保“开户许可证”相关信息全部清晰。<p>|right'>
+                                            <img src="__IMG__/sprites/yingye.png" style="height: 100%;" alt=""></div>
+                                        <p>示例</p>
+                                    </dd>
+                                </dl>
+                                <dl class="realname-info">
+                                    <dd>
+                                        <ul class="list list-decimal">
+                                            <li>开户许可证必须在有效期内，没有作假痕迹；</li>
+                                            <li>开户许可证信息清晰可见，无遮挡；</li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="help-block">
+                                <p>您的照片信息仅在审核时作为{$C.sitename}实名认证依据，我们不会保留原始图片及泄露用户任何隐私！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-btn pt15">
+					     {:token_field()}
+                        <input class="btn btn-primary" id="anjian" type="button" data-form="top-left,json" name="uploadImage" value="确认，提交上传" /></div>
+                </div>
+            </div>
+        </form>
+        <script>
+            var url = "{:url('merchants/Account/uploadImage')}";
+        </script>
+        <script src="__JS__/webuploader.min.js"></script>
+        <script src="__JS__/jquery.img.js?v=103"></script>
+    </div>
+</div>
+{/block}

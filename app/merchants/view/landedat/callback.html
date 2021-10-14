@@ -1,0 +1,60 @@
+{extend name="layout/index" /} 
+{block name="content"}
+<style>
+.login-primary {
+    float: none;
+    position: relative; 
+    width: 469px;
+    height: 470px;
+	margin: auto;
+    margin-top: 120px;
+}
+.ddf{
+       height: 50px; font-size: 18px; overflow: hidden;width:160px
+}
+</style>
+<div class="content">
+	<div class="panel panel-bggray" style="padding: 30px 0;">
+		<div class="container">
+			<div class="login-primary">
+			<div class="control-label text-red h3">你还可以绑定已有账号</div>
+				<div class="login-content signform" id="con_login_1">
+							<form action="{:url('merchants/Login/login')}" method="post" id="login-form-0">
+								<div class="form-error" id="sign-error">
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="username">
+										<i class="iconfont iconfont-user">
+											
+										</i>
+									</label>
+									<input class="form-control" name="username" id="username" type="text"
+									placeholder="用户名/邮箱/手机号码" maxlength="20" value="" placeholder="输入手机号" null="用户名不能为空">
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="password">
+										<i class="iconfont iconfont-password">
+											
+										</i>
+									</label>
+									<input class="form-control" name="password" id="password" type="password"
+									placeholder="登录密码" maxlength="20" null="请输入密码" err="登录密码错误">
+								</div>
+								<div class="form-group">
+									<button class="btn btn-primary" type="submit" data-form="top-left,json"
+									name="login-form-0">
+										绑定账号
+									</button>
+									<input type="hidden" name="type" value="0">
+										{:token_field()}
+									<button class="btn btn-green ddf" style="margin-left: 50px;" onclick="javascript:qqlogina()" id="qqlogin" type="button">
+										直接登陆
+									</button>
+								</div>
+							</form>
+						</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

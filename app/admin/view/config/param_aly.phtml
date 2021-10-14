@@ -1,0 +1,52 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">参数配置</div>
+    <div class="layui-card-body" pad15>
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li><a href="{:url('/config/param',['model'=>'qiniu'])}">七牛配置</a></li>
+                <li ><a href="{:url('/config/param',['model'=>'weixin'])}">公众号配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxapp'])}">APP配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxpay'])}">微信支付</a></li>
+				 <li><a href="{:url('/config/param',['model'=>'alipay'])}">支付宝配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'qcloudsms'])}">短信配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'baiduapp'])}">百度数据</a></li>
+				<li><a href="{:url('/config/param',['model'=>'email'])}">邮件配置</a></li>
+				<li><a href="{:url('/config/param',['model'=>'cash'])}">提现配置</a></li>
+				<li class="layui-this"><a href="{:url('/config/param',['model'=>'aly'])}">认证配置</a></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                   <form action="{:url('/config/param',['model'=>'aly'])}" class="layui-form" method="post">
+
+                       <div class="layui-form-item">
+                           <label class="layui-form-label">WBAPPID</label>
+                           <div class="layui-input-inline" style="width: 400px;">
+                               <input type="text" name="appid" value="{$list.appid|default=''}" class="layui-input">
+                           </div>
+                           <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">腾讯人脸核身PC配置</div>
+                       </div>
+                       <div class="layui-form-item">
+                           <label class="layui-form-label">SECRETID</label>
+                           <div class="layui-input-inline" style="width: 400px;">
+                               <input type="text" name="secretid" value="{$list.secretid|default=''}" class="layui-input">
+                           </div>
+                           <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">腾讯人脸核身PC配置</div>
+                       </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit  lay-filter="*">确认保存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+{/block}
+

@@ -1,0 +1,34 @@
+<div class="navbar-customer" id="navbar-customer">
+      <ul class="navbar-login clearfix">
+       <li class="navbar-user userstate1"><a class="btn btn-primary" href="{:url('home/login/login')}">登录</a><a class="btn btn-default" href="{:url('home/Login/register')}">注册</a></li>
+       <li class="navbar-user userstate2 hide" data-hover="dropdown"><a class="btn btn-primary navbar-avatar" href="{:url('home/Member/index')}"><span class="avatar"><i class="iconfont"></i></span><span class="username">username</span></a>
+        <div class="dropdown-menu animated zoomIn">
+         <div class="navbar-account">
+          <div class="navbar-account-name hide">
+           <h3 class="ellipsis"><a href="{:url('home/Member/index')}">我的账户</a></h3>
+           <p class="levels "><a href="###"><span class="level level0">K0</span></a></p>
+           <p class=""><a href="###">我的特权（普通用户）</a></p>
+          </div>
+          <div class="navbar-account-nav">
+           <ul class="clearfix">
+            <li><a class="btn btn-default" href="{:url('home/Sellcard/index')}"><i class="iconfont"></i>我要卖卡</a></li>
+            <li><a class="btn btn-default" href="{:url('home/Sellcard/order')}"><i class="iconfont"></i>卖卡记录</a></li>
+            <li><a class="btn btn-default" href="{:url('home/Cash/index')}"><i class="iconfont"></i>我要出款</a></li>
+            <li><a class="btn btn-default" href="{:url('home/Cash/cashrecords')}"><i class="iconfont"></i>出款记录</a></li>
+           </ul>
+          </div>
+          <div class="navbar-account-set clearfix">
+           <a class="pull-left" href="{:url('home/Member/profile')}">资料管理</a>
+           <a class="pull-right" href="{:url('home/Login/logout')}">安全退出</a>
+          </div>
+         </div>
+        </div></li>
+       <li class="navbar-help" data-hover="dropdown"><a class="navbar-icon" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-help"></i></a>
+        <div class="dropdown-menu animated zoomIn">
+         <p class="link"><a href="{:url('home/helpfaq/index')}">帮助中心</a><em class="sep">|</em><a href="{:url('home/helpfaq/danye',['id'=>17])}">卖卡流程</a></p>
+         <p class="tel">或直接拨打客服热线<br /><span class="text-red h2">{$C.kefu}</span><br /><small class="text-light">（08:00-次日01:00）</small></p>
+         <p class="link"><a class="btn btn-primary btn-block zhiCustomBtn" href="tencent://message/?uin={$C.qq}&Site=Sambow&Menu=yes" rel="external nofollow">在线客服咨询</a></p>
+        </div></li>
+       <li class="navbar-hezuo"><a class="navbar-icon" href="{:url('home/helpfaq/business')}" title="招商合作"><i class="iconfont iconfont-hezuo"></i></a></li>
+      </ul>
+     </div>

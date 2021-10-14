@@ -1,0 +1,274 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+.layui-form-switch{
+	margin-top:0;
+}
+.lay-span{
+	display: block;
+    padding: 5px 5px;
+    background: #FF5722;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+}
+.layui-card .layui-card-body .layui-btn-group{
+	margin-bottom:0;
+}
+.layui-card .layui-card-body .layui-table td{
+	max-width:450px
+}
+</style>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form class="layui-form layui-col-space5">
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="username" placeholder="查询内容" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <select name="type" id="selt" lay-skin="select">
+                    <option value="shopid">SHOPID</option>
+                    <option value="orderno">订单号</option>
+                    <option value="money">提现金额</option>
+                    <option value="name">真实姓名</option>
+                </select>
+            </div>
+            <button class="layui-btn" type="button" lay-submit="" lay-filter="sreach" lay-skin="select" ><i class="layui-icon"></i></button>
+            <input type="hidden" value="" name="state" id="seltt">
+             <div class="layui-inline layui-show-xs-block">
+                    <button class="layui-btn" type="button" id="printt" lay-event="LAYTABLE_EXPORT">
+                        <i class="layui-icon layui-icon-export">  </i></button>
+                </div>
+            <div class="layui-inline layui-show-xs-block" id="dorder">
+                <button class="layui-btn layui-btn-default" type="button" id="sall" lay-type="0">全部订单</button>
+                <button class="layui-btn layui-btn-primary" type="button" id="sall" lay-type="1">等待受理</button>
+                <button class="layui-btn layui-btn-primary" type="button" id="sall" lay-type="2">正在处理</button>
+                <button class="layui-btn layui-btn-primary" type="button" id="sall" lay-type="3">成功订单</button>
+                <button class="layui-btn layui-btn-primary" type="button" id="sall" lay-type="4">失败订单</button>
+                {eq name="$money['isdisplay']" value="1"}
+                 <div class="lay-span" style="margin-left:120px;background:#46be8a;cursor:auto;display:inline-block;" >{$money['bankname']}  <span class="layui-badge layui-bg-gray">{$money['lian']}</span></div>{/eq}
+                {eq name="$money['isalipay']" value="1"}
+                <div class="lay-span" style="background:#1e9fff;cursor:auto;display:inline-block;">支付宝  <span class="layui-badge layui-bg-gray">{$money['alipay']}</span></div>{/eq}
+            </div>
+           
+        </form>
+    </div>
+		<table id="tableList" lay-filter="tableList"></table>
+</div>
+<script type="text/html" id="money">
+    <span  style="color:#ff1919">{{d.money-d.price}}</span>
+</script>
+<script type="text/html" id="tableTBTrack">
+   <div class="layui-btn-group">
+       {{# if(d.getstatus<2){}}
+       <button type="button" class="layui-btn " lay-event="bianji" >审核</button>
+       {{# }else{ }}
+		<button type="button" class="layui-btn layui-btn-disabled" >审核</button>
+       {{# } }}
+       {{# if(d.getstatus==4){}}
+       <button type="button" class="layui-btn layui-btn-danger" lay-event="cha" >查询</button>
+       {{# }else{ }}
+       <button type="button" class="layui-btn layui-btn-disabled" >查询</button>
+       {{# } }}
+
+	</div>
+</script>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+		var insTb = table.render({
+            elem: '#tableList',
+            url: "{:url('/Cash/index')}",
+            where:{id:$("input[name=field]").val()},
+            page: true,
+            limit:15,
+            limits:[15,30,45,60,75,90],
+            cellMinWidth: 100,
+            totalRow:true,
+            cols: [[
+                {type:'numbers',title:'#'},
+				{field: 'order',align: 'content', sort: true, title: '订单号',width:200,totalRowText: '合计：'},
+                {field: 'shopid',align: 'content',  title: '商户ID',width:90},
+                {field:'user', align: 'content', title: '真实姓名',minWidth:200},
+				{field:'type', align: 'content', title: '提现类型'},
+				{field: 'bankname', align: 'content', title: '账户名称',width:90},
+				{field: 'accounts', align: 'content', title: '账户',minWidth:200},
+				{field: 'money', align: 'content', title: '金额',width:110,totalRow: true},
+				{field: 'umoney', align: 'content', title: '账户余额',minWidth:110},
+				{align: 'center',  title: '手续费',field:'price',width:80,totalRow: true},
+				{align: 'center',  title: '实际到账',templet:'#money',width:100},
+				{align: 'center',  title: '状态',field:'status'},
+				{align: 'center',  title: '备注',field:'content'},
+				{align: 'center',  title: '时间',field:'create_time',width: 160},
+                {align: 'center',  title: '耗时',field:'ovtime',width: 160},
+                {align: 'center', toolbar: '#tableTBTrack', title: '操作',width: 165}
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.total, //解析数据长度
+                  "data": res.data.data //解析数据列表
+                };
+            }
+        });
+		 table.on('tool(tableList)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+			var data = obj.data //获得当前行数据
+			,layEvent = obj.event; //获得 lay-event 对应的值
+			switch(layEvent){
+				case "bianji":
+				  var one=openUrl("审核提现订单",'600px','500px',"{:Url('/Cash/edit')}?id="+data.id);
+				break;
+				case "fail":
+				  layer.confirm('确定执行失败操作，此操作将退回用户金额？', {
+						icon: 3,
+						title: '提示'
+					}, function (index) {
+						var index = layer.msg('执行中，请稍候', {
+							icon: 16,
+							time: false,
+							shade: 0.3
+						});
+						$.ajax({
+							url: "{:Url('/Cash/edit')}?type=fail&id="+data.id,
+							type: 'post',
+							dataType: 'json',
+							success: function (result) {
+								if (result.code === 1) {
+									insTb.reload();
+								}
+								layer.close(index);
+								layer.msg(result.msg);
+							},
+							error: function (xhr, state, errorThrown) {
+								layer.close(index);
+								layer.msg(state + '：' + errorThrown);
+							}
+						});
+					});
+				break;
+                case "cha":
+                        var index = layer.msg('执行中，请稍候', {
+                            icon: 16,
+                            time: false,
+                            shade: 0.3
+                        });
+                        $.ajax({
+                            url: "{:Url('/Cash/lookup')}?id="+data.id,
+                            type: 'post',
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.code === 1) {
+                                    insTb.reload();
+                                }
+                                layer.close(index);
+                                layer.msg(result.msg);
+                            },
+                            error: function (xhr, state, errorThrown) {
+                                layer.close(index);
+                                layer.msg(state + '：' + errorThrown);
+                            }
+                        });
+                    break;
+				
+				
+				case "del":
+				  layer.confirm('确定删除？', {
+						icon: 3,
+						title: '提示'
+					}, function (index) {
+						var index = layer.msg('删除中，请稍候', {
+							icon: 16,
+							time: false,
+							shade: 0.3
+						});
+						$.ajax({
+							url: "{:url('/Cash/del')}?id="+data.id,
+							type: 'post',
+							dataType: 'json',
+							success: function (result) {
+								if (result.code === 1) {
+									insTb.reload();
+								}
+								layer.close(index);
+								layer.msg(result.msg);
+							},
+							error: function (xhr, state, errorThrown) {
+								layer.close(index);
+								layer.msg(state + '：' + errorThrown);
+							}
+						});
+					});
+				break;
+			}
+			function openUrl(title,width,height,url){
+				var index = layer.open({
+						title: title,
+						type: 2,
+						shadeClose:true,
+						area: [width, height],
+						content: url,
+					})
+				return index;
+			}
+		  });
+		  form.on('submit(sreach)', function(obj){
+              var state=$("#seltt").val();
+              var kk=$("#selt").val();
+              var name=$("input[name=username]").val();
+			var index = layer.msg('查询中，请稍候', {
+							icon: 16,
+							time: false,
+							shade: 0.3
+						});
+                 insTb.reload({
+					page:{curr:1
+						 },
+                     where:{
+                         shop_id:name,
+                         state:state,
+                         keys:kk
+                     }
+                 });
+				 layer.close(index);
+        });
+        //状态查询
+        $("#dorder").on("click","#sall",function(){
+            var e=$(this);
+            e.siblings().addClass("layui-btn-primary");
+            e.removeClass("layui-btn-primary");
+            $("#seltt").val(e.attr('lay-type'));
+            var state=$("#seltt").val();
+            if(state==0)$("input[name=username]").val('');
+            var kk=$("#selt").val();
+            var name=$("input[name=username]").val();
+            insTb.reload({
+                page:{curr:1
+                },
+                where:{
+                    shop_id:name,
+                    state:state,
+                    keys:kk
+                }
+            });
+        });
+        
+         $("#printt").click(function(){
+           var state=$("#seltt").val();
+              var kk=$("#selt").val();
+              var name=$("input[name=username]").val();
+            location.href="{:url('/Cash/export')}?shop_id="+name+"&keys="+kk+"&state="+state;
+
+        });
+    });
+
+</script>
+{/block}

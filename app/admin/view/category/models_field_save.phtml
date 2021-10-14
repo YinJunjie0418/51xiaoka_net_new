@@ -1,0 +1,73 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 配置标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" value="{$data.title|default=''}" autocomplete="off" placeholder="请输入配置标题" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 配置标识</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" value="{$data.name|default=''}" autocomplete="off" placeholder="由英文字母和下划线组成，必须以字母开头" class="layui-input" {if isset($data.is_sys)=='1'}disabled{/if}>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 配置类型</label>
+                <div class="layui-input-block">
+                    <select name="type" {if isset($data.is_sys)=='1'}disabled{/if} lay-filter="type">
+                        <option value="">请选择配置类型</option>
+                        {foreach name=":field_config()" key="k" item="v"}
+                        <option value="{$k}" {if condition="isset($data) and $data.type eq $k"}selected="selected"{/if}>{$v}[{$k}]</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" id="value">
+                <label class="layui-form-label">默认值</label>
+                <div class="layui-input-block">
+                    <input type="text" name="value" value="{$data.value|default=''}" autocomplete="off" placeholder="请输入默认值" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" id="options">
+                <label class="layui-form-label">选项值</label>
+                <div class="layui-input-block">
+                    <textarea name="options" autocomplete="off" placeholder="此配置仅适用于配置类型为单选项、下拉选项。参考格式如下：
+1:是
+0:否" class="layui-textarea">{$data.options|default=''}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    {if(isset($data) and $data.type =='radio' || isset($data) and $data.type == 'select' )}
+        $("#value").show();
+        $("#options").show();
+    {else}
+        $("#value").hide();
+        $("#options").hide();
+    {/if}
+    form.on('select(type)', function(data){
+        var that = $(this);
+        if(data.value == 'radio' || data.value == 'select'){
+            $("#value").show();
+            $("#options").show();
+        }else{
+            $("#value").hide();
+            $("#options").hide();
+        }
+    });
+</script>
+{/block}

@@ -1,0 +1,39 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">上传设置</div>
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片压缩</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="is_thumb" value="0">
+                    <input type="checkbox" name="is_thumb" value="1" lay-skin="switch" lay-text="开启|关闭" {if isset($data.is_thumb) and $data.is_thumb eq '1'}checked="checked"{/if}>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">最大宽度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="max_width" value="{$data.max_width|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">px</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">最大高度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="max_height" value="{$data.max_height|default=''}" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">px</div>
+            </div>
+            <hr>
+            
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

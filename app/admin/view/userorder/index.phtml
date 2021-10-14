@@ -1,0 +1,353 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+.layui-form-switch{
+	margin-top:0;
+}
+.lay-span{
+	display: block;
+    padding: 5px 5px;
+    background: #FF5722;
+    text-align: center;
+    color: #fff;
+    border-radius: 3px;
+}
+.layui-card .layui-card-body .layui-btn-group{
+	margin-bottom:0;
+}
+.layui-card .layui-card-body .layui-table td{
+	max-width:450px
+}
+.layui-input-block {
+    margin-left: 0px; 
+    min-height: 36px;
+}
+.layui-form-item {
+    margin-bottom: 0px;
+}
+.layui-form-select dl {
+    z-index: 99999;
+}
+.layui-table-cell, .layui-table-tool-panel li {
+     overflow: unset;
+}
+</style>
+<div class="layui-card">
+    <div class="layui-card-body">
+
+		<form class="layui-form layui-col-space5" >
+				<div class="layui-inline layui-show-xs-block">
+                <input class="layui-input"  autocomplete="off" placeholder="开始日期" name="starttime" value="{:date('Y-m-d 00:00:00', strtotime('-7 days'))}" id="starttime">
+				</div>
+				<div class="layui-inline layui-show-xs-block">
+					<input class="layui-input"  autocomplete="off" placeholder="截止日期" name="endtime" value="{:date('Y-m-d 23:59:59')}" id="endtime">
+				</div>
+				<div class="layui-inline layui-show-xs-block">
+				 <select name="type" id="selt" lay-skin="select">
+					 <option value="shopid">SHOPID</option>
+					 <option value="batchno">订单号</option>
+					 <option value="card_no">卡号</option>
+					 <option value="card_key">卡密</option>
+				 </select>
+                </div>
+				<div class="layui-inline layui-show-xs-block">
+				<input type="hidden" id="typen" value="">
+				<input type="hidden" id="money" value="">
+                    <input type="text" name="username" placeholder="搜索内容" autocomplete="off" class="layui-input">
+				</div>
+				<input type="hidden" value="" name="state" id="seltt">
+				 <div class="layui-inline layui-show-xs-block">
+                    <button class="layui-btn" type="button" lay-submit="" lay-filter="sreach" lay-skin="select" >
+                        <i class="layui-icon">&#xe615;</i></button>
+                     <button class="layui-btn layui-btn-danger" type="button" lay-submit=""  lay-filter="mongo" lay-skin="select" >
+                         重建批次</button>
+                </div>
+            <div class="layui-group">
+				<div class="layui-btn-group layui-show-xs-block" id="allbutton">
+				   <button class="layui-btn" style="margin-bottom:8px" type="button" id="typeClick" lay-type="" >全 部</button>
+				   {volist name="li" id="p"}
+                    <button class="layui-btn layui-btn-primary" style="margin-bottom:8px" type="button" id="typeClick" lay-type="{$p.type}" >{$p.title}</button> 
+                   {/volist}									
+                </div>
+            </div>
+				</form>
+        </div>
+		<table id="tableList" lay-filter="tableList"></table>
+
+</div>
+	<script type="text/html" id="caoz">
+		<div class="layui-btn-group">
+		   {{#  if(d.progress == 1){ }}
+		   <button class="layui-btn layui-btn-disabled" >暂停</button>
+		   {{#  } else { }}
+            {{#  if(d.sus == 1){ }}
+		      <button class="layui-btn layui-btn-warm" lay-event="suspend" >重启</button>
+            {{#  } else { }}
+		      <button class="layui-btn layui-btn-normal" lay-event="stopda"  >暂停</button>
+            {{# }}}
+		    {{# }}}
+		    {{#  if(d.tmporder == 0){ }}
+		    <a class="layui-btn"  ew-href="{:url('/Order/index')}?batchno={{d.batchno}}" >查看详情</a>
+		     {{#  } else { }}
+            <a class="layui-btn"  ew-href="{:url('/Apiorder/index')}?batchno={{d.batchno}}" >查看详情</a>
+            {{# }}}
+            {{#  if(d.progress == 1){ }}
+            <button class="layui-btn layui-btn-disabled" >取消订单</button>
+            {{#  } else { }}
+            <a class="layui-btn layui-btn-danger" lay-event="cancel" >取消订单</a>
+            {{# }}}
+
+		</div>
+   </script>
+<script type="text/html" id="priority">
+    {{#  if(d.type == 0 && d.progress != 1){ }}
+    <input type="text" name="priority" value="{{d.priority}}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('/userorder/editpriority')}?order={{d.batchno}}">
+    {{#  } else { }}
+       --
+    {{# }}}
+</script>
+<script type="text/html" id="opersel">
+    <select name="type" lay-filter="modelchannel" >
+        <option value="0|{{d.batchno}}|{{d.class}}" {{#  if(d.type == 0){ }} selected="selected"{{# }}} >站内消耗</option>
+        {volist name="operlist" id="p"}
+         <option value="{$p.id}|{{d.batchno}}|{{d.class}}" {{#  if(d.type == {$p.id}){ }} selected="selected"{{# }}} >{$p.name}</option>
+        {/volist}
+    </select>
+</script>
+
+<script type="text/html" id="feilv">
+    <input type="text" name="feilv" value="{{d.feilv}}" autocomplete="off" class="layui-input ajax-update" data-url="{:url('/userorder/editfeilv')}?order={{d.batchno}}">
+</script>
+
+{/block}
+{block name="js"}
+<script src="/static/simple/js/clipboard.min.js"></script>
+<script>
+    layui.use(['layer', 'form', 'table', 'laydate'], function () {
+        var $ = layui.jquery,layer = layui.layer,form = layui.form,table = layui.table,laydate=layui.laydate;
+        var stt=$("#starttime").val(),set=$("#endtime").val();
+		var insTb = table.render({
+            elem: '#tableList',
+            url: "{:url('/Userorder/index')}?se="+set+"&st="+stt,
+            page: true,
+            limit:15,
+            limits:[15,30,45,60,75,90,1000],
+            cellMinWidth: 100,
+            cols: [[
+				{title:"批次号", align: 'center',field:'batchno', sort: true,width:200},
+				{field: 'shopid',title:"商户信息", align: 'center', width:120},
+			    {field: 'title',title: '卡类',align: 'center',width:150,totalRowText: '合计：'},
+                {field: 'oper',toolbar: '#opersel',title: '处理通道',align: 'center',width:150},
+				{field:'money',title: '提交面值',style:"color:#c60",align: 'center',width:100},
+				{field: 'feilv',toolbar: '#feilv',title:'销卡费率',style:"color:#e60040",align:'center',width:100},
+				{field:'ids', title:'总提卡数',align: 'center',width:100},
+				{field: 'jindu',title: '处理进度',style:"color:#00a65a",align: 'center',width:100},
+				{field: 'cuo',title:'错卡率',style:"color:#e60040",align:'center',width:100},
+                {field: 'priority',title:'优先级',toolbar:"#priority",style:"color:#e60040",align:'center',width:100},
+				{field:'create_time', align: 'center',title:'提交时间',width:180},
+				{align:'center',title:'操作',toolbar: '#caoz',width:300}
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.total, //解析数据长度
+                  "data": res.data.data //解析数据列表
+                };
+            }
+        });
+		var nowTime=new Date();    
+		var startTime=laydate.render({
+			elem:'#starttime',
+			type:'datetime',
+			btns: ['confirm'],
+			max:'23:59:59',//默认最大值为当前日期
+			done:function(value,date){
+				endTime.config.min={    	    		
+					year:date.year,
+					month:date.month-1,//关键
+					date:date.date,
+					hours:date.hours,
+					minutes:date.minutes,
+					seconds:date.seconds
+				};
+                
+			}
+		})
+		var endTime=laydate.render({
+			elem:'#endtime',
+			type:'datetime',
+			btns: ['confirm'],
+			max:'23:59:59',
+			done:function(value,date){   	   
+				startTime.config.max={
+						year:date.year,
+						month:date.month-1,//关键
+						date:date.date,
+				};
+
+			}
+		})
+		
+		table.on('tool(tableList)', function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            switch (layEvent) {
+                case 'suspend':
+                    var indexs = layer.load(3, {
+                        shade: [0.1,'#fff'] //0.1透明度的白色背景
+                    });
+
+                    $.post("{:url('/userorder/suspend')}",{order:data.batchno,class:data.class,money:data.money},function (e) {
+                        layer.close(indexs);
+                        layer.msg(e.msg, {
+                            time: 1000,
+                            shade: 0.3
+                        },function(){
+                            insTb.reload();
+                        });
+                    })
+                break;
+                case 'stopda':
+                    var indexs = layer.load(3, {
+                        shade: [0.1,'#fff'] //0.1透明度的白色背景
+                    });
+
+                    $.post("{:url('/userorder/suspend')}",{order:data.batchno},function (e) {
+                        layer.close(indexs);
+                        layer.msg(e.msg, {
+                            time: 1000,
+                            shade: 0.3
+                        },function(){
+                            insTb.reload();
+                        });
+                    })
+                break;
+                
+                case 'cancel':
+                    var indexs = layer.load(3, {
+                        shade: [0.1,'#fff'] //0.1透明度的白色背景
+                    });
+                    $.post("{:url('/userorder/cancel')}",{order:data.batchno},function (e) {
+                        layer.close(indexs);
+                        layer.msg(e.msg, {
+                            time: 1000,
+                            shade: 0.3
+                        },function(){
+                            insTb.reload();
+                        });
+                    })
+                break;
+              
+
+            }
+        })
+
+
+		
+		  form.on('submit(sreach)', function(obj){
+            var name=$("input[name=username]").val();
+			var kk=$("#selt").val(),st=$("#starttime").val(),se=$("#endtime").val();
+            
+			var state=$("#seltt").val(),cl=$("#typen").val();
+                 insTb.reload({
+					page:{curr:1
+						 },
+                     where:{
+						 name:name,
+						 kk:kk,
+						 st:st,
+						 se:se,
+						 state:state,
+						 classa:cl,
+                     }
+                 });
+        });
+
+        form.on('submit(mongo)', function(obj){
+            var index = layer.load(3, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+            $.post("{:url('/Userorder/restmongo')}",function (e) {
+                layer.close(index);
+                layer.msg(e.msg, {
+                    time: 1000,
+                    shade: 0.3
+                });
+            })
+        });
+        
+         form.on('select(modelchannel)', function (data) {
+             console.log(data.value);
+             layer.confirm('只有待处理和处理失败的卡才能切换通道，请确认卡的可用性？', function(index){
+				var loading =layer.load(3, {shade: [0.1,'#fff']});
+				$.post("{:url('/Userorder/switchChannel')}",{idOrder:data.value},function(res){
+						layer.close(loading);
+						if(res.code==1){
+							layer.alert(res.msg,{icon:1},function(index){
+								 layer.close();
+								 window.parent.location.reload();
+								 layer.closeAll();
+							});
+				        }else{
+						layer.alert(res.msg,{icon:2});
+						}
+					})
+             })
+         })
+		
+		//卡类查询
+		$("#allbutton").on("click","#typeClick",function(){
+		    var e=$(this);
+			e.siblings().addClass("layui-btn-primary");
+			e.removeClass("layui-btn-primary");
+			$("#typen").val(e.attr('lay-type'));
+            var name=$("input[name=username]").val();
+			var kk=$("#selt").val(),st=$("#start").val(),se=$("#end").val();
+           
+			var state=$("#seltt").val(),cl=$("#typen").val();
+                 insTb.reload({
+					page:{curr:1
+						 },
+                     where:{
+						 name:name,
+						 kk:kk,
+						 st:st,
+						 se:se,
+						 state:state,
+						 classa:cl,
+                     }
+                 });
+		});
+		//状态查询
+		$("#dorder").on("click","#sall",function(){
+		    var e=$(this);
+			e.siblings().addClass("layui-btn-primary");
+			e.removeClass("layui-btn-primary");
+			$("#seltt").val(e.attr('lay-type'));
+            var name=$("input[name=username]").val();
+			var kk=$("#selt").val(),st=$("#start").val(),se=$("#end").val();
+           
+			var state=$("#seltt").val(),cl=$("#typen").val();
+                 insTb.reload({
+					page:{curr:1
+						 },
+                     where:{
+						 name:name,
+						 kk:kk,
+						 st:st,
+						 se:se,
+						 state:state,
+						 classa:cl,
+                     }
+                 });
+		});
+		
+		// 点击图片放大
+        $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
+            layer.photos({photos: {data: [{src: $(this).attr('src')}]}, shade: .1, closeBtn: true});
+        });
+    });
+
+</script>
+{/block}

@@ -1,0 +1,113 @@
+{extend name="layout/member" /} 
+{block name="content"}
+<style>
+	.selecta{
+		width: 200px;
+		padding: 10px;
+		border: 1px solid #e5e5e5;
+		border-radius: 3px;
+	}
+</style>
+<div class="view-framework-main">
+	<div class="box">
+		<h2 class="box-caption">申请加款</h2>
+		<form action="{:url('merchants/Cash/withdraw')}" method="post" id="formbtn">
+			<div class="userform">
+				<div class="form-group">
+					<label class="form-label">选择付款银行：</label>
+					<div class="form-element">
+						<select id="bankid" name="bankid" class="selecta" onchange="selbank(this)">
+							{volist name="list" id="p"}
+							     <option value="{$p.id}">{$p.bankName}</option>
+							{/volist}
+						</select>
+					</div>
+				</div>
+				<div class="form-group" >
+					<label class="form-label">收款人：</label>
+					<div class="form-element" id="bankname" style="color: red">{$list[0]['title']|default=""} </div>
+				</div>
+				<div class="form-group" >
+					<label class="form-label">收款账户：</label>
+					<div class="form-element" id="banknameval">{$list[0]['content']|default=""} </div>
+				</div>
+				<div class="form-group" >
+					<label class="form-label">开户地址：</label>
+					<div class="form-element" id="bankaddressval">{$list[0]['city']|default=""} </div>
+				</div>
+
+				<div class="sr-only">
+					<input type="text" name="fakeusernameremembered"><input type="password" name="fakepasswordremembered">
+					<p>
+						防止浏览器自动乱填充表单
+					</p>
+				</div>
+				<div class="form-group">
+					<label class="form-label" for="moneyoff"><em>*</em> 加款金额：</label>
+					<div class="form-element">
+						<input class="form-control form-control-short" name="moneyoff" id="moneyoff" type="text" value="" maxlength="8" null="请输入要加款的金额" reg="^\d+(\.\d+)?$">
+						<div class="form-tips">
+							元<span class="sep">|</span>剩余额度：<i id="rema">{eq name="$list[0]['daymoney']|default=0" value='0'}不限额{else/}{$list[0]['daymoney']-$list[0]['remamoney']}{/eq}</i>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-label">
+						<em>*</em>付款截图：</label>
+					<div class="form-element">
+						<p class="text-light">图片支持jpg、png格式，图片最大不要超过5M。</p>
+						<div class="realname-panel clearfix" style="width: 400px">
+							<dl class="realname-info" style="width: 100%">
+								<dt>
+									<p class="text-dark">付款截图</p>
+									<p>需要能看清流水号、付款金额、时间等信息。</p>
+								</dt>
+								<dd style="width: 100%;height: 160px;">
+									<div class="realname-preview" id="preview_0" style="height: 120px">暂无图片</div>
+									<div class="btn btn-green realname-uploadfile" id="uploadfile_0"></div>
+									<div class="realname-status hide" id="status_0">
+										<div class="progress">
+											<div class="progress-bar progress-bar-success"></div>
+										</div>
+									</div>
+									<input type="hidden" name="rechpic" id="rechpic" value="">
+								</dd>
+
+							</dl>
+
+						</div>
+					</div>
+				</div>
+				<div id="recycle-check">
+					<div class="form-group">
+						<div class="col-xs-11 col-xs-offset-1">
+								<span class="checkbox-text">说明：请打款到我司指定银行后按照打款金额提交加款申请，我司工作人员查收到账后会立即为您的账户加款</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group-btn">
+					{:token_field()}
+					<input type="hidden" name="type" value="alipay">
+					<button class="btn btn-primary" type="button" data-form="top-left,json" id="anjian" name="formbtn">申请加款</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	var url = "{:url('merchants/Account/uploadImage')}";
+	function selbank(q){
+		$.post("{:url('merchants/Cash/index')}",{id:$(q).val()},function(a){
+			if(a!=undefined && a!=""){
+				$("#banknameval").text(a.content);
+				$("#bankaddressval").text(a.city);
+				$("#bankname").text(a.title);
+				var fg=a.daymoney-a.remamoney;
+				$("#rema").text(fg);
+			}
+		})
+	}
+</script>
+<script src="__JS__/webuploader.min.js"></script>
+<script src="__JS__/jquery.img.js?v=103"></script>
+   {/block}

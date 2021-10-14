@@ -1,0 +1,8 @@
+<div class="myfooter" id="myfooter">
+	<div class="tabs floorbar">
+		<a class="tab-item {if condition="($contr == 'Index')"}active{/if}" href="/"><span class="icon icon-home"><i class="iconfont iconfont-home iconfont-normal"></i><i class="iconfont iconfont-home-full iconfont-active"></i></span><span>首页</span></a>
+		<a class="tab-item " href="{:url('home/card/index')}"><span class="icon icon-sell"><i class="iconfont iconfont-sell iconfont-normal"></i><i class="iconfont iconfont-sell-full iconfont-active"></i></span><span>卖卡</span></a>
+		<a class="tab-item " href="#"><span class="icon icon-buy"><i class="iconfont iconfont-buy iconfont-normal"></i><i class="iconfont iconfont-buy-full iconfont-active"></i></span><span>买卡</span></a>
+		<a class="tab-item {if condition="($contr == 'Member')"}active{/if}" href="{:url('home/Member/index')}"><span class="icon icon-my"><i class="iconfont iconfont-my iconfont-normal"></i><i class="iconfont iconfont-my-full iconfont-active"></i></span><span>我的</span></a>
+	</div>
+</div>

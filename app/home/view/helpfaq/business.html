@@ -1,0 +1,87 @@
+{extend name="layout/index" /} 
+{block name="content"}
+<div class="content">
+	<div class="business-jumbotron">
+	</div>
+	<div class="panel">
+		<div class="panel-heading">
+			<h3 class="panel-title">招商合作联系方式</h3>
+			<div class="panel-subtitle">
+				<s class="line"></s>
+				<p class="h3">
+					针对游戏公会，各类商家招商合作
+				</p>
+			</div>
+		</div>
+		<div class="container">
+			<div class="business clearfix">
+			{volist name="cardModel" id="k" key="l"}
+			 {eq name="$k.status" value='1'}
+				<div class="business-item">
+					<div class="business-body">
+						<h3>{$k.title}招商</h3>
+						<div class="business-carousel owl-carousel owl-theme" >
+							
+								   <div class="owl-item" >
+									<ul class="business-cards clearfix">
+									 {volist name="k.comments" id="p" key='i'}
+											<li>
+												<div class="business-cards-item">
+													<img src="{$p.iconurl}" alt="{$p.title}" title="{$p.title}">
+													<h5>{$p.title}</h5>
+												</div>
+												</li>
+											{if condition="($i%6 == 0)"}	
+												</ul>
+											</div>
+										<div class="owl-item" >
+											<ul class="business-cards clearfix">
+											{/if}
+										{/volist}
+										</ul>
+									</div>
+						</div>
+						<div class="business-action">
+						{switch name="l"}
+							{case value="2"}
+								<a class="btn btn-primary" href="http://wpa.qq.com/msgrd?v=3&amp;uin={$C.qq}&amp;site=qq&amp;menu=yes" target="_blank"><i class="iconfont"></i> QQ交谈</a>
+							{/case}
+							{case value="3"}
+								<a class="btn btn-red" href="http://wpa.qq.com/msgrd?v=3&amp;uin={$C.qq}&amp;site=qq&amp;menu=yes" target="_blank"><i class="iconfont"></i> QQ交谈</a>
+							{/case}
+							{case value="4"}
+								<a class="btn btn-green" href="http://wpa.qq.com/msgrd?v=3&amp;uin={$C.qq}&amp;site=qq&amp;menu=yes" target="_blank"><i class="iconfont"></i> QQ交谈</a>
+							{/case}
+							{case value="5"}
+								<a class="btn btn-orange" href="http://wpa.qq.com/msgrd?v=3&amp;uin={$C.qq}&amp;site=qq&amp;menu=yes" target="_blank"><i class="iconfont"></i> QQ交谈</a>
+							{/case}
+							{case value="6"}
+								<a class="btn btn-primarybtn" href="http://wpa.qq.com/msgrd?v=3&amp;uin={$C.qq}&amp;site=qq&amp;menu=yes" target="_blank"><i class="iconfont"></i> QQ交谈</a>
+							{/case}
+							{case value="7"}
+								<a class="btn btn-red" href="http://wpa.qq.com/msgrd?v=3&amp;uin={$C.qq}&amp;site=qq&amp;menu=yes" target="_blank"><i class="iconfont"></i> QQ交谈</a>
+							{/case}
+						{/switch}
+						</div>
+					</div>
+				</div>
+				{/eq}
+		      {/volist}
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="__JS__/owl.carousel.min.js"></script>
+<script>$(".owl-carousel").owlCarousel({
+	items: 1,
+	itemsDesktop: false,
+	itemsDesktopSmall: false,
+	itemsTablet: false,
+	itemsMobile: false,
+	rewindNav: false,
+	pagination: false,
+	scrollPerPage: false,
+	navigation: true,
+	navigationText: ["<i class='iconfont'>&#xe638;</i>", "<i class='iconfont'>&#xe629;</i>"],
+});</script>
+{/block}

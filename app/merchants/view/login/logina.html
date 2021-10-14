@@ -1,0 +1,245 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$title} </title>
+{/block}
+{block name="content"}
+<div class="content">
+	<div class="panel panel-sign">
+		<div class="container">
+			<div class="box clearfix">
+				<div class="login-secondary">
+					<div class="login-secondary-logo">
+						<img src="{$C.logo}" alt="爱销卡靠谱的卡密回收平台">
+					</div>
+					<div class="login-secondary-down clearfix">
+						<div class="tips">
+							<h3>
+								{$C.sitename}--专注卡券卡密回收
+							</h3>
+							<p>
+								请阅读平台服务协议、隐私政策、回收说明、转让协议。注册即视为同意爱销卡平台所有协议，请知晓。
+							</p>
+						</div>
+						<div class="down pull-left">
+							<a class="btn btn-green" href="{$C.isourl|default=""}">
+								<i class="iconfont">
+
+								</i>
+								安全快捷 极速提现
+							</a>
+							<a class="btn btn-green" href="{$C.apkurl|default=""}">
+								<i class="iconfont">
+
+								</i>
+							   品牌保障  安全无忧
+							</a>
+						</div>
+						{notempty name="C.appimg"}
+						<div class="qr pull-right">
+							<img src="{$C.appimg}" alt="爱销卡靠谱的卡密回收平台">
+							<p>
+								扫描下载客户端
+							</p>
+						</div>
+						{/notempty}
+					</div>
+				</div>
+				<div class="login-primary">
+					<div class="login-switch">
+						<!-- <span class="switch-text">
+							<span class="switch-text-arrow">
+								<i>
+								</i>
+								<s>
+								</s>
+							</span>
+							<span class="switch-text-body">
+								点击切换扫码登录
+							</span>
+						</span> 
+						<span class="switch-text switch-scan-text">
+							<span class="switch-text-arrow">
+								<i>
+								</i>
+								<s>
+								</s>
+							</span>
+							<span class="switch-text-body">
+								帐号密码登录在这里
+							</span>
+						</span>-->
+						<a class="login-switch-toggle " href="javascript:;">
+							<i class="iconimg " style="display:none">
+								切换登录模式(电脑登录or二维码扫码登录)
+							</i>
+						</a>
+					</div>
+					<div class="pc-login">
+						<div class="login-tab">
+							<a id="login1" onclick="setTab('login', 1, 2);" class="active" href="javascript:;">
+								帐号密码登录
+							</a>
+							<span class="sep">
+								|
+							</span>
+							<a id="login2" onclick="setTab('login', 2, 2);" href="javascript:;">
+								手机验证码登录
+							</a>
+						</div>
+						<div class="login-content signform" id="con_login_1">
+							<form action="{:request()->url()}" method="post" id="login-form-0">
+								<div class="form-error" id="sign-error">
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="username">
+										<i class="iconfont iconfont-user">
+											
+										</i>
+									</label>
+									<input class="form-control" name="username" id="username" type="text"
+									placeholder="用户名/邮箱/手机号码" maxlength="20" value="" placeholder="输入手机号" null="用户名不能为空">
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="password">
+										<i class="iconfont iconfont-password">
+											
+										</i>
+									</label>
+									<input class="form-control" name="password" id="password" type="password"
+									placeholder="登录密码" maxlength="20" null="请输入密码" err="登录密码错误">
+								</div>
+								<div class="form-group">
+									<button class="btn btn-primary" type="submit" data-form="top-left,json"
+									name="login-form-0">
+										登 录
+									</button>
+									<input type="hidden" name="type" value="0">
+										{:token_field()}
+									<div class="form-attach">
+										<a class="text-light" href="{:url('merchants/Login/forgetpassword')}">
+											忘记密码?
+										</a>
+										<span class="sep">
+											|
+										</span>
+										<a class="text-blue" href="{:url('merchants/Login/register')}">
+											立即注册
+										</a>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="login-content signform hide" id="con_login_2">
+							<form action="{:request()->url()}" method="post" id="login-form-1">
+								<div class="form-error" id="sign-error">
+								</div>
+								<div class="form-group">
+									<label class="control-label">
+										<i class="iconfont iconfont-phone">
+											
+										</i>
+									</label>
+									<input class="form-control" id="phoneno" type="text" name="phoneno" value=""
+									placeholder="手机号码" null="手机号码不能为空" reg="^1[3|4|5|6|7|8|9][0-9]{9}$" err="手机号码格式错误">
+								</div>
+								<div class="form-group">
+									<label class="control-label" for="codeno">
+										<i class="iconfont iconfont-password">
+											
+										</i>
+									</label>
+									<input class="form-control" id="codeno" name="codeno" type="text" placeholder="手机验证码"
+									null="请输入验证码" reg="[0-9]{6}">
+									<a class="absolute-right text-blue" href="javascript:;" data-href="{:url('home/Api/sendMsg',['scene'=>'login','tip'=>'phoneno'])},,top-left,post"
+									id="mcode">
+										获取短信验证码
+									</a>
+								</div>
+								<div class="form-group">
+									<button class="btn btn-primary" type="submit" data-form="top-left,json"
+									name="login-form-1">
+										登 录
+									</button>
+									<input type="hidden" name="type" value="1">
+									{:token_field()}
+									<div class="form-attach">
+										<a class="text-light" href="{:url('merchants/Login/forgetpassword')}">
+											忘记密码?
+										</a>
+										<span class="sep">
+											|
+										</span>
+										<a class="text-blue" href="{:url('merchants/Login/register')}">
+											立即注册
+										</a>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="login-other">
+							<label>
+								推荐登录方式：
+							</label>
+							<a class="login-other-qzone {eq name='isqq' value='0'}hidden{/eq}" href="javascript:;" target="_top" rel="nofollow"
+							onclick="toQzoneLogin();">
+								<i class="iconfont iconfont-qq">
+									
+								</i>
+								使用QQ帐号登录
+							</a>
+							<a class="login-other-wechat {eq name='iswx' value='0'}hidden{/eq}" href="javascript:;" target="_top"
+							rel="nofollow" onclick="towxLogin();">
+								<i class="iconfont iconfont-wechat">
+									
+								</i>
+								微信帐号登录
+							</a>
+						</div>
+					</div>
+				<!-- 	<div class="scan-login hide">
+						<h3>
+							手机APP扫码登录
+						</h3>
+						<div class="login-qrcode">
+							<div class="login-qrcode-show login-qrcode-fresh">
+								<div class="login-qrcode-img">
+									<img width="222" src="" id="login_qrcode">
+								</div>
+								<div class="login-qrcode-help">
+									<img width="150" src="/template/static/images/qrcode/phone.png" alt="">
+								</div>
+								<div class="login-qrcode-error hide">
+									<h5>
+										二维码已失效
+									</h5>
+									<a class="btn btn-red btn-sm" href="javascript:;">
+										请点击刷新
+									</a>
+								</div>
+							</div>
+							<div class="login-qrcode-desc">
+								<i class="iconfont">
+									
+								</i>
+								<p>
+									打开
+									<a class="text-blue" href="http://www.lipin.com/app.html" target="_blank">
+										卡卡{$C.sitename}APP
+									</a>
+									<br>
+									扫一扫登录
+									<br>
+									<br>
+									<a class="text-blue" href="https://www.lipin.com/signup.html">
+										立即注册
+									</a>
+								</p>
+							</div>
+						</div>
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}

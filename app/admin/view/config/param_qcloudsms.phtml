@@ -1,0 +1,120 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">参数配置</div>
+    <div class="layui-card-body" pad15>
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li><a href="{:url('/config/param',['model'=>'qiniu'])}">七牛配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'qq'])}">QQ登陆配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxapp'])}">APP配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxpay'])}">微信支付</a></li>
+				 <li><a href="{:url('/config/param',['model'=>'alipay'])}">支付宝配置</a></li>
+                <li class="layui-this"><a href="{:url('/config/param',['model'=>'qcloudsms'])}">短信配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'baiduapp'])}">百度数据</a></li>
+				<li><a href="{:url('/config/param',['model'=>'email'])}">邮件配置</a></li>
+				<li><a href="{:url('/config/param',['model'=>'cash'])}">提现配置</a></li>
+				<li><a href="{:url('/config/param',['model'=>'aly'])}">认证配置</a></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form action="{:url('/config/param',['model'=>'qcloudsms'])}" class="layui-form" method="post">
+					<div class="layui-form-item">
+                        <label class="layui-form-label">短信接口</label>
+                        <div class="layui-input-block">
+						  <input type="radio" name="atype" value="0" title="短信宝" {eq name="list.atype|default=''" value='0'}checked=""{/eq}><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>短信宝</div></div>
+						  <input type="radio" name="atype" value="1" title="极速数据" {eq name="list.atype|default=''" value='1'}checked=""{/eq}><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><div>极速数据</div></div>
+						  <input type="radio" name="atype" value="2" title="云片网" {eq name="list.atype|default=''" value='2'}checked=""{/eq} ><div class="layui-unselect layui-form-radio  "><i class="layui-anim layui-icon"></i><div>云片网</div></div>
+						</div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">选择短信接口</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">Appid</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="appid" value="{$list.appid}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">AppKey</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="password" name="appkey" value="{$list.appkey}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">极速数据/云片网只填此项</div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">注册短信模板</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="regMsg" value="{$list.regMsg|default=""}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">通用短信模板</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="tMsg" value="{$list.tMsg|default=""}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">找回密码模板</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="findMsg" value="{$list.findMsg|default=""}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">提现验证模板</label>
+                            <div class="layui-input-inline" style="width: 400px;">
+                                <input type="text" name="cashMsg" value="{$list.cashMsg|default=""}" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline layui-input-company"></div>
+                        </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit  lay-filter="*">确认保存</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class="layui-form" wid100 lay-filter="">
+        
+            
+            
+            
+            
+        
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+<script>
+    element.on('tab(demo)', function(data){
+            var that = $(this);
+            var model = data.value;
+            console.log(data);
+            $.ajax({ 
+                type: 'POST',
+                url: "/user/charge/get_course_data/",
+                data:{course_id:course_id},
+                success:function(ret) {    
+                    //console.log(ret);
+                    that.closest("tr").find("select[name='course_data_id[]']").empty();
+                    that.closest("tr").find("select[name='course_data_id[]']").append("<option value=''>请选择专业</option>");
+                    $.each(ret, function(i,item){
+                        //console.log(item.level);
+                        that.closest("tr").find("select[name='course_data_id[]']").append("<option value="+item.id+">"+item.level+"</option>");
+                    });
+                    form.render('select');
+                },
+                dataType:'json',
+            });
+        });
+</script>
+{/block}

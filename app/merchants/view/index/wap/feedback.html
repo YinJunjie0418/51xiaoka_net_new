@@ -1,0 +1,59 @@
+ {include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">建议反馈</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<form class="card-gradient" method="post" id="feedbackbtn" action="{:url('home/Index/feedback')}">
+		<div class="card">
+			<div class="cell cell-access">
+				<div class="cell-hd">
+					<label class="contaol-label text-light">选择卡种</label>
+				</div>
+				<div class="cell-bd">
+					<select class="form-control" name="type" id="card_type">
+					  {volist name="list" id="p"}
+						<option value="{$p.type}">{$p.title}</option>
+						{/volist}
+					</select>
+				</div>
+				<div class="cell-ft">
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+					<input class="form-control" id="title" name="title" type="text" placeholder="请输入标题（必填）" maxlength="20" null="请输入标题" data-input="clear">
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+					<textarea class="form-textarea" id="content" name="content" placeholder="请详细描述您的问题或建议（必填）" null="请详细描述您的问题或建议" rows="6"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="cell">
+				<div class="cell-hd">
+					<label class="contaol-label" for="">联系方式</label>
+				</div>
+				<div class="cell-bd">
+					<input class="form-control" id="contact" name="contact" type="number" placeholder="请输入手机号码/QQ（必填）" null="请输入联系方式" maxlength="11" data-input="clear">
+				</div>
+			</div>
+		</div>
+		<div class="myaction-warpper">
+			<div class="myaction">
+				<div class="btn-group">
+				{:token_field()}
+					<button class="btn btn-primary" type="button" id="anjian" name="feedbackbtn" data-form="top-left,json">提交反馈</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+</section>
+</body>
+</html>

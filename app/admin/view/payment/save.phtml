@@ -1,0 +1,61 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .layui-form-item {
+        margin-bottom: 1px;
+    }
+</style>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">商户号</label>
+                 <div class="layui-form-mid layui-word-aux text-primary">{$data['shopid']}</div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">公司名称</label>
+                 <div class="layui-form-mid layui-word-aux text-primary">{$data['company']}</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">收款账户</label>
+               <div class="layui-form-mid layui-word-aux text-primary">{$data['bankName']}---{$data['cs']}</div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">加款金额</label>
+               <div class="layui-form-mid layui-word-aux text-danger">{$data['money']}</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">打款凭证</label>
+                <div class="layui-form-mid layui-word-aux text-danger"><img style="width: 400px;" tb-img src="{$data['content']}"></div>
+            </div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-inline" style="width:300px">
+					<textarea name="content" placeholder="请输入内容" rows="3" lay-verify="required" class="layui-textarea">{$data['remarks']|default=""}</textarea>
+				</div>
+                <div class="layui-form-mid layui-word-aux text-danger" style="margin-left: 130px;">同意加款请填写摘要,失败请填写原因</div>
+			</div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type" value="success" title="同意加款" ><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>同意加款</div></div>
+                <input type="radio" name="type" value="loaded" title="未到账" ><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon "></i><div>未到账</div></div>
+                <input type="radio" name="type" value="fail" title="审核失败" ><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>审核失败</div></div>
+            </div>
+            </div>
+            <div class="layui-form-item" style="margin-top:20px">
+                <div class="layui-input-block">
+				<button class="layui-btn" lay-filter="i" lay-submit="">提交操作</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    // 点击图片放大
+    $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
+        layer.photos({photos: {data: [{src: $(this).attr('src')}]}, shade: .9, closeBtn: true});
+    });
+</script>
+{/block}

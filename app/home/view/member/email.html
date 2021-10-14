@@ -1,0 +1,34 @@
+{extend name="layout/member" /} 
+{block name="content"}
+    <div class="view-framework-body">
+   <div class="view-framework-main"> 
+    <div class="tabnavs">
+     {include file="layout/info_menu" /}
+    </div>
+	<div class="box tab-content">
+	<div class="status-hint">
+		<div class="status-hint-icon">
+			<i class="iconfont text-green"></i>
+		</div>
+		<div class="status-hint-text">
+			<h3 class="text-green">当前状态：已绑定邮箱</h3>
+			<p class="fsz16">
+				当前绑定邮箱：{:tfen($user.email,3,4)}
+			</p>
+			<p class="fsz16">
+				绑定邮箱可以用于安全验证、找回密码等重要操作
+			</p>
+			<a class="btn btn-primary btn-sm" href="{:url('home/Email/upEmail')}">修改邮箱</a>
+		</div>
+	</div>
+	<div class="userform-tips">
+		<h5>温馨提示：</h5>
+		<ul>
+			<li>1、您的邮箱绑定之后，即可享受邮箱登录、找回密码等服务，让您的网上购物体验更安全更便捷</li>
+			<li>2、若您的邮箱可正常使用但是收不到验证码，请检查您的垃圾邮件或广告邮件，并建议您在邮箱设置中，将{$C['sitename']}发件人设置为白名单，如果您5分钟内仍未收到验证邮件，您可以重新发送</li>
+			<li>3、如果您的邮箱已经无法正常使用，请提供用户名，手机号，身份证号，点击联系平台在线客服</li>
+		</ul>
+	</div>
+</div>
+</div>
+{/block}

@@ -1,0 +1,106 @@
+{extend name="layout/member" /} 
+{block name="content"}
+    <div class="view-framework-main">
+	<div class="box">
+		<h2 class="box-caption">API收单统计</h2>
+		<div class="form-filter">
+			<form action="{:url('home/Apiface/statistics')}" method="get" id="formsubmit">
+				<div class="form-group">
+					<label class="control-label" for="qStartTime">日期筛选</label>
+					<input type="text" class="form-control form-datetime" id="qStartTime" name="starttime" value="{$starttime|default=''}" autocomplete="off">
+					<span class="control-label">-</span>
+					<input type="text" class="form-control form-datetime mr10" id="qEndTime" name="endtime" value="{$endtime|default=''}" autocomplete="off">
+					<button class="btn btn-primary btn-sm btn-square" type="submit" onclick="$('[name=day]').val('');return formtest(this);">查询</button>
+					<a class="item {eq name="$day" value="0"}selected{/eq}" href="{:url('home/Apiface/statistics')}">全部</a>
+					<a class="item {eq name="$day" value="1"}selected{/eq}" href="javascript:;" onclick="submitset('day',1)">今天</a>
+                  <a class="item {eq name="$day" value="7"}selected{/eq}" href="javascript:;" onclick="submitset('day',7)">最近7天</a>
+                  <a class="item {eq name="$day" value="30"}selected{/eq}" href="javascript:;" onclick="submitset('day',30)">1个月</a>
+                  <a class="item {eq name="$day" value="60"}selected{/eq}" href="javascript:;" onclick="submitset('day',60)">2个月</a>
+                  <a class="item {eq name="$day" value="90"}selected{/eq}" href="javascript:;" onclick="submitset('day',90)">3个月</a>
+                  <a class="item {eq name="$day" value="365"}selected{/eq}" href="javascript:;" onclick="submitset('day',365)">1年</a>
+					  <input type="hidden" name="day" value="{$day|default=''}">
+				</div>
+			</form>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-custom statistics-records">
+			<thead>
+			<tr>
+				<th class="date">
+					统计日期
+				</th>
+				<th class="nums">
+					总提笔数
+				</th>
+				<th class="total">
+					总提金额
+				</th>
+				<th class="nums">
+					成功笔数
+				</th>
+				<th class="total">
+					成功面额
+				</th>
+				<th class="total">
+					成功入账
+				</th>
+				<th class="nums">
+					失败笔数
+				</th>
+				<th class="total">
+					失败面额
+				</th>
+				<th class="nums">
+					处理中笔数
+				</th>
+				<th class="total">
+					处理中金额
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+			{volist name="list" id="p"}
+			<tr>
+				<td class="date">
+					{$p.datetime}
+				</td>
+				<td class="nums">
+					<strong class="text-green">{$p.id}</strong>
+				</td>
+				<td class="nums">
+					<strong class="text-green">{$p.summoney}</strong>
+				</td>
+				<td class="total">
+					<span class="text-green">{$p.okcount}</span>
+				</td>
+				<td class="nums">
+					<span class="text-pink">{$p.okmian}</span>
+				</td>
+				<td class="nums">
+					<span class="text-pink">{$p.okmoney}</span>
+				</td>
+				<td class="nums">
+					<strong class="text-red">{$p.failcount}</strong>
+				</td>
+				<td class="nums">
+					<strong class="text-orange">{$p.failmian}</strong>
+				</td>
+				<td class="total">
+					<span class="text-orange">{$p.loadcount}</span>
+				</td>
+				<td class="nums">
+					<strong class="text-dark">{$p.loadmian}</strong>
+				</td>
+
+			</tr>
+			{/volist}
+			</tbody>
+			</table>
+			{empty name="list"}{$empty|raw}{/empty}
+		</div>
+		<div class="pb20">
+			  {$list|raw}
+       </div>
+	</div>
+</div>
+   {/block}

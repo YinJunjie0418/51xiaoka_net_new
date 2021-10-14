@@ -1,0 +1,8 @@
+<ul class="nav-tabs clearfix">
+      <li {if condition="($action == 'profile')"} class="current"{/if}><a href="{:url('merchants/Member/profile')}">基本资料</a></li>
+      <li {if condition="($contr == 'Account' || $action=='realname')"} class="current"{/if}><a href="{:url('merchants/Member/realname')}">实名认证</a></li>
+      <li {if condition="($contr == 'Editpass' || $action=='password' || $action=='paymentcodepin')"}class="current"{/if}><a href="{:url('merchants/Member/password')}">密码管理</a></li>
+      <li {if condition="($contr == 'Mobile' || $action=='photo')"}class="current"{/if}><a href="{:url('merchants/Member/photo')}">手机设置</a></li>
+      <li {if condition="($contr == 'Email' || $action=='email')"}class="current"{/if}><a href="{:url('merchants/Member/email')}">邮箱设置</a></li>
+      
+     </ul>

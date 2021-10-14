@@ -1,0 +1,406 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$ress['title']} </title>
+  <meta name="keywords" content="{$ress['keywords']}" />
+  <meta name="description" content="{$ress['description']}" />
+  <style>
+      .feilv{
+          height: 50px;
+            border-radius: 5px;
+            border: 2px solid #e4ecfa;
+            padding-left: 8px;
+            font-size: 18px;
+            float: left;
+      }
+      .feilv:focus{
+           border: 2px solid #ff1880
+      }
+      #feilvnote{
+          display: block;
+            width: 50%;
+            float: left;
+            margin-left: 20px;
+      }
+  </style>
+  
+{/block}
+{block name="content"}
+  <div class="content"> 
+   <div class="recycle-primary">
+    <div class="container">
+     <div class="recycle-loader" id="recycleLoader">
+      <div class="recycle-loading"> 
+       <img src="__IMG__/sprites/loader.gif" />
+       <h3>回收表单加载中，请稍候...</h3>
+       <p>如长时间未加载成功，请刷新重试~</p>
+       <p><a class="btn btn-default btn-sm" href="javascript:location.reload();">点我刷新或Ctrl+F5</a></p>
+      </div>
+      <div class="recycle-former recycle-placeholder">
+       <div class="form-group">
+        <div class="col-xs-11 col-xs-offset-1">
+         <ul class="btn-group btn-group-tall clearfix">
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li> 
+         </ul>
+        </div>
+       </div>
+       <hr />
+	   <div class="form-group">
+        <div class="col-xs-11 col-xs-offset-1">
+         <ul class="btn-group btn-group-tall clearfix">
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li> 
+         </ul>
+        </div>
+       </div>
+       <hr />
+	   <div class="form-group">
+        <div class="col-xs-11 col-xs-offset-1">
+         <ul class="btn-group btn-group-tall clearfix">
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li> 
+         </ul>
+        </div>
+       </div>
+       <hr />
+	   <div class="form-group">
+        <div class="col-xs-11 col-xs-offset-1">
+         <ul class="btn-group btn-group-tall clearfix">
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li> 
+         </ul>
+        </div>
+       </div>
+       <hr />
+	   <div class="form-group">
+        <div class="col-xs-11 col-xs-offset-1">
+         <ul class="btn-group btn-group-tall clearfix">
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li>
+          <li><span class="btn btn-placeholder"></span></li> 
+         </ul>
+        </div>
+       </div>
+       <hr />
+      </div>
+     </div>
+     <div class="recycle-former hide" id="recycleFormer">
+      <form method="post" name="sell" id="sell">
+       <div class="form-group">
+        <div class="col-xs-1">
+         <label class="control-label">选择卡类：</label>
+        </div>
+        <div class="col-xs-11">
+         <ul class="btn-group btn-group-cardtype clearfix" id="cardTypeBtns"> 
+          {volist name="cardModel" id="p"}
+		   {eq name="p.istype" value="0"}
+           <li id="cardType_{$p.id}" {eq name="$p.id" value="$cid"}class="active"{/eq}><a class="btn-card btn-card-{$p.route}" href="{:url('home/card/index',['cid'=>$p.id])}"><i class="iconfont iconfont-{$p.route}"></i><span>{$p.title}</span> </a> </li> 
+		  {/eq}
+		  {/volist}
+          
+         </ul>
+        </div>
+       </div>
+       <hr />
+       <div class="form-group">
+        <div class="col-xs-1">
+         <label class="control-label">选择卡种：</label>
+        </div>
+        <div class="col-xs-11">
+         <ul class="btn-group btn-group-tall clearfix" id="cardSpecies"></ul>
+        </div>
+       </div>
+       <hr />
+       <div class="recycle-opening" id="recycle-opening">
+        <div class="isQbi">
+         <div class="form-group" id="card-facevalue-wrapper">
+          <div class="col-xs-1">
+           <label class="control-label" id="recycle-danzhang">单张面值：<br /><span class="text-red">不得选错&nbsp;&nbsp;&nbsp;</span></label>
+          </div>
+          <div class="col-xs-11 card-facevalue-box" id="cardFacevalueBox">
+           <ul class="btn-group btn-group-value clearfix" id="cardFacevalue"></ul>
+           <div class="card-facevalue-tips"></div>
+          </div>
+         </div>
+         <hr />
+          <div class="form-group hide" id="fast-deal">
+          <div class="col-xs-1">
+           <label class="control-label" id="recycle-batch">定义折扣：</label>
+          </div>
+          <div class="col-xs-11">
+           <input type="text" name="feilv" onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,4})?).*$/g, '$1')" class="feilv">
+            <p class="text-orange h4 pt10 hide" id="feilvnote"></p>
+          </div>
+         </div>
+         <div class="form-group" id="batch">
+          <div class="col-xs-1">
+           <label class="control-label" id="recycle-batch">提交方式：</label>
+          </div>
+          <div class="col-xs-11">
+           <ul class="btn-group btn-group-figure btn-group-units clearfix" id="chooseMode">
+            <li class="active"><a class="btn" id="choose-batch" href="#batchMode"><i class="iconfont iconfont-batch"></i>批量提交<b></b></a></li>
+            <li class=""><a class="btn" id="choose-single" href="#singleMode"><i class="iconfont iconfont-single"></i>单张提交<b></b></a></li>
+            <li class="hide" id="uploadModeBtn"><a class="btn" id="choose-upload" href="#uploadMode"><i class="iconfont iconfont-upload-img"></i>图片提交<b></b></a></li>
+           </ul>
+           <p class="text-orange h4 pt10 hide" id="cardnote"></p>
+          </div>
+         </div>
+         <div class="recycle-mode" id="batchMode">
+          <div class="form-group">
+           <div class="col-xs-1">
+            <label class="control-label" id="recycle-cardnopsw">卡号/密码：</label>
+           </div>
+           <div class="col-xs-11">
+            <div class="textarea-wrapper">
+             <textarea class="form-control" name="cardlist" id="cardlist" onkeydown="cardnum(this,event)" onblur="cardnum(this,'blur')" wrap="off"></textarea>
+             <div class="textarea-tips">
+              <div class="mask-black"></div>
+              <ul class="textarea-tips-list" id="card-tips">
+               <li class="textarea-attention"><i class="iconfont iconfont-tips"></i> <p class="text-red nocode">卡号与卡密之间请用<strong class="text-orange">“空格”</strong>隔开，<br />每张卡占用一行用 <strong class="text-orange">&quot;回车(Enter键)&quot;</strong> 隔开，例：</p><p class="text-red hide onlypass">此卡种无需卡号，只需填写卡密，<br />每张一行用<strong class="text-orange">&quot;回车(Enter键)&quot;</strong>隔开！</p><p class="h5 text-gray" id="cardlizi"></p></li>
+              </ul>
+             </div>
+            </div>
+            <div class="help-block">
+             <a class="btn btn-sm btn-primary cardlist-neaten" id="cardlist-neaten" href="javascript:;">整理卡号/密码</a>
+             <span class="inline-block pl20">已经输入 <strong id="cardnum" class="text-red">0</strong> 张面值 <strong class="text-red"><strong id="cardmz">0</strong>元</strong> 的 <strong class="text-red" id="cardname"></strong>，每次最多可提交1000张 </span>
+            </div>
+           </div>
+          </div>
+         </div>
+         <div class="recycle-mode hide" id="singleMode">
+          <div class="form-group nocode">
+           <div class="col-xs-1">
+            <label class="control-label" id="recycle-cardno">输入卡号：</label>
+           </div>
+           <div class="col-xs-4">
+            <input class="form-control" name="cardno[]" type="text" placeholder="请输入卡号" />
+           </div>
+          </div>
+          <div class="form-group">
+           <div class="col-xs-1">
+            <label class="control-label" id="recycle-cardpsw">输入卡密：</label>
+           </div>
+           <div class="col-xs-4">
+            <input class="form-control" name="cardpsw[]" type="text" placeholder="请输入卡密" reg="^[A-Za-z0-9_-]{4,30}$" />
+           </div>
+          </div>
+          <div class="form-group switchVerify">
+           <div class="col-xs-1 verifycode-label">
+            <label class="control-label">卡验证码：</label>
+           </div>
+           <div class="col-xs-2 verifycode-input">
+            <input class="form-control" name="cardcode[]" type="text" placeholder="请输入卡验证码" />
+           </div>
+          </div>
+         </div>
+         <div class="recycle-mode hide" id="uploadMode">
+          <div class="form-group">
+           <div class="col-xs-1">
+            <label class="control-label">上传图片：</label>
+           </div>
+           <div class="col-xs-11">
+            <div class="uploadimg-group clearfix" id="uploadimg-group">
+             <ul id="uploadimg-preview"></ul>
+             <div class="uploadimg-btn">
+              <label class="btn btn-default btn-uploadfile" for="uploadimg" id="uploadimg"><span><i class="iconfont"></i>上传<em class="upload-text">实体卡</em></span></label>
+             </div>
+            </div>
+            <div class="help-block">
+             <p>可多选，最多可同时提交<strong class="text-red">10</strong>张<em class="upload-text">实体卡</em>图片</p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       
+        <div class="recycle-sumbit" id="recycle-sumbit">
+         <hr />
+         <!--<div class="form-group fast-deal hide" id="fast-deal">
+          <div class="col-xs-11 col-xs-offset-1">
+           <label class="checkbox" for="urgent"><input type="checkbox" id="urgent" /><span class="checkbox-text">我要加急处理<span class="gray">(9:00-18:00)</span> <span class="text-red hide" id="urgent-money">（手续费:3%）</span> </span></label>
+          </div>
+         </div>-->
+         <div id="recycle-check">
+          <div class="form-group">
+           <div class="col-xs-11 col-xs-offset-1">
+            <label class="checkbox" for="protocol"><input type="checkbox" id="protocol" checked="checked" /><span class="checkbox-text"> 我已阅读，理解并接受「<a class="text-blue" target="_blank" href="{:url('home/Helpfaq/danye',['id'=>21])}">{$C.sitename}礼品卡转让协议</a>」和「<a class="text-blue" target="_blank" href="{:url('home/Helpfaq/danye',['id'=>20])}">礼品卡回收说明</a>」</span></label>
+           </div>
+          </div>
+          <div class="form-group">
+           <div class="col-xs-11 col-xs-offset-1">
+            <label class="checkbox" for="legal"><input type="checkbox" id="legal" checked="checked" /><span class="checkbox-text">我已确认该<span class="isQbi notQbijs">卡号卡密</span><span class="recycle-qbi isQbijs hide">账号内Q币</span><strong class="text-primary">来源合法</strong>，如有问题，本人愿意承担一切法律责任。</span></label>
+           </div>
+          </div>
+          <div class="form-group" id="isFaceerr">
+           <div class="col-xs-11 col-xs-offset-1">
+            <label class="checkbox" for="faceerr"><input type="checkbox" id="faceerr" /><span class="checkbox-text">我已确认该卡<strong class="text-primary">面值</strong>准确无误，<strong class="text-primary">如有面值错误余额恕不退还！损失自行承担！</strong></span></label>
+           </div>
+          </div>
+         </div>
+         <hr />
+         <div class="form-group isQbi">
+          <div class="col-xs-11 col-xs-offset-1">
+           <input type="hidden" name="urgent" id="urgentval" value="0" />
+           <input type="hidden" name="type" id="type" value="0" />
+		   <input type="hidden" name="cardtype" id="cardtype" value="0" />
+           <input type="hidden" name="cardprice" id="cardprice" value="" />
+		   <input type="hidden" name="mcode" id="mcode" value="" />
+           <button class="btn btn-green btn-lg btn-sellform" type="button" id="sellbutton" name="sell" onclick="tijiao();">确认提交卖卡</button>
+          </div>
+         </div>
+        
+        </div>
+       </div>
+       <div class="recycle-closed recycle-closed-maintain hide" id="recycle-closed-1">
+        <div class="inner">
+         <i class="iconimg iconimg-maintain"></i>
+         <div class="textips">
+          <h3>非常抱歉，<strong class="text-red">此卡回收通道维护中，暂时无法提交</strong></h3>
+          <p>具体恢复时间，将以网站公告形式通知！</p>
+         </div>
+        </div>
+       </div>
+       <div class="recycle-closed recycle-closed-qiye hide" id="recycle-closed-2">
+        <p class="h3 hide"><strong class="text-red">非常抱歉，此卡只针对企业用户</strong></p>
+        <a class="btn btn-orange" href="javascript:;" onclick="chatinit();" rel="external nofollow">详情请咨询在线客服</a>
+       </div>
+      </form>
+     </div>
+     <div class="recycle-usable hide" id="recycleUsable">
+      <i class="iconimg iconimg-disabled"></i>
+      <h3>非常抱歉，<strong class="text-red">暂不支持您提交本卡类</strong></h3>
+      <a class="btn btn-primary" href="javascript:;" onclick="chatinit();" rel="external nofollow">如有疑问请咨询在线客服</a>
+      <fieldset class="orline">
+       <legend class="orline-title" align="center">您也可以选择其他卡类进行回收</legend>
+      </fieldset>
+      <ul class="recycle-usable-cardbtns">
+	    {volist name="cardModel" id="p"}
+		   {eq name="p.status" value="1"}
+           <li id="cardUsable_{$p.id}"><a href="{:url('home/card/index',['cid'=>$p.id])}"><img src="{$p.image}" /><span>{$p.title}</span> </a> </li> 
+		  {/eq}
+		  {/volist}
+      </ul>
+     </div>
+    </div>
+   </div>
+   <div id="carddiy" class="modal hide" style="width: 300px">
+    <div class="cardprice-modal">
+     <div class="form-tips text-red" id="carddiyTips"></div>
+     <div class="form-group">
+      <input class="form-control" name="diyprice" type="text" placeholder="请输入10-10000元的面值" maxlength="20" />
+     </div>
+     <div class="form-group">
+      <button class="btn btn-primary btn-block" type="button" name="login-form" onclick="idiyselect();">确 定</button>
+     </div>
+    </div>
+   </div> 
+   <script>var cardtype = {$cid};var cardid={$tid};</script>
+   <script src="__JS__/webuploader.min.js"></script>
+   <script src="__JS__/recycle.common.js?{:time()}"></script>
+   <script src="__JS__/recycle.primary.js?{:time()}"></script> 
+   <div class="panel panel-stepflow-inverse" style="position:relative;height:160px">
+    <div class="container">
+     <div class="kaka-stepflows">
+     <ul class="stepflow-group clearfix">
+       <li>
+        <div class="icon">
+         <i class="newtop s1"></i>
+        </div>
+        <div class="title">
+         注册账号
+        </div>
+        </li>
+       <li>
+        <div class="flow">
+         登录账户
+        </div><em></em>
+		</li>
+       <li>
+        <div class="icon">
+         <i class="newtop s2"></i>
+        </div>
+        <div class="title">
+         实名认证
+        </div>
+		
+        </li>
+       <li>
+        <div class="flow">
+         绑定提现账号
+        </div><em></em></li>
+       <li>
+        <div class="icon">
+         <i class="newtop s3"></i>
+        </div>
+        <div class="title">
+         提交卡密
+        </div>
+       </li>
+       <li>
+        <div class="flow">
+         等待平台验卡
+        </div><em></em></li>
+       <li>
+        <div class="icon">
+         <i class="newtop s4"></i>
+        </div>
+        <div class="title">
+         验卡成功
+        </div>
+        </li>
+       <li>
+        <div class="flow">
+         相应资金到账
+        </div><em></em></li>
+       <li>
+        <div class="icon">
+         <i class="newtop s5"></i>
+        </div>
+        <div class="title">
+         账户提现
+        </div>
+        </li>
+       <li>
+        <div class="flow">
+         银行或支付宝
+        </div><em></em></li>
+       <li>
+        <div class="icon">
+         <i class="newtop s6"></i>
+        </div>
+        <div class="title">
+         交易成功
+        </div>
+        </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+ {include file="layout/home_buttom" /} 
+ {include file="layout/home_wen" /}
+  </div>
+ {/block}

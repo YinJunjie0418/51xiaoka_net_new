@@ -1,0 +1,59 @@
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no, initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Cache-Control" content="no-cache, no-store">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>{$title}-{$C['sitename']}</title>
+<meta name="keywords" content="{$C['keywords']}">
+<meta name="description" content="{$C['description']}">
+<link rel="stylesheet" href="__CSSM__/owlui.animate.css?20191011">
+<link rel="stylesheet" href="__CSSM__/owlui.icon.css?20191011">
+<link rel="stylesheet" href="__CSSM__/owlui.css?2020526">
+<link rel="stylesheet" href="__CSSM__/base.css?2020629">
+<script src="__JSM__/j_lipin.js?20190521"></script>
+<script src="__JSM__/library.js?20190521"></script>
+<script src="__JS__/jquery.cookie.js?20181116"></script>
+<script src="__JSM__/touchslide.js"></script>
+<script src="__JSM__/base.js?245556758"></script>
+</head>
+<body class="bg-white" ontouchstart="">
+<div class="modal hide" id="modal-dialog">
+</div>
+<div class="modal-cover hide" id="modal-dialog-cover">
+</div>
+<section class="myapp" id="myapp">
+<div class="matte pullup" id="service">
+	<div class="pullup-content">
+		<div class="pullup-title">
+			<p class="actionsheet-title-text">
+				请选择{$C.sitename}客服
+			</p>
+		</div>
+		<div class="pullup-list">
+			<a class="cell" href="tencent://message/?uin={$C.qq}&Site=Sambow&Menu=yes" id="zhiCustomBtn"  rel="external nofollow">
+			<div class="cell-bd">
+				<i class="iconfont iconfont-xiaoxi"></i>在线客服咨询
+			</div>
+			</a><a class="cell" href="tel:{$C.kefu}">
+			<div class="cell-bd">
+				<i class="iconfont iconfont-call"></i>在线客服电话
+			</div>
+			</a><a class="cell" href="/">
+			<div class="cell-bd">
+				<i class="iconfont iconfont-home"></i>返回首页
+			</div>
+			</a>
+		</div>
+	</div>
+	<div class="pullup-content">
+		<a class="cell" href="javascript:;" data-dismiss="matte" data-target="#service">
+		<div class="cell-bd">
+			取消
+		</div>
+		</a>
+	</div>
+</div>

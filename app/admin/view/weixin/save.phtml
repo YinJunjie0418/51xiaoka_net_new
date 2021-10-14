@@ -1,0 +1,56 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+	   <form action="{:request()->url()}" class="layui-form" method="post">
+	    		<input type="hidden" name="id" value="{$info.id|default=''}">
+             <div class="layui-form-item">
+                <label class="layui-form-label">模板编号：</label>
+                <div class="layui-input-inline">
+                   <input type="text" class="layui-input" name="tplno"  lay-verify='required' value="{$info.tplno|default=''}" size="24" />
+                </div>
+               
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">模板ID：</label>
+                <div class="layui-input-inline">
+                   <input type="text" class="layui-input" value="{$info.tplid|default=''}" name="tplid" size="24" />
+                </div>
+               
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">模板名称：</label>
+                <div class="layui-input-inline">
+                  <input type="text" class="layui-input"  name="title" value="{$info.title|default=''}" size="24" />
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label">模板内容：</label>
+                <div class="layui-input-block">
+                   <textarea name="content" class="layui-textarea">{$info.content|default=""}</textarea>
+                </div>
+               
+            </div>
+             
+            
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script language="javascript" type="text/javascript">
+   form.on('select(levelM)', function (data) {
+       if(data.value=="view"){
+           $("#url").show();$("#keys").hide();
+       }else{
+           $("#url").hide();$("#keys").show();
+       }
+    });
+</script>
+{/block}

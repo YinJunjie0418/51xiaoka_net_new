@@ -1,0 +1,276 @@
+{extend name="base" /}
+{block name="css"}
+<link rel="stylesheet" href="/static/simple/hqui/module/dtree/dtree.css"/>
+<link rel="stylesheet" href="/static/simple/hqui/module/dtree/font/dtreefont.css"/>
+<link rel="stylesheet" href="/static/simple/hqui/module/admin.css?v=316"/>
+<style>
+    #treeTbTree {
+        height: 800px;
+        overflow: auto;
+    }
+
+    @media screen and (max-width: 768px) {
+        #treeTbTree {
+            height: auto;
+        }
+    }
+
+    /** dtree选中颜色重写 */
+    .dtree-theme-item-this {
+        background-color: #eeeeee !important;
+    }
+</style>
+<style>
+    .ew-iframe-body {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        overflow: auto;
+    }
+</style>
+{/block}
+{block name="body"}
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <!-- 左树 -->
+        <div class="layui-col-sm12 layui-col-md4 layui-col-lg2">
+            <div class="layui-card">
+                {include file="article/dtree"}
+            </div>
+        </div>
+        <!-- 右表 -->
+        <div class="layui-col-sm12 layui-col-md8 layui-col-lg10">
+            <div class="layui-card">
+                <!--内容-->
+                <div class="layui-card-body">
+                    <form action="{:url('/article/page_edit',['cid'=>$cid])}" class="layui-form" method="post">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="title" value="{$data.title|default=''}" autocomplete="off" placeholder="" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">封面</label>
+                            <div class="layui-input-block">
+                                <input type="hidden" name="image" value="{$data.image|default='/static/simple/img/no_image_100x100.jpg'}" autocomplete="off" placeholder="" class="layui-input">
+                                <div class="layui-upload-list ajax-avatar">
+                                    <img class="layui-upload-img" id="test-upload-normal-img" src="{$data.image|default='/static/simple/img/no_image_100x100.jpg'}" height="130">
+                                </div>
+                            </div>
+                        </div>
+                        {foreach name="field" item="r"}
+                        <!--input-->
+                        {if $r.type == 'input'}
+                            {if $r.is_sys == '1'}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$r.title}</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="{$r.name}" autocomplete="off" value="{$data[$r.name]|default=''}" placeholder="请输入{$r.title}" class="layui-input">
+                                </div>
+                            </div>
+                            {else}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$r.title}</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="{$r.name}" autocomplete="off" value="{$data.jdata[$r.name]|default=''}" placeholder="请输入{$r.title}" class="layui-input">
+                                </div>
+                            </div>
+                            {/if}
+                        <!--textarea-->
+                        {elseif $r.type == 'textarea'}
+                            {if $r.is_sys == '1'}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$r.title}</label>
+                                <div class="layui-input-block">
+                                    <textarea name="{$r.name}" placeholder="请输入{$r.title}" class="layui-textarea">{$data[$r.name]|default=''}</textarea>
+                                </div>
+                            </div>
+                            {else}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$r.title}</label>
+                                <div class="layui-input-block">
+                                    <textarea name="{$r.name}" placeholder="请输入{$r.title}" class="layui-textarea">{$data.jdata[$r.name]|default=''}</textarea>
+                                </div>
+                            </div>
+                            {/if}
+                        <!--select-->
+                        {elseif $r.type == 'select'}
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">{$r.title}</label>
+                            <div class="layui-input-block">
+                                <select name="{$r.name}">
+                                    {foreach name=":parse_attr($r.options)" key="value" item="name"}
+                                    <option value="{$value}" {if isset($data) and $data.jdata[$r.name] eq $value}selected{elseif !isset($data) and $r.value == $value}selected{/if}>{$name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <!--radio-->
+                        {elseif $r.type == 'radio'}
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">{$r.title}</label>
+                            <div class="layui-input-block">
+                                {foreach name=":parse_attr($r.options)" key="value" item="name"}
+                                <input type="radio" name="{$r.name}" value="{$value}" title="{$name}" {if isset($data) and $data.jdata[$r.name] eq $value}checked {elseif !isset($data) and $r.value == $value}checked{/if}/>
+                                {/foreach}
+                            </div>
+                        </div>
+                        <!--upload-->
+                        {elseif $r.type == 'upload'}
+                            {if $r.is_sys == '1'}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$r.title}</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="{$r.name}" value="{$data[$r.name]|default=''}" autocomplete="off" placeholder="请上传{$r.title}" class="layui-input">
+                                    <button type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-images"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                                </div>
+                            </div>
+                            {else}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$r.title}</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="{$r.name}" value="{$data.jdata[$r.name]|default=''}" autocomplete="off" placeholder="请上传{$r.title}" class="layui-input">
+                                    <button type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-images"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                                </div>
+                            </div>
+                            {/if}
+                        <!--photo-->
+                        {elseif $r.type == 'photo'}
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">{$r.title}</label>
+                            <div class="layui-input-inline" style="width:112px;">
+                                <input type="hidden" name="photo">
+                                <button type="button" class="layui-btn layui-btn-primary ajax-photos"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">允许多文件上传，不支持ie8/9</div>
+                        </div>
+                        {if condition="!empty($data['photo'])"}
+                        {foreach name="data.photo" item="v"}
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-block">
+                                <input type="text" name="photo[]" value="{$v}" autocomplete="off" readonly class="layui-input">
+                                <button type="button" class="layui-btn layui-btn-primary layui-btn-position delete-photo"><i class="fa fa-times-circle"></i></button>
+                            </div>
+                        </div>
+                        {/foreach}
+                        {/if}
+                        <!--editor-->
+                        {elseif $r.type == 'editor'}
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">{$r.title}</label>
+                            <div class="layui-input-block">
+                                <textarea name="{$r.name}" placeholder="请输入{$r.title}" id="editor_{$r.name}" style="height:400px;">{$data.jdata[$r.name]|default=''}</textarea>
+                            </div>
+                        </div>
+                        <!--编辑器-->
+                        <script src="/static/simple/libs/ueditor/ueditor.config.js"></script>
+                        <script src="/static/simple/libs/ueditor/ueditor.all.min.js"></script>
+                        <script src="/static/simple/libs/ueditor/lang/zh-cn/zh-cn.js"></script>
+                        <script>
+                            UE.getEditor('editor_{$r.name}',{
+                                // initialFrameWidth :800,// 设置编辑器宽度
+                                initialFrameHeight:400,// 设置编辑器高度
+                                scaleEnabled:true,
+                                serverUrl: "{:url('/uploads/editor')}"
+                            });
+                        </script>
+                        {/if}
+                        {/foreach}
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">内容</label>
+                            <div class="layui-input-block">
+                                <textarea name="content" placeholder="请输入内容" id="editor" style="height:400px;">{$data.content|default=''}</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">页面模板</label>
+                            <div class="layui-input-block">
+                                <select name="template">
+                                    {foreach name="show_template" item="r"}
+                                    <option value="{$r}" {if condition="isset($data) and $data.template eq $r"}selected="selected"{/if}>{$r}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                                <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--内容-->
+            </div>
+        </div>
+
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.extend({dtree:'dtree/dtree'}).use(['layer', 'form', 'table', 'util', 'dtree', 'index'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var dtree = layui.dtree;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+        var index = layui.index;
+        var cid = "{:input('cid')}";
+        
+        // 树形渲染
+        var treeTbTree = dtree.render({
+            elem: '#treeTbTree',
+            url: '{:url("/article/get_category_tree")}',
+            none: "请先添加数据？",
+            type:'all',
+            initLevel: '5',
+            dot: false,
+            line:true,
+            method: 'GET'
+        });
+
+        // 树形点击事件
+        dtree.on('node("treeTbTree")', function (obj) {
+            var data = obj.param;
+            //console.log(data)
+            if(!data.leaf){
+                var $div = obj.dom;
+                treeTbTree.clickSpread($div);  //调用内置函数展开节点
+            }
+            //判断点开页面
+            if(data.leaf === true){
+//                console.log(obj.parentParam)
+                //console.log(data);
+                var url = "{:url('/article/index')}?cid=" + data.nodeId;
+                window.location.href = url;
+//                index.openTab({
+//                    title: data.context, 
+//                    url: "{:url('admin/article/index')}?cid=" + data.nodeId,
+//                });
+            }
+        });
+
+    });
+</script>
+<!--编辑器-->
+<script src="/static/simple/libs/ueditor/ueditor.config.js"></script>
+<script src="/static/simple/libs/ueditor/ueditor.all.min.js"></script>
+<script src="/static/simple/libs/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+    UE.getEditor('editor',{
+        // initialFrameWidth :800,// 设置编辑器宽度
+        initialFrameHeight:400,// 设置编辑器高度
+        scaleEnabled:true,
+        serverUrl: "{:url('/uploads/editor')}"
+    });
+</script>
+{/block}

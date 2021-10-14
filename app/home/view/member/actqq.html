@@ -1,0 +1,13 @@
+<div class="pa30" id="saveqq">
+  <form action="{:url('home/Member/addqq')}" method="post" id="formqq">
+    <div class="alert alert-info mb10">
+      <p>请填写您的QQ号码，方便我们在处理您提交的卡密有问题时能及时联系到您。</p>
+    </div>
+    <div class="form-group">
+      <div class="mr4">
+        <input class="form-control" id="contact" name="contact" type="text" value="{$user.qq}" reg="[1-9][0-9]{4,}" null="请填写QQ号码" placeholder="请输入QQ号码" value=""></div>
+      <p class="help-block">QQ设置完成后，您可以在“资料管理”中修改。</p></div>
+    <div class="form-group mb0">
+      <button class="btn btn-primary btn-block" type="button" data-form="top-left,json" name="formqq">提 交</button></div>
+  </form>
+</div>

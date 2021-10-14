@@ -1,0 +1,76 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$res['title']} </title>
+  <meta name="keywords" content="{$res['keywords']}" />
+  <meta name="description" content="{$res['description']}" />
+{/block}
+{block name="content"}
+  <div class="content">
+   <div class="container help-center">
+    <div class="help-aside">
+     <div class="help-aside-inner" id="side-float">
+      {include file="layout/tomenu" /}
+     </div> 
+    </div>
+    <script src="__JS__/jquery.fixed.js"></script>
+    <script>$(document).ready(function(){$("#side-float").smartFloat({classname: 'fixed',reference: $("#footer").offset().top - 135});});</script>
+    <div class="help-main">
+	<h2>建议反馈</h2>
+	<div class="help-cont">
+		<form method="post" id="feedbackbtn" action="?">
+			<div class="alert alert-warning">
+				<p class="h5">
+					如果您在使用本平台过程中遇到问题Bug，或者有更好的意见建议，欢迎留言，感谢您对{$C.sitename}的支持；<br>
+					此反馈不会马上回复，如果您遇到卡券处理问题，请联系右下角在线客服，以免耽误您的卡券处理进度。
+				</p>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-1">
+					<label class="control-label" for="card_type">选择卡种</label>
+				</div>
+				<div class="col-xs-4">
+					<select class="form-control" name="type" id="card_type">
+						{volist name="list" id="p"}
+						<option value="{$p.type}">{$p.title}</option>
+						{/volist}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-1">
+					<label class="control-label" for="title">反馈标题</label>
+				</div>
+				<div class="col-xs-6">
+					<input class="form-control" id="title" name="title" type="text" placeholder="请输入标题（必填）" maxlength="20" null="请输入标题">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-1">
+					<label class="control-label" for="content">反馈内容</label>
+				</div>
+				<div class="col-xs-10">
+					<textarea class="form-control py10" id="content" name="content" placeholder="请详细描述您的问题或建议（必填）" null="请详细描述您的问题或建议" rows="6" wrap="off"></textarea>
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<div class="col-xs-1">
+					<label class="control-label" for="conract">联系方式</label>
+				</div>
+				<div class="col-xs-4">
+					<input class="form-control" id="contact" name="contact" type="tel" placeholder="请输入手机号码/QQ（必填）" null="请输入联系方式" maxlength="11">
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<div class="col-xs-3 col-xs-offset-1">
+				{:token_field()}
+					<button class="btn btn-green btn-lg btn-block" type="button" id="anjian" name="feedbackbtn" data-form="top-left,json">提交反馈</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+   </div>
+  </div>
+{/block}

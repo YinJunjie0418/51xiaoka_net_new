@@ -1,0 +1,118 @@
+{extend name="layout/member" /} 
+{block name="content"}
+   <div class="view-framework-main"> 
+    <div class="tabnavs">
+     {include file="layout/info_menu" /}
+    </div> 
+    <div class="box tab-content realname-content">
+	{empty name="user.mobile"}
+	   <div class="status-hint">
+		<div class="status-hint-icon">
+			<i class="iconfont text-red"></i>
+		</div>
+		<div class="status-hint-text">
+			<h3 class="text-red">您还未绑定手机！</h3>
+			<p class="fsz16">
+				实名认证前必须先进行手机绑定
+			</p>
+			<p class="fsz16">
+				如有问题，请联系客服咨询
+			</p>
+			<a class="btn btn-primary btn-sm" href="{:url('merchants/Mobile/setphoto')}">进行手机绑定</a>
+		 </div>
+	  </div>
+	{else/}
+	<div class="status-hint">
+		{switch name="$user['userReal']['retype']"}
+		{case value="1"}
+		    <div class="status-hint-icon">
+			  <i class="iconimg iconimg-realname-succeed"></i>
+		    </div>
+			<div class="status-hint-text">
+				<h3>{$user.userReal.name} <span class="label label-primary">已实名认证</span></h3>
+				<p>
+					证件类型：身份证
+				</p>
+				<p>
+					证件号码：{:tfen($user.userReal.idcard,4,12)}
+				</p>
+				<p>
+					绑定手机：{:tfen($user.mobile,3,4)} <span class="sep">|</span><a class="text-blue" href="{:url('merchants/Mobile/upphoto')}">更换</a>
+				</p>
+				<p>
+					认证渠道：{switch name="user.userReal.hastype"}
+					          {case value="0"}API认证{/case}
+					          {case value='1'}{$C.sitename}认证{/case}
+					          {default/}
+					          微信认证
+					          {/switch}
+				</p>
+				<p>
+					认证日期：{:date("Y-m-d",strtotime($user.userReal.create_time))}
+				</p>
+			</div>
+			<div class="status-hint-text" >
+				<a class="btn btn-default btn-sm" style="padding: 8px 40px;background: #ec0a8f;color: #FFF;border-color: #ff4bb5;" href="{:url('merchants/Account/enterprise')}">升级企业认证</a>
+			</div>
+		{/case}
+		{case value="2"}
+		  <div class="status-hint-icon">
+			<i class="iconimg iconimg-realname-succeed"></i>
+		  </div>
+		  <div class="status-hint-text">
+			<h3>{$user['userReal']['company_name']} <span class="label label-primary">企业认证</span></h3>
+			<p>
+				证件类型：营业执照
+			</p>
+			<p>
+				证件号码：{:tfen($user.userReal.canada,4,8)}
+			</p>
+			<p>
+				绑定手机：{:tfen($user.mobile,3,4)} <span class="sep">|</span><a class="text-blue" href="{:url('merchants/Mobile/upphoto')}">更换</a>
+			</p>
+			<p>
+				认证渠道：{$C.sitename}认证
+			</p>
+			<p>
+				认证日期：{:date("Y-m-d",strtotime($user.userReal.create_time))}
+			</p>
+		</div>
+		
+		{/case}
+		{case value="3"}
+		  <div class="status-hint-icon">
+			<i class="iconimg iconimg-realname-verify"></i>
+			</div>
+			<div class="status-hint-text">
+				<h3 class="text-orange">当前状态：实名认证审核中...</h3>
+				<p class="fsz16">
+					我们将在工作时间（09:00-21:00）的30分钟之内完成认证
+				</p>
+				<p class="fsz16">
+					如有问题，请联系客服咨询
+				</p>
+				<a class="btn btn-default btn-sm" href="{:url('merchants/Member/index')}">返回我的账户</a>
+			</div>
+		{/case}
+		{case value="4"}
+		  <div class="status-hint-icon">
+			<i class="iconimg iconimg-realname-failed"></i>
+			</div>
+			<div class="status-hint-text">
+				<h3 class="text-orange">{$user.userReal.remarks}</h3>
+				<p class="fsz16">
+					请按照要求实名认证
+				</p>
+				<p class="fsz16">
+					如有问题，请联系客服咨询
+				</p>
+				<a class="btn btn-default btn-sm" href="{:url('merchants/Account/index',['cz'=>'toset'])}">重新认证</a>
+			</div>
+		{/case}
+		{/switch}
+	</div>
+	{/empty}
+</div>
+
+   </div>
+   {/block}

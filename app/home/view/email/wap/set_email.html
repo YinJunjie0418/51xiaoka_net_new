@@ -1,0 +1,41 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">邮箱设置</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="sign-form">
+		<form id="submitemail">
+			<div class="form-group">
+				<input class="form-control" id="emailno" type="email" name="emailno" reg="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" null="请输入邮箱" placeholder="请输入邮箱" data-input="clear">
+			</div>
+			<div class="form-group">
+				<input class="form-control" id="ecodeno" name="ecodeno" type="text" null="请输入邮箱验证码" placeholder="请输入邮箱验证码">
+				<div class="form-action">
+					<a class="text-blue" href="javascript:;" data-href="{:url('home/Api/sendEmail',['scene'=>'setemail','tip'=>'emailno'])},,top-right,post" id="emcode">获取验证码</a>
+				</div>
+			</div>
+			<div class="form-tips">
+				<p>
+					邮箱验证码5分钟内有效,若失效或未收到,请重新获取
+				</p>
+			</div>
+			<div class="form-group">
+				{:token_field()}<button class="btn btn-primary btn-block btn-circle" type="button" data-href="{:url('home/Email/setEmail')},,top-left,post">提交绑定</button>
+			</div>
+		</form>
+	</div>
+	<div class="warm-prompt">
+		<ul class="list list-disc">
+			<li>您的邮箱绑定之后，即可享受邮箱登录、找回密码等服务，让您的网上购物体验更安全更便捷；</li>
+			<li>若您的邮箱可正常使用但是收不到验证码，请检查您的垃圾邮件或广告邮件，并建议您在邮箱设置中，将{$C['sitename']}发件人设置为白名单，如果您5分钟内仍未收到验证邮件，您可以重新发送；</li>
+			<li>如果您的邮箱已经无法正常使用，请提供用户名，手机号，身份证号，联系平台在线客服。</li>
+		</ul>
+	</div>
+</div>
+
+</body>
+</html>

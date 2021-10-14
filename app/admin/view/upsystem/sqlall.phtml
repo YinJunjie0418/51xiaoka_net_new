@@ -1,0 +1,60 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-btn-group">
+            <a href="{:url('/Upsystem/backup')}" class="layui-btn ajax-action"><i class="fa fa-tags"></i> 立即备份</a>
+            <a href="{:url('/Upsystem/optimize')}" class="layui-btn layui-btn-normal ajax-batcha" data-tab="tableList" ><i class="fa fa-rocket"></i> 批量优化</a>
+            <a href="{:url('/Upsystem/repair')}" class="layui-btn layui-btn-normal ajax-batcha"  data-tab="tableList"><i class="fa fa-retweet"></i> 批量修复</a>
+        </div>
+		<table id="tableList" lay-filter="tableList"></table>
+    </div>
+</div>
+
+<script type="text/html" id="tableTBTrack">
+   <div class="layui-btn-group">
+		<a href="{:url('/Upsystem/optimize')}?table={{d.name}}" class="layui-btn layui-btn-xs layui-btn-normal ajax-action"><i class="fa fa-rocket"></i> 优化</a>
+                        <a href="{:url('/Upsystem/repair')}?table={{d.name}}" class="layui-btn layui-btn-xs layui-btn-normal ajax-action"><i class="fa fa-retweet"></i> 修复</a>
+	</div>
+</script>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+		var insTb = table.render({
+            elem: '#tableList',
+            url: "{:url('/Upsystem/sqlall')}",
+            page: true,
+            limit:30,
+            limits:[30,45,60,75,90],
+            cellMinWidth: 100,
+            cols: [[
+                {type:'checkbox',title:'#'},
+                {field: 'name',align: 'content', sort: true, title: '表名'},
+                {field:'engine', align: 'content', title: '类型'},
+				{field:'rows', align: 'content', title: '记录'},
+				{field: 'data_length', align: 'content', title: '大小'},
+				{field: 'comment', align: 'content', title: '备注'},
+				{field: 'create_time', align: 'content', title: '创建时间'},
+                {align: 'center', toolbar: '#tableTBTrack', title: '操作'}
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.length, //解析数据长度
+                  "data": res.data //解析数据列表
+                };
+            }
+        });
+    });
+
+</script>
+{/block}

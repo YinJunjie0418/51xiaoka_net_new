@@ -1,0 +1,207 @@
+{extend name="layout/member" /} 
+{block name="content"}
+<style>
+#xi{
+    height: 24px;
+    display: inline-block;
+		margin-bottom: 3px;
+}
+#xi:before{
+    width: 19px;
+    content: "系";
+    color: #FFF;
+    display: inline-block;
+    margin-right: 3px;
+    padding: 2px;
+    text-align: center;
+	border-color: #198bfc;
+    background-color: #198bfc;
+    box-shadow: 1px 3px 13px rgba(25,139,252,.2);
+	border-radius: 3px;
+
+}
+#shang{
+    height: 24px;
+    display: inline-block;
+}
+#shang:before{
+    border-color: #01cf75;
+    background-color: #01cf75;
+    box-shadow: 1px 3px 13px rgba(1,207,117,.21);
+    width: 19px;
+    content: "商";
+    color: #FFF;
+    display: inline-block;
+    margin-right: 3px;
+    padding: 2px;
+    text-align: center;
+	border-radius: 3px;
+}
+</style>
+    <div class="view-framework-main">
+	<div class="box">
+		<h2 class="box-caption">API收单记录</h2>
+		<div class="form-filter">
+			<form action="{:url('home/Apiface/consign')}" method="get" id="formsubmit">
+				<div class="form-group">
+					<label class="control-label" for="qStartTime">日期筛选</label>
+					<input type="text" class="form-control form-datetime" id="qStartTime" name="starttime" value="{$starttime|default=''}" autocomplete="off">
+					<span class="control-label">-</span>
+					<input type="text" class="form-control form-datetime mr10" id="qEndTime" name="endtime" value="{$endtime|default=''}" autocomplete="off">
+					<a class="item {eq name="$day" value="0"}selected{/eq}" href="{:url('home/Apiface/consign')}">全部</a>
+					<a class="item {eq name="$day" value="1"}selected{/eq}" href="javascript:;" onclick="submitset('day',1)">今天</a>
+                  <a class="item {eq name="$day" value="7"}selected{/eq}" href="javascript:;" onclick="submitset('day',7)">最近7天</a>
+                  <a class="item {eq name="$day" value="30"}selected{/eq}" href="javascript:;" onclick="submitset('day',30)">1个月</a>
+                  <a class="item {eq name="$day" value="60"}selected{/eq}" href="javascript:;" onclick="submitset('day',60)">2个月</a>
+                  <a class="item {eq name="$day" value="90"}selected{/eq}" href="javascript:;" onclick="submitset('day',90)">3个月</a>
+                  <a class="item {eq name="$day" value="365"}selected{/eq}" href="javascript:;" onclick="submitset('day',365)">1年</a>
+					  <input type="hidden" name="day" value="{$day|default=''}">
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="rekey">订单查询</label>
+					<input type="text" class="form-control input-long mr10" name="rekey" id="rekey" value="{:input('rekey')}" placeholder="请输入关键字搜索">
+					<select name="setype" class="form-control mr10" style="width:130px">
+						<option value="orderno" {eq name="setype" value="orderno"}selected{/eq}>系统订单号</option>
+						<option value="tmporder" {eq name="setype" value="tmporder"}selected{/eq}>商户订单号</option>
+						<option value="card_no" {eq name="setype" value="card_no"}selected{/eq}>卡号</option>
+						<option value="card_key" {eq name="setype" value="card_key"}selected{/eq}>卡密</option>
+					</select>
+					<label class="control-label" for="cardype">卡种类型</label>
+					<select name="cardype" class="form-control mr20">
+						<option value="">全部类型</option>
+						{volist name="clist" id="p"}
+						<option value="{$p.type}" {eq name="cardype" value="$p.type"}selected{/eq}>{$p.title}</option>
+						{/volist}
+					</select>
+					<label class="control-label" for="cardype">卖卡状态</label>
+					<select name="status" class="form-control mr10">
+						<option value="">全部状态</option>
+						<option value="1" {eq name="status" value="1"}selected{/eq}>等待受理</option>
+						<option value="2" {eq name="status" value="2"}selected{/eq}>处理中</option>
+						<option value="3" {eq name="status" value="3"}selected{/eq}>完成交易</option>
+						<option value="4" {eq name="status" value="4"}selected{/eq}>交易失败</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<button class="btn btn-primary btn-sm btn-square px30" onclick="$('[name=day]').val('');" type="submit">搜索</button>
+					<button class="btn btn-default btn-sm btn-square" onclick="$('[name=status]').val('');" type="button" data-href="{:url('home/Apiface/export')},href,top-left,get">导出记录(Excel)</button>
+					<button class="btn btn-default btn-sm btn-square" onclick="$('[name=status]').val(3);" type="button" data-href="{:url('home/Apiface/export')},href,top-left,get">只导出成功记录(Excel)</button>
+				</div>
+			</form>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-custom sell-records">
+			<thead>
+			<tr>
+				<th class="date">
+					订单号
+				</th>
+				<th class="">
+					提交卡类
+				</th>
+				<th class="note">
+					卡号/卡密
+				</th>
+				<th class="note">
+					申明面值
+				</th>
+				<th class="note">
+					实际面值
+				</th>
+				<th class="note">
+					结算金额
+				</th>
+				<th class="state">
+					交易状态
+				</th>
+				<th class="note">
+					提交时间
+				</th>
+				<th class="note">
+					备注说明
+				</th>
+				<th class="note">
+					回掉详情
+				</th>
+				<th class="note">
+					处理耗时
+				</th>
+				<th class="action">
+					操作
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+			{volist name="list" id="f"}
+			<tr>
+				<td class="date">
+					<span class="text-orange" id="xi">{$f.orderno}</span></br>
+					<span class="text-green" id="shang">{$f.tmporder}</span>
+				</td>
+				<td>
+					{$f.title}
+				</td>
+				<td class="note">
+					{$f.card_no}</br>{$f.card_key}
+				</td>
+				<td class="note">
+					{$f.money}
+				</td>
+				<td class="note">
+					{$f.settle_amt}
+				</td>
+				<td class="note">
+					{eq name="$f.amount" value="0"}<span class="values text-pink">0.00</span>{else/}<span class="values text-success">+{$f.amount}</span>{/eq}
+				</td>
+				<td class="state">
+					{$f.state|raw}
+				</td>
+				<td class="note">
+					<span class="text-orange">{$f.create_time}</span>
+				</td>
+				<td class="note">
+					<span class="text-red">{$f.remarks|default="-"}</span>
+				</td>
+				<td class="note">
+					<span class="text-red" style="display: block;width: 80px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{$f.tongzhi|default="-"}</span>
+				</td>
+				<td class="note">
+					<span class="text-red">{$f.haos|default="-"}</span>
+				</td>
+				<td >
+					<a class="text-blue" da-href="{:url('home/Apiface/xiafa')}" da-id="{$f.id}" href="javascript:void(0);" onclick="setXiafa(this)">下发通知</a>
+				</td>
+			</tr>
+			{/volist}
+			</tbody>
+			</table>
+			{empty name="list"}{$empty|raw}{/empty}
+		</div>
+		<div class="pb20">
+			  {$list|raw}
+       </div>
+	</div>
+</div>
+ <script>
+	  function setXiafa(a){
+	     loading(!0);
+		 var opt=$(a).attr('da-href'),id=$(a).attr('da-id');
+	    $.post(opt,{id:id},function(e){
+		   loading(!1);
+		   if(e.code==1){
+		     $("#modal-dialog").html(e.msg).width(360).modal({
+				title: "提示",
+				modal: !0,
+				timeout: 300
+			});
+		   }else{
+		      $("#modal-dialog").html(e.msg).width(360).modal({
+				title: "提示",
+				modal: !0,
+				timeout: 300
+			});
+		   }
+		})
+	  }
+	  </script>
+{/block}

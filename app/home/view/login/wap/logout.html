@@ -1,0 +1,47 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="location='/'"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/Helpfaq/helpa')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">信息提示</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="messager">
+		<div class="messager-icon">
+			<i class="owlicon owlicon-success"></i>
+		</div>
+		<div class="messager-text">
+			<h2 class="messager-title"><a href="{:url('home/Member/index')}">帐号退出成功！</a>
+			</h2>
+			<div class="messager-desc">
+				<p>
+					等待 <strong id="wait">3</strong> 秒后页面自动跳转。如太久没有跳转
+				</p>
+				<p>
+					您可以手动 <a class="text-blue" href="{:url('home/Member/index')}">点击此进入</a>
+				</p>
+			</div>
+		</div>
+		<div class="messager-action">
+			<div class="btn-group">
+				<a class="btn btn-primary" id="href" href="/">返回首页</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+        (function(){
+            var wait = document.getElementById('wait'),
+                href = document.getElementById('href').href;
+            var interval = setInterval(function(){
+                var time = --wait.innerHTML;
+                if(time <= 0) {
+                    location.href = href;
+                    clearInterval(interval);
+                };
+            }, 1000);
+        })();
+    </script>
+</body>
+</html>

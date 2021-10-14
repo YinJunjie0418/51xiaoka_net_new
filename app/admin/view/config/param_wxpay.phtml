@@ -1,0 +1,156 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">参数配置</div>
+    <div class="layui-card-body" pad15>
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li><a href="{:url('/config/param',['model'=>'qiniu'])}">七牛配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'qq'])}">QQ登陆配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxapp'])}">APP配置</a></li>
+                <li class="layui-this"><a href="{:url('/config/param',['model'=>'wxpay'])}">微信支付</a></li>
+				 <li><a href="{:url('/config/param',['model'=>'alipay'])}">支付宝配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'qcloudsms'])}">短信配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'baiduapp'])}">百度数据</a></li>
+				<li><a href="{:url('/config/param',['model'=>'email'])}">邮件配置</a></li>
+				<li><a href="{:url('/config/param',['model'=>'cash'])}">提现配置</a></li>
+				<li><a href="{:url('/config/param',['model'=>'aly'])}">认证配置</a></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form action="{:url('/config/param',['model'=>'wxpay'])}" class="layui-form" method="post">
+					<div class="layui-form-item">
+						<label class="layui-form-label">公众号二维码</label>
+						<div class="layui-input-block">
+							<div class="layui-upload-list">
+								<img class="layui-upload-img" id="test-upload-normal-img" src="{$list.wxewm|default=''}" width="110" height="110">
+							</div>
+							<input type="hidden" name="wxewm" value="{$list.wxewm|default=''}" autocomplete="off" placeholder="" class="layui-input">
+							<button type="button" class="layui-btn ajax-avatar"><i class="fa fa-file-image-o"></i> 选择图片</button>
+						</div>
+					</div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">登陆回掉地址</label>
+                        
+                        <div class="layui-form-mid layui-word-aux" style="#f00!important;">{$wxcallback} </div>
+                    </div>
+                    	<div class="layui-form-item">
+                        <label class="layui-form-label">微信登陆</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="checkbox" name="wxlogin" lay-skin="switch" lay-text="开启|关闭" {if isset($list.wxlogin) && $list.wxlogin=='1'} checked{/if}>
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                    <div class="layui-form-item" >
+                        <label class="layui-form-label">开发平台Appid</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="faappid" value="{$list.faappid|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+					<div class="layui-form-item" style="border-bottom:1px solid #f60">
+                        <label class="layui-form-label">开发平台secretID</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="fasecretID" value="{$list.fasecretID|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">验证Token</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="token" value="{$list.token|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">验证AESKey</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="password" name="aeskey" value="{$list.aeskey|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux text-danger">此密钥作为后续通信的安全密钥</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">Appid</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="appid" value="{$list.appid|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">secretID</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="secretID" value="{$list.secretID|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                     
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">商户号</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="mch_id" value="{$list.mch_id|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密匙</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="password" name="key" value="{$list.key|default=''}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">CERT证书</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="wxcert" value="{$list.wxcert|default=''}" class="layui-input">
+							<button type="button" class="layui-btn ajax-file" style="margin-top:5px" ><i class="layui-icon"></i>上传文件</button>
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+					<div class="layui-form-item">
+                        <label class="layui-form-label">KEY证书</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="wxfkey" value="{$list.wxfkey|default=''}" class="layui-input">
+							<button type="button" class="layui-btn ajax-file" style="margin-top:5px" ><i class="layui-icon"></i>上传文件</button>
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit  lay-filter="*">确认保存</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+<script>
+    element.on('tab(demo)', function(data){
+            var that = $(this);
+            var model = data.value;
+            console.log(data);
+            $.ajax({ 
+                type: 'POST',
+                url: "/user/charge/get_course_data/",
+                data:{course_id:course_id},
+                success:function(ret) {    
+                    //console.log(ret);
+                    that.closest("tr").find("select[name='course_data_id[]']").empty();
+                    that.closest("tr").find("select[name='course_data_id[]']").append("<option value=''>请选择专业</option>");
+                    $.each(ret, function(i,item){
+                        //console.log(item.level);
+                        that.closest("tr").find("select[name='course_data_id[]']").append("<option value="+item.id+">"+item.level+"</option>");
+                    });
+                    form.render('select');
+                },
+                dataType:'json',
+            });
+        });
+</script>
+{/block}

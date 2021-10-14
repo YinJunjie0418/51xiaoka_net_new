@@ -1,0 +1,25 @@
+<div class="form-primary">
+	<form action="{:url('home/bank/addalipay')}" method="post" id="submit">
+		<div class="alert alert-alt alert-warning text-center">
+			{eq name="$user.userReal.retype" value="1"}
+		 只能添加<strong>【{$user.userReal.name}】</strong>的支付宝账号
+		{else/}
+			只能添加<strong>【{$user.userReal.company_name}】</strong>的支付宝账号
+		{/eq}
+		</div>
+		<div class="form-group">
+			<input class="form-control" name="accounts"  id="accounts" type="text" value="{$res.accounts}" reg="^[A-Za-z0-9@._~\w-]{5,50}$" null="收款帐号不可为空" err="帐号格式不正确" placeholder="请输入支付宝账号">
+		</div>
+		{empty name="$res.accounts"}
+		<div class="form-group">
+			<input class="form-control" name="verifyacc" id="verifyacc" type="text" value="" reg="^[A-Za-z0-9@._~\w-]{5,50}$" null="收款帐号不可为空" err="帐号格式不正确" placeholder="请再次输入支付宝账号">
+		</div>
+		{/empty}
+		<div class="form-group">
+		{:token_field()}
+			<button class="btn btn-primary" type="button" data-form="top-left,json" name="submit">确认，提交</button>
+			{notempty name="$res.id"}
+			<button class="btn btn-link text-red" type="button" data-dialog='{:url('home/Bank/del',['id'=>$res.id])},350'>删除此支付宝账号</button>{/notempty}
+		</div>
+	</form>
+</div>

@@ -1,0 +1,101 @@
+{extend name="layout/member" /} 
+{block name="content"}
+    <div class="view-framework-body">
+   <div class="view-framework-main"> 
+    <div class="tabnavs">
+     {include file="layout/info_menu" /}
+    </div> 
+    <div class="box tab-content">
+     <div class="userform">
+      <div class="form-divider">
+       <div class="form-group">
+        <label class="form-label">登陆账号：</label>
+        <div class="form-element">
+         <p>{$user.username}</p>
+        </div>
+       </div>
+	   {switch name="$user['userReal']['retype']"} 
+		   {case value="1"}
+		   <div class="form-group">
+			<label class="form-label">真实姓名：</label>
+			<div class="form-element">
+			 {$user['userReal']['name']} 
+			 <span class="label label-primary">已实名</span>
+			 <span class="sep">|</span>
+			 <a class="text-blue" href="{:url('home/Member/realname')}">查看</a>
+			</div>
+		   </div>
+		   {/case}
+		   {case value="2"}
+		   <div class="form-group">
+			<label class="form-label">法人姓名：</label>
+			<div class="form-element">
+			 {$user['userReal']['name']} 
+			 <span class="label label-primary">法人实名</span>
+			 <span class="sep">|</span>
+			 <a class="text-blue" href="{:url('home/Member/realname')}">查看</a>
+			</div>
+		   </div>
+		   <div class="form-group">
+			<label class="form-label">企业名称：</label>
+			<div class="form-element">
+			 {$user['userReal']['company_name']} 
+			 <span class="label label-danger">企业认证</span>
+			 <span class="sep">|</span>
+			 <a class="text-blue" href="{:url('home/Member/realname')}">查看</a>
+			</div>
+		   </div>
+		   {/case}
+		   {default /}
+		   <div class="form-group">
+			<label class="form-label">真实姓名：</label>
+			<div class="form-element">
+			 <a class="text-blue" href='{:url("home/Account/index")}'>马上去实名认证</a> 
+			 <span class="sep">|</span>
+			 <span class="text-orange">实名认证之后才可以提现</span>
+			</div>
+		   </div>
+	   {/switch}
+       <div class="form-group">
+        <label class="form-label">联系QQ：</label>
+        <div class="form-element">
+         <p>{empty name="$user.qq"}未设置QQ{else/}{$user.qq}{/empty}<span class="sep">|</span><a class="text-blue" href="javascript:;" onclick="geteditqq();">修改QQ</a></p>
+        </div>
+       </div>
+       <div class="form-group">
+        <label class="form-label">手机绑定：</label>
+		{empty name="$user.mobile"}
+        <div class="form-element">
+         <p>手机未绑定<span class="sep">|</span><a class="text-blue" href="{:url('home/Mobile/setphoto')}">绑定手机</a></p>
+        </div>
+		{else/}
+		<div class="form-element">
+         <p>{:tfen($user.mobile,3,4)}<span class="sep">|</span><a class="text-blue" href="{:url('home/Mobile/upphoto')}">更换手机</a></p>
+        </div>
+		{/empty}
+       </div>
+       <div class="form-group">
+        <label class="form-label">邮箱设置：</label>
+		{empty name="$user.mobile"}
+		<div class="form-element">
+         <p>未设置<span class="sep">|</span><a class="text-blue" href="{:url('home/Email/setEmail')}">修改邮箱</a></p>
+        </div>
+		{else/}
+        <div class="form-element">
+         <p>{:tfen($user.email,3,4)}<span class="sep">|</span><a class="text-blue" href="{:url('home/Email/upEmail')}">修改邮箱</a></p>
+        </div>
+		{/empty}
+       </div>
+       <div class="form-group hidden">
+        <label class="form-label">默认地址：</label>
+        <div class="form-element">
+         <div class="form-multi">
+          <p><span class="text-muted">未添加收货地址，</span><a class="text-blue" href="#">马上去绑定</a></p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div> 
+    </div>
+   </div>
+   {/block}

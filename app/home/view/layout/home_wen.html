@@ -1,0 +1,33 @@
+<div class="panel panel-faq">
+	<div class="container">
+		<div class="panel-heading">
+			<h3 class="panel-title">新闻动态</h3>
+			<div class="panel-subtitle">
+				<p>
+					<a href="{:url('home/helpfaq/danye',['id'=>17])}">回收流程</a><span class="sep">|</span><a href="{:url('home/helpfaq/index')}">帮助中心</a><span class="sep">|</span><a href="{:url('home/helpfaq/danye',['id'=>23])}">商家合作</a><span class="sep">|</span><a href="{:url('home/helpfaq/index')}">更多</a>
+				</p>
+			</div>
+		</div>
+		<div class="faq-top">
+		 <div class="as"><span ><i class="wen iconfont text-pink">&#58924;</i>常见问题</span><span><a href="{:url('home/Helpfaq/index')}">MORE</a></span></div>
+		 <div class="as"><span><i class="wen iconfont text-info">&#59068;</i>行业资讯</span><span><a href="{:url('home/Helpfaq/zixun')}">MORE</a></span></div>
+		</div>
+		<div class="clearfix">
+			<ul class="pull-left faq-ul">
+			  {volist name="wen" id="p"}
+				<li >
+				<a href="{:url('home/Helpfaq/index')}"><strong>{$key+1}</strong>{$p.title}</a>
+				</li>
+				{/volist}
+			</ul>
+			<ul class="pull-right faq-ul">
+				{volist name="zi" id="k"}
+				<li>
+				<a href="{:url('home/helpfaq/danye',['id'=>$k.id])}">
+				<strong>{$key+1}</strong>{$k.title}</a>
+				</li>
+				{/volist}
+			</ul>
+		</div>
+	</div>
+</div>

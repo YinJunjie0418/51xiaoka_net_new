@@ -1,0 +1,51 @@
+<div class="login-modal">
+	<h5 class="login-modal-title">登录{$C.sitename}</h5>
+	<ul class="tabs tabs-pills login-tabs">
+		<li class="tab-item"><span class="active" id="login1" onclick="setTaba('login', 1, 2);" href="javascript:;">帐号密码登录</span></li>
+		<li class="tab-item"><span id="login2" onclick="setTaba('login', 2, 2);" href="javascript:;">手机验证码登录</span></li>
+	</ul>
+	<div class="sign-form-content">
+		<div class="sigin-error" id="sign-error">
+		</div>
+		<div id="con_login_1">
+			<form action='{:url("home/Login/login")}' method="post" id="login-form-0">
+				<div class="form-group">
+					<input class="form-control" name="username" id="username" type="text" placeholder="用户名/邮箱/手机号码" maxlength="20" value="" null="用户名不能为空" data-input="clear">
+				</div>
+				<div class="form-group">
+					<input class="form-control" name="password" id="password" type="password" placeholder="登录密码" maxlength="20" null="请输入密码" err="登录密码错误" data-input="clear"><label class="passeye" for="onoff-password"><input type="checkbox" id="onoff-password"><i class="eye"></i></label>
+				</div>
+				<div class="form-group">
+				  {:token_field()}
+					<button class="btn btn-secondary" type="button" data-form="top-left,json" name="login-form-0">登录</button><input type="hidden" name="type" value="0"/>
+				</div>
+			</form>
+		</div>
+		<div id="con_login_2" class="hide">
+			<form action='{:url("home/Login/login")}' method="post" id="login-form-1">
+				<div class="form-group">
+					<input class="form-control" id="phoneno" type="text" name="phoneno" value="" placeholder="手机号码" null="手机号码不能为空" err="手机号码格式错误" reg="^1[3|4|5|6|7|8|9][0-9]{9}$" data-input="clear"/>
+				</div>
+				<div class="form-group">
+					<input class="form-control" id="codeno" name="codeno" type="number" placeholder="手机验证码" null="请输入验证码" reg="[0-9]{6}"/>
+					<div class="form-action">
+						<a class="text-blue" href="javascript:;" data-href="{:url('home/Api/sendMsg',['scene'=>'login','tip'=>'phoneno'])},,top-left,post" id="mcode">获取验证码</a>
+					</div>
+				</div>
+				<div class="form-group">
+				{:token_field()}
+					<button class="btn btn-secondary" type="button" data-form="top-left,json" name="login-form-1">登录</button><input type="hidden" name="type" value="1"/>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="sign-links">
+		<a class="text-blue" href="{:url('home/Login/forgetpassword')}">忘记密码?</a><span class="sep">·</span>没有账号？<a class="text-blue" href="{:url('home/Login/register')}">立即注册</a>
+	</div>
+	 <div class="sign-other {eq name='isqq' value='0'}hidden{/eq}">
+		<fieldset class="orline">
+			<legend class="orline-title" align="center">其他登录方式</legend>
+		</fieldset>
+		<a class="btn btn-primary btn-sm btn-inline " href="javascript:;" target="_top" rel="nofollow" onclick="toQzoneLogin();"><i class="iconfont iconfont-sqq"></i> 使用QQ帐号登录</a>
+	</div>
+</div>

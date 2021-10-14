@@ -1,0 +1,79 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+     <div class="layui-card-header">
+        <div class="layui-btn-group">
+          <a href="{:url('/card/addapi')}" class="layui-btn ajax-iframe" data-width="750px" data-height="150px"><i class="fa fa-plus-circle"></i> 添加接口</a>
+        </div>
+    </div>
+    
+    <table id="tableList" lay-filter="tableList"></table>
+    <!-- 表格操作列 -->
+    <script type="text/html" id="tableTBTrack">
+	    {{#  if(d.isok == 1){ }}
+        <a href="{:url('/card/configEdit')}?id={{d.id}}" class="layui-btn layui-btn-normal ajax-iframe" data-width="750px" data-height="500px">编辑</a>
+        <a href="{:url('/card/apidel')}?id={{d.id}}" class="layui-btn layui-btn-danger ajax-delete">卸载</a>
+		{{# }else if(d.isok==2){ }}
+		 <a href="{:url('/card/apidel')}?id={{d.id}}" class="layui-btn layui-btn-danger ajax-delete">接口文件不存在-删除</a>
+		{{#  } else { }}
+		<a href="{:url('/card/addapi')}?id={{d.class}}" class="layui-btn layui-btn-normal ajax-action" >安装接口</a>
+		{{#  } }}
+    </script>
+     <script type="text/html" id="status">
+                <input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="开启|关闭" data-url="{:url('/card/apiedit')}?id={{d.id}}" {{d.status==1?'checked':''}}>
+     </script>
+    <script type="text/html" id="isload">
+        {{# if(d.istype==0){}}
+        <input type="checkbox" name="isload" lay-skin="switch" lay-filter="*" lay-text="可等待|不可等待" data-url="{:url('/card/apiedit')}?id={{d.id}}" {{d.isload==1?'checked':''}}>
+        {{# }else{ }}
+        --
+        {{# } }}
+    </script>
+	
+    
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+
+        // 渲染回访表格
+        var insTb = table.render({
+            elem: '#tableList',
+            url: "{:url('/card/installapi')}",
+            page: false,
+            cellMinWidth: 100,
+            size:'lg',even:true,
+            cols: [[
+                {type:'numbers',title:'#'},
+                {field: 'type', align: 'center', sort: true, title: '接口类型'},
+                {field: 'name',align: 'center', sort: true, title: '运营商名称'},
+                {field: 'url', align: 'left', sort: true, title: '网址'},
+				{field: 'qq',align: 'center', sort: true, title: '作者QQ',},
+                {align: 'center', title: '是否开启',templet:'#status'},
+                {align: 'center', toolbar: '#tableTBTrack', title: '操作', minWidth: 200}
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data, //解析数据长度
+                  "data": res.data //解析数据列表
+                };
+            }
+        });
+
+
+
+    });
+
+</script>
+{/block}

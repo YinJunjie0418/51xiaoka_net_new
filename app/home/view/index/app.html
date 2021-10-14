@@ -1,0 +1,66 @@
+{extend name="layout/index" /} 
+{block name="content"}
+  <div class="content app-page">
+	<div class="app-focus">
+		<div class="container">
+			<div class="app-phoneqr png">
+				<img src="{$wx.appimg}" alt="">
+			</div>
+			<div class="app-download">
+				<div class="app-download-item app-download-android">
+					<a class="app-btn app-btn-android" href="{$wx.apkurl|default=""}">安卓端下载</a>
+					<p>
+						版本号：v {$wx.apkv|default="1.0"}
+					</p>
+				</div>
+				<div class="app-download-item app-download-ios">
+					<a class="app-btn app-btn-ios" href="{$wx.isourl|default=""}">iOS端下载</a>
+					<p>
+						版本号：v {$wx.isov|default="1.0"}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="app-features">
+		<div class="container">
+			<h2>下载{$C.sitename}<span>手机端</span></h2>
+			<ul class="app-features-group clearfix">
+				<li>
+				<div class="features-icon">
+					<i class="iconimg iconimg-fast"></i>
+				</div>
+				<div class="features-desc">
+					<h3>简单</h3>
+					<p>
+						一键提交，快到没朋友
+					</p>
+				</div>
+				</li>
+				<li>
+				<div class="features-icon">
+					<i class="iconimg iconimg-anys"></i>
+				</div>
+				<div class="features-desc">
+					<h3>快捷</h3>
+					<p>
+						随时随地，有卡就回收
+					</p>
+				</div>
+				</li>
+				<li>
+				<div class="features-icon">
+					<i class="iconimg iconimg-fair"></i>
+				</div>
+				<div class="features-desc">
+					<h3>安全</h3>
+					<p>
+						专业品牌，一对一服务
+					</p>
+				</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+  {/block}

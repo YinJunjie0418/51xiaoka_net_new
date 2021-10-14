@@ -1,0 +1,176 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body" id="mybutton">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">点卡名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" value="{$data.title|default=''}" autocomplete="off" placeholder="请输入名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">点卡面值</label>
+                <div class="layui-input-block">
+                    <input type="text" name="mianzhi" value="{$data.mianzhi|default=''}" autocomplete="off" placeholder="请输入面值" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">识别代码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="geway" value="{$data.geway|default=''}" autocomplete="off" placeholder="请输入本卡识别代码" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">上游通道代码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="type" value="{$data.type|default=''}" autocomplete="off" placeholder="请输入上游通道代码" class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">选择分类</label>
+                <div class="layui-input-block">
+                    <select name="cid" id="model" lay-filter="one_cate" >
+                        <option value="0">请选择</option>
+                        {foreach name="fenlei" item="r"}
+                         <option value="{$r.id}" {if condition="isset($data) and $data.cid eq $r.id"}selected="selected"{/if}>{$r.title}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择对冲通道</label>
+                <div class="layui-input-block">
+                    <select name="operid" >
+                        <option value="0">请选择</option>
+                        {foreach name="operlist" item="rr"}
+                        <option value="{$rr.id}" {eq name="$data.operid" value="$rr.id"}selected="selected"{/eq}>{$rr.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">绑定产品</label>
+                    <div class="layui-input-block">
+                        <select name="bid" id="two_cate" >
+                            <option value="0">请先选择分类</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            {volist name="bindids" id="p"}
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">通道名称:</label>
+                        <label class="layui-form-label" style="text-align: left">{$p.title}</label>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">通道比例</label>
+                        <div class="layui-input-inline" style="width:100px">
+                            <input type="text" name="bilia" autocomplete="off" value="{$p.rate}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline" data-bindid="{$p.id}">
+                        <button class="layui-btn" type="button" id="apisave" ><i class="layui-icon layui-icon-ok"></i></button>
+                        <button class="layui-btn layui-btn-danger" type="button" id="apidel"><i class="layui-icon layui-icon-delete"></i></button>
+                    </div>
+                </div>
+            {/volist}
+            <div class="layui-form-item">
+                <label class="layui-form-label">费率</label>
+                <div class="layui-input-inline" >
+                    <input type="text" name="rate" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d\.]/g,'')" value="{$data.rate|default=''}" autocomplete="off" placeholder="请输入充值费率" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">卡小图标</label>
+                <div class="layui-input-block">
+                    <input type="text" name="iconurl" value="{$data.iconurl|default=''}" autocomplete="off" placeholder="请上传点卡小图标" class="layui-input">
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-images"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="hidden" name="id" value="{$data.id|default=''}">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    $("#mybutton").on("click","#apisave",function(){
+        var e=$(this);
+        var feilv=e.parent().parent().find('input[name=bilia]').val(),id=e.parent().attr("data-bindid");
+        var index = layer.load(3, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+        $.post("{:url('/SellCard/editrate')}",{id:id,rate:feilv},function (e) {
+            layer.close(index);
+            layer.msg(e.msg);
+        })
+    });
+
+    $("#mybutton").on("click","#apidel",function(){
+        var e=$(this);
+        var id=e.parent().attr("data-bindid");
+        layer.confirm('确定要删除通道吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var index = layer.load(3, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+            $.post("{:url('/SellCard/apidel')}",{id:id},function (e) {
+                layer.close(index);
+                layer.msg(e.msg);
+                if(e.code==1){
+                    location.reload();
+                }
+            })
+        });
+
+    });
+    $(function(){
+        var cid="{$data.cid|default=0}";
+        var bid="{$bid['bindid']|default=0}";
+        if(cid==0 || cid==undefined)return false;
+        var url = "{:url('/SellCard/getModels')}?id=" + cid;
+        $.get(url,function(data){
+            $("#two_cate").empty();
+            $("#two_cate").append(new Option("请先选择分类",""));
+            $.each(data.data,function(index,item){
+                if(item.id==bid){
+                    $("#two_cate").append(new Option(item.title,item.id,true,true));
+                }else{
+                    $("#two_cate").append(new Option(item.title,item.id));
+                }
+
+            });
+            layui.form.render("select");
+        });
+    })
+
+    form.on('select(one_cate)', function(data){
+        //data.value 得到被选中的值
+        var url = "{:url('/SellCard/getModels')}?id=" + data.value;
+        $.get(url,function(data){
+            $("#two_cate").empty();
+            $("#two_cate").append(new Option("请先选择分类",""));
+            $.each(data.data,function(index,item){
+                $("#two_cate").append(new Option(item.title,item.id));
+                console.log(item.title,item.id);
+            });
+            layui.form.render("select");
+        });
+
+    });
+</script>
+{/block}
+

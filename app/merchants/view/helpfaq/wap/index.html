@@ -1,0 +1,46 @@
+     {include file="layout/wap/tou" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="http://www.lipin.com/help-help.html"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">平台公告</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="card-gradient">
+	{volist name="list" id="p"}
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">{$p.title}</h3>
+				<div class="card-desc">
+				{:htmlspecialchars_decode($p.content)}
+				</div>
+			</div>
+			<div class="card-footer">
+				<div class="cell cell-access" onclick="more(this);">
+					<div class="cell-bd">
+						<span class="text-light">通知时间：{:date("Y-m-d",strtotime($p.update_time))}</span>
+					</div>
+					<div class="cell-ft">
+						<span class="text-blue">详情</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		{/volist}
+		<script>function more(obj){var _this = $(obj),_atxt = _this.find('.text-blue'),_selector = _this.closest('.card').find('.card-desc');if (_selector.hasClass('unfold')) {_selector.removeClass('unfold');_this.removeClass('owl');_atxt.html('详情');} else {_selector.addClass('unfold');_this.addClass('owl');_atxt.html('收起');}}</script>
+	</div>
+</div>
+</section>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+<div class="backdrop" id="backdrop">
+</div>
+</body>
+</html>
+</html>

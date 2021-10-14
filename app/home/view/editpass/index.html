@@ -1,0 +1,198 @@
+{extend name="layout/member" /} 
+{block name="content"}
+    <div class="view-framework-body">
+   <div class="view-framework-main"> 
+    <div class="tabnavs">
+     {include file="layout/info_menu" /}
+    </div>
+<div class="box tab-content">
+		
+	<div class="userform">
+		<div class="form-group">
+			<label class="form-label">&nbsp;</label>
+			<div class="form-element">
+				<ul class="btn-group clearfix" id="banktype-group">
+					<li><a class="btn" href="{:url('home/Member/password')}"><span class="icon"><i class="iconfont"></i></span>登录密码管理<b></b></a></li>
+					<li class="selected"><a class="btn" href="{:url('home/Member/paymentcodepin')}"><span class="icon"><i class="iconfont"></i></span>安全密码管理<b></b></a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="stepflex stepflex-3">
+		{neq name="isup" value="1"}
+			 <ul class="clearfix">
+				<li class="first doing">
+				<div class="stepflex-num">
+					<span>1</span>
+				</div>
+				<div class="stepflex-text">
+					验证身份
+				</div>
+				</li>
+				<li >
+				<div class="stepflex-num">
+					<span>2</span>
+				</div>
+				<div class="stepflex-text">
+					修改安全密码
+				</div>
+				<div class="stepflex-progress">
+				</div>
+				</li>
+				<li>
+				<div class="stepflex-num">
+					<span><i class="iconfont"></i></span>
+				</div>
+				<div class="stepflex-text">
+					完成重置
+				</div>
+				<div class="stepflex-progress">
+				</div>
+				</li>
+			</ul> 
+		{else/}
+			<ul class="clearfix">
+				 <li class="first done">
+				  <div class="stepflex-num">
+				   <span>1</span>
+				  </div>
+				  <div class="stepflex-text">
+				   验证身份
+				  </div></li>
+				 <li class="doing">
+				  <div class="stepflex-num">
+				   <span>2</span>
+				  </div>
+				  <div class="stepflex-text">
+				   修改安全密码
+				  </div>
+				  <div class="stepflex-progress"></div></li>
+				 <li>
+				  <div class="stepflex-num">
+				   <span><i class="iconfont"></i></span>
+				  </div>
+				  <div class="stepflex-text">
+				   完成重置
+				  </div>
+				  <div class="stepflex-progress"></div></li>
+			</ul>
+			{/neq}
+		</div>
+{neq name="isup" value="1"}
+		<div class="form-group">
+			<label class="form-label" for="selectype">验证方式：</label>
+			<div class="form-element">
+				<select class="form-control" id="selectype" onchange="selectVerifyType();" name="selectype">
+				   {notempty name="$user.mobile"}
+					<option value="mobile">通过已验证手机认证</option>{/notempty}
+					{notempty name="$user.email"}
+					<option value="email">通过已绑定邮箱验证</option>{/notempty}
+					<option value="paypass">通过原安全密码验证</option>
+				</select>
+			</div>
+		</div>
+		<div id="mobile-verify">
+			<form id="submitmobile">
+				<div class="form-group">
+					<label class="form-label">已验证手机：</label>
+					<div class="form-element">
+						<strong>{:tfen($user.mobile,3,4)}</strong>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-label" for="codeno"><em>*</em> 短信验证码：</label>
+					<div class="form-element">
+						<input class="form-control form-control-short" id="codeno" name="codeno" type="text" reg="[0-9]{6}" null="请输入短信验证码"><a class="btn btn-default btn-square pull-left" href="javascript:;" data-href="{:url('home/Api/sendMsg',['scene'=>'tradepwd','tip'=>'codeno'])},,top-left,post" id="mcode">获取验证码</a>
+						<div class="help-block">
+							<p>
+								短信验证码 5 分钟内有效，若已失效或未收到验证码，请点击重新获取
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="form-group-btn">
+				    {:token_field()}
+					<a class="btn btn-primary" href="javascript:;" data-href="{:url('home/Member/checkPCode',['type'=>'uppass'])},,top-left,post">下一步</a>
+				</div>
+			</form>
+		</div>
+		<div id="email-verify" style="display: none;">
+			<form id="submitemail">
+				<div class="form-group">
+					<label class="form-label">已绑定邮箱：</label>
+					<div class="form-element">
+						<strong>{:tfen($user.email,3,4)}</strong>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-label" for="ecodeno"><em>*</em> 邮箱验证码：</label>
+					<div class="form-element">
+						<input class="form-control form-control-short" id="ecodeno" name="ecodeno" type="text" null="请输入邮箱验证码"><a class="btn btn-default btn-square pull-left" href="javascript:;" data-href="{:url('home/Api/sendEmail',['scene'=>'upemail','tip'=>'ecodeno'])},,top-left,post" id="emcode">获取验证码</a>
+						<div class="help-block">
+							<p>
+								邮箱验证码 5 分钟内有效，若已失效或未收到验证码，请点击重新获取
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="form-group-btn">
+				    {:token_field()}
+					<a class="btn btn-primary" href="javascript:;" data-href="{:url('home/Member/checkECode',['type'=>'uppass'])},,top-left,post">下一步</a>
+				</div>
+			</form>
+		</div>
+		<div id="paypass-verify" style="display: none;">
+			<form id="submitpaypass">
+				<div class="form-group">
+					<label class="form-label" for="oldpaypass"><em>*</em> 原安全密码：</label>
+					<div class="form-element">
+						<input class="form-control" id="oldpaypass" name="oldpaypass" type="password" value="" null="">
+					</div>
+				</div>
+				<div class="form-group-btn">
+				    {:token_field()}
+					<a class="btn btn-primary" href="javascript:;" data-href="{:url('home/Member/checkPass',['type'=>'uppass'])},,top-left,post">下一步</a>
+				</div>
+			</form>
+		</div>
+		<div class="userform-tips">
+			<h5>为什么要进行身份验证？</h5>
+			<ul>
+				<li>1、为保障您的账户信息安全，在变更账户中的重要信息时需要进行身份验证，感谢您的理解和支持。</li>
+				<li>2、验证身份遇到问题？请提供用户名，手机号，身份证号，点击联系平台<a class="text-blue" href="javascript:;" onclick="chatinit();">在线客服</a></li>
+			</ul>
+		</div>
+		<script type="text/javascript">function selectVerifyType(){var type = $("#selectype").val();if(type == "mobile"){$("#email-verify").hide();$("#paypass-verify").hide();$("#mobile-verify").show();}else if(type == "email"){$("#mobile-verify").hide();$("#paypass-verify").hide();$("#email-verify").show();}else if(type == "paypass"){$("#mobile-verify").hide();$("#email-verify").hide();$("#paypass-verify").show();}}</script>
+		{else/}
+		  <form id="setpaypass">
+			<div class="form-group">
+				<label class="form-label" for="newpsw"><em>*</em> 新安全密码：</label>
+				<div class="form-element">
+					<input class="form-control" id="newpsw" name="newpsw" type="password" value="" reg="^[A-Za-z0-9_-~!@#$%^&amp;*()\[\]_+-={}?,.\/]{6,20}$" maxlength="20" null="请输入密码" err="密码长度6~20为数组字母组合" autocomplete="off">
+					<div class="help-block">
+						<p>
+							由字母加数字或符号至少两种以上字符组成的6-20位半角字符，区分大小写
+						</p>
+					</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="form-label" for="verifypsw"><em>*</em> 确认新密码：</label>
+			<div class="form-element">
+				<input class="form-control" id="verifypsw" name="verifypsw" type="password" null="请再次输入新密码" value="" autocomplete="off">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="form-label" for="verifycode"><em>*</em> 验证码：</label>
+			<div class="form-element">
+				<input type="text" class="form-control form-control-short" id="verifycode" name="verifycode" maxlength="5" null="请输入验证码"><img src="{:captcha_src()}" class="verifyimg code pull-left" onclick="this.src=this.src+'?'+Math.random()" title="点击图片刷新验证码">
+			</div>
+		</div>
+		<div class="form-group-btn">
+			{:token_field()}
+				<a class="btn btn-primary" id="bbtu" href="javascript:;" data-href="{:url('home/Editpass/index')},,top-left,post">提交</a>
+		</div>
+	</form>
+		{/neq}
+	</div>
+</div>
+{/block}

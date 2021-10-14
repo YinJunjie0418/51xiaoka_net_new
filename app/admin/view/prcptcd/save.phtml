@@ -1,0 +1,90 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择总行</label>
+                <div class="layui-input-block">
+                <select name="bank_code" id="bank_code" lay-filter="bank_code">
+                    <option value="">请选择</option>
+                    {foreach name="info" id="p"}
+                    <option value="{$p.procode}" {eq name="$data.bank_code|default=''" value="$p.procode"}selected{/eq}>{$p.bankName}</option>
+                    {/foreach}
+                </select>
+                </div>
+            </div>
+			<div class="layui-form-item">
+                    <label class="layui-form-label">选择地区</label>
+                    <div class="layui-input-inline">
+                        <select name="province" id="province" lay-filter="province">
+                            <option value="">请选择省</option>
+                            {foreach name="citys" id="p"}
+                              <option value="{$p.code}" {eq name="$data.province|default=''" value="$p.code"}selected{/eq} >{$p.region}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="city_code" id="citys" lay-filter="citys">
+                            <option value="">请选择市</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">银行名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="bankname" value="{$data.bankname|default=''}" autocomplete="off" lay-verify="required" placeholder="请输入银行名称"  class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">银行联号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="prcptcd" value="{$data.prcptcd|default=''}" autocomplete="off" lay-verify="required" placeholder="请输入银行联合"  class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-top:20px">
+                <div class="layui-input-block">
+                    <input name="id" type="hidden" value="{$data.id|default=''}">
+				<button class="layui-btn" lay-filter="i" lay-submit="">提交操作</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    $(function(){
+        var province="{$data.province|default=''}",code="{$data.city_code|default=''}";
+        if(province!=""){
+            var nos=$("#province").val();//获得选中的option的值
+            $.post("{:url('/Prcptcd/citys')}",{code:nos},function(e){
+                var str="";
+                for(var x in e.data){
+                    if(e.data[x].code == code){
+                        str += '<option value = "' + e.data[x].code + '" selected>' + e.data[x].region + '</option>'
+                    }else{
+                        str += '<option value = "' + e.data[x].code + '">' + e.data[x].region + '</option>'
+                    }
+
+                }
+                $("#citys").html(str);
+                form.render();//最后记得渲染
+            })
+        }
+    })
+
+
+    form.on('select(province)', function(data){ //no是那个lay-filter的值
+        var nos=$("#province").val();//获得选中的option的值
+        $.post("{:url('/Prcptcd/citys')}",{code:nos},function(e){
+            var str="";
+            for(var x in e.data){
+                str += '<option value = "' + e.data[x].code + '">' + e.data[x].region + '</option>'
+            }
+            $("#citys").html(str);
+            form.render();//最后记得渲染
+        })
+    });
+</script>
+{/block}

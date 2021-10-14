@@ -1,0 +1,105 @@
+<div class="form-primary">
+	<form action="{:url('home/bank/addbank')}" method="post" id="submit">
+		<div class="alert alert-alt alert-warning text-center">
+			{eq name="$user.userReal.retype" value="1"}
+			只能添加<strong>【{$user.userReal.name}】</strong>的银行卡账号
+			{else/}
+			只能添加<strong>【{$user.userReal.company_name}】</strong>的银行卡账号
+			{/eq}
+
+		</div>
+		<div class="form-group">
+			<div class="list-arrow">
+				<select class="form-control" name="tobanka" id="tobank">
+					<option value="">请选择银行</option>
+					{volist name="banks" id="p"}
+					<option value="{$p.id}|{$p.procode}"  {eq name="$p.id" value="$res.bankid"}selected = selected{/eq}>{$p.bankName}</option>
+					{/volist}
+				</select>
+				<div class="select-arrow">
+					开户银行
+				</div>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<input class="form-control" name="bankname" id="bankname" type="text" value="{$res.bankname|default=''}"  null="请输入银行名称"  placeholder="银行名称最好具体到分行">
+		</div>
+		<div class="form-group">
+			<input class="form-control" name="bankaddress" id="bankaddress" type="text" value="{$res.bankaddress|default=''}" null="请输入开户行所在城市" placeholder="开户行所在城市">
+		</div>
+		<div class="form-group">
+			<input class="form-control" name="accounts" id="accounts" type="number" value="{$res.accounts|default=''}" reg="^[0-9]{12,20}$" null="请输入正确的银行卡卡号" err="银行卡格式不正确" placeholder="请输入银行卡卡号">
+		</div>
+		{empty name="$res.accounts"}
+		<div class="form-group">
+			<input class="form-control" id="verifyacc" name="verifyacc" type="number" value="" reg="^[0-9]{12,20}$" null="请再次填写银行卡卡号" err="银行卡格式不正确" placeholder="确认银行卡卡号">
+		</div>
+		{/empty}
+		<div class="form-group">
+			<input type="hidden" name="id" value="{$res.id|default=''}">
+			<input type="hidden" name="tobank" value="{$res.bankid|default=''}">
+			{:token_field()}
+			<button class="btn btn-primary" type="button" data-form="top-left,json" name="submit">确认，提交</button>
+			{notempty name="$res.id"}
+			<button class="btn btn-link text-red" type="button" data-dialog="{:url('home/Bank/del',['id'=>$res.id])},350">删除</button>{/notempty}
+		</div>
+	</form>
+</div>
+<script>
+	var data;
+	$(function(){
+		var id="{$res.cityid|default=''}",region="{$res.region|default=''}";
+		$.post("{:url('home/Bank/getcity')}", function (result) {
+			data=result;
+			var str="<option value=''>请选择地区</option>";
+			for (var i = 0; i < result.length; i++) {
+				if(region==result[i].code){
+					str += "<option value=" + i + " selected>" + result[i].region + "</option>";
+				}else{
+					str += "<option value=" + i + ">" + result[i].region + "</option>";
+				}
+			}
+			$("#tobaccoId").empty().html(str);
+		})
+	})
+	$("#tobank").change(function(){
+		var da=$(this).val();
+		var str=da.split("|");
+		$("input[name=tobank]").val(str[0]);
+		var citys=$("#tocity").val();
+		getPro(str[1],citys);
+	})
+	$("#tobaccoId").change(function(){
+		var id=$(this).val();
+		da=data[id]['regionEntitys'];
+		var str="<option value=''>请选择地区</option>";
+		for (var i = 0; i < da.length; i++) {
+			str += "<option value=" + da[i].code + ">" + da[i].region + "</option>";
+		}
+		$("#tocity").empty().html(str);
+	})
+
+	$("#tocity").change(function(){
+		var da=$("#tobank").val();
+		var str=da.split("|");
+		var bankid=$(this).val(),procode=str[1];
+		getPro(procode,bankid);
+	})
+
+	function getPro(procode,bankid){
+		$.post("{:url('home/Bank/getcode')}",{bankcode:procode,cityid:bankid},function (result) {
+			var da=result.data,str = "<option value=''>请选择开户行</option>";
+			for (var i = 0; i < da.length; i++) {
+				str += "<option value=" + da[i].prcptcd + ">" + da[i].bankname + "</option>";
+			}
+			$("#tobankcode").empty().html(str);
+		})
+	}
+	$("#tobankcode").change(function(){
+		var hang=$(this).val();
+		$("#bankline").val(hang);
+	})
+
+
+</script>

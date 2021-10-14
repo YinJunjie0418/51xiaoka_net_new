@@ -1,0 +1,64 @@
+{extend name="layout/member" /} 
+{block name="content"}
+    <div class="view-framework-body">
+   <div class="view-framework-main"> 
+    <div class="tabnavs">
+     {include file="layout/info_menu" /}
+    </div> 
+   <div class="box tab-content">
+	<div class="userform">
+	    <div class="form-group">
+			<label class="form-label">&nbsp;</label>
+			<div class="form-element">
+				<ul class="btn-group clearfix" id="banktype-group">
+					{eq name="pei.alitype" value="1"}<li id="setcash1" ><a class="btn" href="{:url('home/Member/alipay')}"><i class="iconfont iconfont-alipay"></i>支付宝管理</a></li>{/eq}
+					{eq name="pei.banktype" value="1"}
+					<li id="setcash2" ><a class="btn" href="{:url('home/Member/setcash')}"><i class="iconfont iconfont-bank"></i>银行卡管理</a></li>{/eq}
+					{eq name="pei.wxtype" value="1"}
+					<li id="setcash3" class="active"><a class="btn" href="{:url('home/Member/weixin')}"><i class="iconfont iconfont-weixin">&#59365;</i>微信管理</a></li>{/eq}
+				</ul>
+			</div>
+		</div>
+	    {empty name="$user['userReal']['retype']"}
+			<div class="form-group">
+				<label class="form-label">微信帐号：</label>
+				<div class="form-element">
+					<ul class="cashcard-group" id="cashcard-bank">
+					</ul>
+					<div class="alert alert-warning form-alert">
+						<p>
+							您还没有进行实名认证，无法添加微信
+						</p>
+						<a class="btn btn-primary" href="{:url('home/Account/index')}">前往实名认证</a>
+					</div>
+				</div>
+			</div>
+		{else/}
+		<div class="form-group">
+			<label class="form-label">微信帐号：</label>
+			<div class="form-element">
+				<ul class="cashcard-group" id="cashcard-alipay">
+				   {volist name="list" id="p"}
+					<li>
+					<div class="cashcard-name">
+						<span><strong>{:substr($p.accounts,-6)}</strong></span><i class="iconimga" style="font-style:normal">{$p.bankname}</i>
+					</div>
+					<div class="cashcard-action">
+						</span><a href="###" data-dialog="{:url('home/Bank/del',['id'=>$p.id])},350">删除</a>
+					</div>
+					</li>
+					{/volist}
+				</ul>
+				<a class="cashcard-add" href="javascript:;" data-dialog="{:url('home/Bank/addweixin')},600,添加微信账户"><span class="plus"><s class="across"></s><s class="erect"></s></span>
+				<p>
+					添加微信帐号
+				</p>
+				</a>
+			</div>
+		</div>
+		{/empty}
+		
+		
+	</div>
+</div>
+   {/block}

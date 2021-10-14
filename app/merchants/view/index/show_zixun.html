@@ -1,0 +1,19 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$res['title']} </title>
+  <meta name="keywords" content="{$res['keywords']}" />
+  <meta name="description" content="{$res['description']}" />
+{/block}
+
+{block name="content"}
+<div class="zixun">{$res.title}</div>
+<div class="zixun-bottom">
+  <div class="abs">
+	<span>作者：admin</span>
+	<span>更新时间：{:date("m-d H:i",strtotime($res.update_time))}</span>
+  </div>
+</div>
+<div class="zixun-content">
+  {:htmlspecialchars_decode($res.content)}
+  </div>
+{/block}

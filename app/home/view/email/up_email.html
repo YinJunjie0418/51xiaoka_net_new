@@ -1,0 +1,167 @@
+{extend name="layout/member" /} 
+{block name="content"}
+    <div class="view-framework-body">
+   <div class="view-framework-main"> 
+    <div class="tabnavs">
+     {include file="layout/info_menu" /}
+    </div>
+	<div class="box tab-content">
+	{neq name="isup" value="1"}
+	<div class="userform">
+		<div class="stepflex stepflex-3">
+			<ul class="clearfix">
+				<li class="first doing">
+				<div class="stepflex-num">
+					<span>1</span>
+				</div>
+				<div class="stepflex-text">
+					验证身份
+				</div>
+				</li>
+				<li>
+				<div class="stepflex-num">
+					<span>2</span>
+				</div>
+				<div class="stepflex-text">
+					更换绑定邮箱
+				</div>
+				<div class="stepflex-progress">
+				</div>
+				</li>
+				<li>
+				<div class="stepflex-num">
+					<span><i class="iconfont"></i></span>
+				</div>
+				<div class="stepflex-text">
+					更换成功
+				</div>
+				<div class="stepflex-progress">
+				</div>
+				</li>
+			</ul>
+		</div>
+		<div class="form-group">
+			<label class="form-label" for="selectype">验证方式：</label>
+			<div class="form-element">
+				<select class="form-control" id="selectype" onchange="selectVerifyType();" name="selectype">
+					{notempty name="$user.mobile"}
+					<option value="mobile">通过已验证手机认证</option>{/notempty}
+					{notempty name="$user.email"}
+					<option value="email">通过已绑定邮箱验证</option>{/notempty}
+				</select>
+			</div>
+		</div>
+		<div id="mobile-verify" >
+			<form id="submitmobile">
+				<div class="form-group">
+					<label class="form-label">已验证手机：</label>
+					<div class="form-element">
+						<strong>{:tfen($user.mobile,3,4)}</strong>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-label" for="codeno"><em>*</em> 短信验证码：</label>
+					<div class="form-element">
+						<input class="form-control form-control-short" id="codeno" name="codeno" type="text" reg="[0-9]{6}"><a class="btn btn-default btn-square pull-left" href="javascript:;" data-href="{:url('home/Api/sendMsg',['scene'=>'tradepwd','tip'=>'codeno'])},,top-left,post" id="mcode">获取验证码</a>
+						<div class="help-block">
+							<p>
+								短信验证码 5 分钟内有效，若已失效或未收到验证码，请点击重新获取
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="form-group-btn">
+				    {:token_field()}
+					<a class="btn btn-primary" href="javascript:;" data-href="{:url('home/Member/checkPCode',['type'=>'upemail'])},,top-left,post">下一步</a>
+				</div>
+			</form>
+		</div>
+		<div id="email-verify" style="display: none;">
+			<form id="submitemail">
+				<div class="form-group">
+					<label class="form-label">已绑定邮箱：</label>
+					<div class="form-element">
+						<strong>{:tfen($user.email,3,4)}</strong>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="form-label" for="ecodeno"><em>*</em> 邮箱验证码：</label>
+					<div class="form-element">
+						<input class="form-control form-control-short" id="ecodeno" name="ecodeno" type="text"><a class="btn btn-default btn-square pull-left" href="javascript:;" data-href="{:url('home/Api/sendEmail',['scene'=>'upemail','tip'=>'ecodeno'])},,top-left,post" id="emcode">获取验证码</a>
+						<div class="help-block">
+							<p>
+								邮箱验证码 5 分钟内有效，若已失效或未收到验证码，请点击重新获取
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="form-group-btn">
+				    {:token_field()}
+					<a class="btn btn-primary" href="javascript:;" data-href="{:url('home/Member/checkECode',['type'=>'upemail'])},,top-left,post">下一步</a>
+				</div>
+			</form>
+		</div>
+		<div class="userform-tips">
+			<h5>为什么要进行身份验证？</h5>
+			<ul>
+				<li>1、为保障您的账户信息安全，在变更账户中的重要信息时需要进行身份验证，感谢您的理解和支持。</li>
+				<li>2、验证身份遇到问题？请提供用户名，手机号，身份证号，点击联系平台<a class="text-blue" href="javascript:;" onclick="chatinit();">在线客服</a></li>
+			</ul>
+		</div>
+		<script type="text/javascript">function selectVerifyType(){var type = $("#selectype").val();if(type == "mobile"){$("#mobile-verify").show();$("#email-verify").hide();}else if(type == "email"){$("#mobile-verify").hide();$("#email-verify").show();}}</script>
+	</div>
+	{else/}
+	<div class="userform">
+       <div class="stepflex stepflex-3">
+        <ul class="clearfix">
+         <li class="first done">
+          <div class="stepflex-num">
+           <span>1</span>
+          </div>
+          <div class="stepflex-text">
+           验证身份
+          </div></li>
+         <li class="doing">
+          <div class="stepflex-num">
+           <span>2</span>
+          </div>
+          <div class="stepflex-text">
+           更换绑定邮箱
+          </div>
+          <div class="stepflex-progress"></div></li>
+         <li>
+          <div class="stepflex-num">
+           <span><i class="iconfont"></i></span>
+          </div>
+          <div class="stepflex-text">
+           更换成功
+          </div>
+          <div class="stepflex-progress"></div></li>
+        </ul>
+       </div>
+       <form id="submitmobile">
+        <div class="form-group">
+         <label class="form-label" for="emailno"><em>*</em> 新邮箱：</label>
+         <div class="form-element"> 
+          <input class="form-control" id="emailno" type="text" name="emailno" reg="^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" null="请输入邮箱" />
+         </div> 
+        </div>
+        <div class="form-group">
+         <label class="form-label" for="ecodeno"><em>*</em> 邮箱验证码：</label>
+         <div class="form-element"> 
+          <input class="form-control form-control-short" id="ecodeno" name="ecodeno" type="text" />
+          <a class="btn btn-default btn-square pull-left" href="javascript:;" data-href="{:url('home/Api/sendEmail',['scene'=>'setemail','tip'=>'ecodeno'])},,top-left,post" id="emcode">获取验证码</a>
+          <div class="help-block">
+           <p>邮箱验证码 5 分钟内有效，若已失效或未收到验证码，请点击重新获取</p>
+          </div>
+         </div>
+        </div>
+        <div class="form-group-btn">
+		  {:token_field()}
+         <a class="btn btn-primary" href="javascript:;" data-href="{:url('home/Email/setEmail')},,top-left,post">提交</a>
+        </div>
+       </form> 
+      </div>
+	{/neq}
+   </div>
+{/block}

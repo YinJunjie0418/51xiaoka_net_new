@@ -1,0 +1,123 @@
+{extend name="base" /}
+{block name="body"}
+       <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                      <div class="layui-form">
+							  <table class="layui-table">
+								<colgroup>
+								   <col width="110">
+								  <col width="200">
+								  <col width="110">
+								  <col width="180">
+								  <col width="130">
+								  <col >
+								 <col >
+								</colgroup>
+								<tbody>
+								  <tr>
+									<td>业务订单号</td>
+									<td style="color:magenta">{$res.orderno}</td>
+									<td>充值产品</td>
+									<td colspan=3 style="color:red">{$res.types['title']}【{$res.types['mianzhi']}】</td>
+								  </tr>
+								  <tr>
+									<td>业务流水</td>
+									<td>{$res.tmporder}</td>
+									<td>业务号码</td>
+									<td colspan=3 >{$res.number}</td>
+								  </tr>
+								  <tr>
+									<td>充值流水</td>
+									<td>{$res.cardorder}</td>
+                                    <td>充值卡号</td>
+                                   <td colspan=3>{$res.cardno}</td>
+								  </tr>
+								  <tr>
+									<td>状态</td>
+									<td>{:logType($res.state)}</td>
+									<td>备注信息</td>
+									<td colspan=3>{$res.remarks} </td>
+								  </tr>
+								  <tr>
+									<td>提交时间</td>
+									<td>{$res.create_time}</td>
+									<td>处理时间</td>
+									<td colspan=3>{$res.update_time} </td>
+								  </tr>
+								  <tr>
+                                   <td>面值选择</td>
+                                   <td colspan=5>
+                                       <div class="layui-input-block" style="margin-left:0">
+                						  <input type="radio" name="money" value="50000" title="50" {eq name="res.money|default=''" value='50'}checked=""{/eq}><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>50</div></div>
+                						  <input type="radio" name="money" value="100000" title="100" {eq name="res.money|default=''" value='100'}checked=""{/eq}><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><div>100</div></div>
+                						  <input type="radio" name="money" value="200000" title="200" {eq name="res.money|default=''" value='200'}checked=""{/eq} ><div class="layui-unselect layui-form-radio  "><i class="layui-anim layui-icon"></i><div>200</div></div>
+                						  
+                						  <input type="radio" name="money" value="500000" title="500" {eq name="res.money|default=''" value='500'}checked=""{/eq} ><div class="layui-unselect layui-form-radio  "><i class="layui-anim layui-icon"></i><div>500</div></div>
+                						  
+                						  <input type="radio" name="money" value="800000" title="800" {eq name="res.money|default=''" value='800'}checked=""{/eq} ><div class="layui-unselect layui-form-radio  "><i class="layui-anim layui-icon"></i><div>800</div></div>
+                						  
+                						  <input type="radio" name="money" value="1000000" title="1000" {eq name="res.money|default=''" value='1000'}checked=""{/eq} ><div class="layui-unselect layui-form-radio  "><i class="layui-anim layui-icon"></i><div>1000</div></div>
+                						  
+                						   <input type="radio" name="money" value="2000000" title="2000" {eq name="res.money|default=''" value='2000'}checked=""{/eq} ><div class="layui-unselect layui-form-radio  "><i class="layui-anim layui-icon"></i><div>2000</div></div>
+                						</div>
+								  </td>
+                                
+                            </tr>
+                            <tr>
+                                    <td class="am-text-left">
+                                        操作
+                                    </td>
+                                    <td colspan=5>
+    								<div class="layui-inline">
+                                        <div class="layui-input-inline">
+                                            <input id="txtErrinfo" name="txtErrinfo" style="width:400px;    float: left;"  type="text" class="layui-input" placeholder="标单凭证" />
+                                        </div>
+    								  <div class="layui-input-inline">
+    								       <input id="id" name="id" type="hidden" value="{$res.id}" />
+    									<button class="layui-btn " lay-filter="sno" lay-submit="">确定</button>
+    								  </div>
+    								</div>                                    
+                                    </td>
+                                </tr>
+								</tbody>
+							  </table>
+							</div>
+                </form>
+            </div>
+        </div>
+			{/block}
+			{block name="js"}
+			<script>
+		layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+				form.on('submit(sno)',
+                   function(data) {
+				        var id=$("#id").val();
+				        var money=$('input:radio[name="money"]:checked').val();
+				        var str=$('#txtErrinfo').val();
+						layer.confirm('您确定该执行成功操作吗？', function(index){
+								var loading =layer.load(3, {shade: [0.1,'#fff']});
+								$.post("{:url('/CashLog/shenhe')}",{id:id,money:money,str:str},function(res){
+										layer.close(loading);
+										if(res.code==1){
+											layer.alert(res.msg,{icon:1},function(index){
+												layer.close();
+                                                parent.layui.table.reload('tabl');
+                                                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                                                parent.layer.close(index);
+											});
+										}else{
+											layer.alert(res.msg,{icon:2});
+										}
+								})
+							})
+						return false;
+                  
+                });
+
+            });</script>
+				{/block}

@@ -1,0 +1,47 @@
+ {include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">手机设置</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="messager">
+		<div class="messager-icon">
+			<i class="owlicon owlicon-success"></i>
+		</div>
+		<div class="messager-text">
+			<h4 class="messager-title text-success">您已绑定手机</h4>
+			<div class="messager-desc">
+				<p class="text-gray">
+					手机号码：{:tfen($user.mobile,3,4)}
+				</p>
+				<p class="text-light h6">
+					绑定手机可以用于安全验证、找回密码等操作
+				</p>
+			</div>
+		</div>
+		<div class="messager-action">
+			<div class="btn-group">
+				<a class="btn btn-secondary" href="{:url('home/Mobile/upphoto')}">更改绑定手机</a>
+				<a class="btn btn-default" href="{:url('home/Member/index')}">返回我的帐户</a>
+			</div>
+		</div>
+	</div>
+	<div class="warm-prompt">
+		<ul class="list list-disc">
+			<li>您的手机绑定之后，即可享受手机登录、找回密码等服务，让您的网上购物体验更安全更便捷；</li>
+			<li>若您的手机可正常使用但无法接收到验证码，可能是由于通信网络异常造成的，请您稍后重新尝试操作；</li>
+			<li>如果您的手机已经无法正常使用，请提供用户名，手机号，身份证号，联系平台在线客服。</li>
+		</ul>
+	</div>
+</div>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>

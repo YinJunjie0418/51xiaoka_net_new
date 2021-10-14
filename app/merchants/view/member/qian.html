@@ -1,0 +1,22 @@
+<div class="userform">
+
+    {eq name="res.code" value="1"}
+    <div class="layui-form-item" style="height:200px;text-align:center">
+      <img src="{$res.url}" class="layui-input" style="height: 100%;width: 200px;margin:auto">
+    </div>
+    {else/}
+    <div class="prompt prompt-danger">
+      <div class="prompt-icon">
+        <i class="iconimg"></i>
+      </div>
+      <div class="prompt-cont">
+        <h4> {$res.msg}</h4>
+        <div class="action">
+          <a class="btn btn-sm btn-default btn-cancel" href="###" data-dismiss="modal">确定</a>
+        </div>
+      </div>
+    </div>
+    {/eq}
+
+
+</div>

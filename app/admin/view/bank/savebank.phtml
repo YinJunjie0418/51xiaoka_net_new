@@ -1,0 +1,45 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">银行名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="bankName" value="{$data.bankName|default=''}" autocomplete="off" placeholder="请输入银行名称" lay-verify="required" class="layui-input">
+                </div>
+            </div>
+			 <div class="layui-form-item">
+                <label class="layui-form-label">收款人</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" value="{$data.title|default=''}" autocomplete="off" placeholder="请输入收款人名称" lay-verify="required" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">银行账户</label>
+                <div class="layui-input-block">
+                    <input type="text" name="content" value="{$data.content|default=''}" autocomplete="off" lay-verify="required" placeholder="请输入银行账户"  class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">开户地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="city" value="{$data.city|default=''}" autocomplete="off" lay-verify="required" placeholder="请输入开户地址"  class="layui-input">
+                </div>
+            </div>
+			 <div class="layui-form-item">
+                <label class="layui-form-label">日限额</label>
+                <div class="layui-input-block">
+                    <input type="text" name="daymoney" value="{$data.daymoney|default='0'}" autocomplete="off" lay-verify="required" placeholder="输入0不限额"  class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

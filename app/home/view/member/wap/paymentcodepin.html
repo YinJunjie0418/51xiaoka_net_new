@@ -1,0 +1,101 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="#"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">修改密码</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent mycontent-hastabs" id="mycontent">
+     <div class="myfixed">
+		<div class="tabs navbar navbar-inverse">
+			<a id="setcash1" class="tab-item " href="{:url('home/Member/password')}"><span>登陆密码</span></a>
+			<a id="setcash2" class="tab-item active" href="{:url('home/Member/paymentcodepin')}"><span>安全密码</span></a>
+		</div>
+	</div>
+ {empty name="user.mobile"}
+	<div class="matte actionsheet in">
+		<div class="actionsheet-body">
+			<div class="messager">
+				<div class="messager-icon">
+					<i class="owlicon owlicon-safe-warn"></i><i class="avatar avatar-default"></i>
+				</div>
+				<div class="messager-text">
+					<div class="messager-desc">
+						为了账号资金安全，请先绑定手机
+					</div>
+				</div>
+				<div class="btn-group">
+					<a class="btn btn-primary" href="{:url('home/Mobile/setphoto')}">前往绑定手机</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="backdrop in" id="backdrop">
+	</div>
+  {else/}
+  {empty name="user.tradepwd"}
+	<div class="sign-form">
+		<form action="{:url('home/Member/paymentcodepin')}" method="post" id="newpass">
+			<div class="form-group">
+				<input class="form-control" id="paypass" name="tradePwd" type="password" value=""  maxlength="20" null="请输入新的安全密码" placeholder="请输入新的安全密码" err="密码长度6~20为数组字母组合" tabindex="2" data-input="clear">
+				<label class="passeye" for="onoff-newpsw"><input type="checkbox" id="paypass"><i class="eye"></i></label>
+			</div>
+			<div class="form-group">
+							<input class="form-control" type="tel" value="{:tfen($user.mobile,3,4)}" readonly="">
+						</div>
+						<div class="form-group">
+							<input class="form-control" id="codeno" name="codeTran" type="number" reg="[0-9]{6}" null="请输入短信验证码" placeholder="请输入短信验证码">
+							<div class="form-action">
+								<a class="text-blue" href="javascript:;" data-href="{:url('home/Api/sendMsg',['scene'=>'tradepwd','tip'=>'phoneno'])},,top-right,post" id="mcode">获取验证码</a>
+							</div>
+						</div>
+						<div class="form-tips">
+							<p>
+								短信验证码5分钟内有效,若失效或未收到,请重新获取
+							</p>
+						</div>
+			<div class="form-group">
+			   {:token_field()}
+				<button class="btn btn-primary btn-block btn-circle" type="button" data-form="top-left,json" name="newpass" tabindex="5">提交设置</button>
+			</div>
+		</form>
+	</div>
+	{else/}
+	  <div class="messager">
+		<div class="messager-icon">
+			<i class="owlicon owlicon-success"></i>
+		</div>
+		<div class="messager-text">
+			<h4 class="messager-title text-success">您已设置安全密码</h4>
+			<div class="messager-desc">
+				<p class="text-light h6">
+					安全密码使用于资金操作
+				</p>
+			</div>
+		</div>
+		<div class="messager-action">
+			<div class="btn-group">
+				<a class="btn btn-secondary" href="{:url('home/Editpass/index')}">更改安全密码</a><a class="btn btn-default" href="{:url('home/Member/index')}">返回我的帐户</a>
+			</div>
+		</div>
+	</div>
+	<div class="warm-prompt">
+		<ul class="list list-disc">
+			<li>您的安全密码开启之后，才可以进行提现等操作，让您的网上购物体验更安全更便捷；</li>
+			<li>若您的邮箱可正常使用但是收不到验证码，请检查您的垃圾邮件或广告邮件，并建议您在邮箱设置中，请查看垃圾邮件，如果您5分钟内仍未收到验证邮件，您可以重新发送；</li>
+			<li>如果您的邮箱或手机已经无法正常使用，请提供用户名，手机号，身份证号，联系平台在线客服。</li>
+		</ul>
+	</div>
+	{/empty}
+{/empty}
+</div>
+</section>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>

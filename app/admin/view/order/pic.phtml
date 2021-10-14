@@ -1,0 +1,19 @@
+{extend name="iframe" /}
+{block name="body"}
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                          物品图片
+                        </div>
+						{volist name="$img" id="v" empty="没有图片~~"}
+                        <div class="layui-card-body ">
+						  <div class="layui-anim"><img style="width:600px;height:600px" src="{$v}"></div>
+                        </div>
+						{/volist}
+                    </div>
+                </div>
+              </div>
+            </div>
+			{/block}

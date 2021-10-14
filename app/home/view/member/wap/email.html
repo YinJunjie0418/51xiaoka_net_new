@@ -1,0 +1,40 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">邮箱设置</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="messager">
+		<div class="messager-icon">
+			<i class="owlicon owlicon-success"></i>
+		</div>
+		<div class="messager-text">
+			<h4 class="messager-title text-success">您已绑定邮箱</h4>
+			<div class="messager-desc">
+				<p class="text-gray">
+					邮箱地址：{:tfen($user.email,3,4)}
+				</p>
+				<p class="text-light h6">
+					绑定邮箱可以用于安全验证、找回密码等操作
+				</p>
+			</div>
+		</div>
+		<div class="messager-action">
+			<div class="btn-group">
+				<a class="btn btn-secondary" href="{:url('home/Email/upEmail')}">更改邮箱</a><a class="btn btn-default" href="{:url('home/Member/index')}">返回我的帐户</a>
+			</div>
+		</div>
+	</div>
+	<div class="warm-prompt">
+		<ul class="list list-disc">
+			<li>您的邮箱绑定之后，即可享受邮箱登录、找回密码等服务，让您的网上购物体验更安全更便捷；</li>
+			<li>若您的邮箱可正常使用但是收不到验证码，请检查您的垃圾邮件或广告邮件，并建议您在邮箱设置中，请查看垃圾邮件，如果您5分钟内仍未收到验证邮件，您可以重新发送；</li>
+			<li>如果您的邮箱已经无法正常使用，请提供用户名，手机号，身份证号，联系平台在线客服。</li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

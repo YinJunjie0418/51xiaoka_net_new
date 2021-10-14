@@ -1,0 +1,351 @@
+{extend name="layout/member" /} 
+{block name="content"}
+  <style>
+      .feilv{
+          height: 50px;
+            border-radius: 5px;
+            border: 2px solid #e4ecfa;
+            padding-left: 8px;
+            font-size: 18px;
+            float: left;
+      }
+      .feilv:focus{
+           border: 2px solid #ff1880
+      }
+      #feilvnote{
+          display: block;
+            width: 50%;
+            float: left;
+            margin-left: 20px;
+      }
+  </style>
+    <div class="view-framework-body">
+   <div class="view-framework-main">
+	<div class="box py10">
+	<div class="recycle-primary">
+    <div class="container">
+     <div class="recycle-former" id="recycleFormer">
+      <form method="post" name="sell" id="sell">
+       <div class="form-group">
+        <div class="col-xs-1">
+         <label class="control-label">选择种类：</label>
+        </div>
+        <div class="col-xs-11">
+         <ul class="btn-group btn-group-tall clearfix" id="cardSpecies">
+             {volist name="model" id="p"}
+                <li {eq name="key" value="0"}  class="active"{/eq} onclick="cselect(this,'{$p.title}');">
+                    <a class="btn" href="javascript:;"  style="height: 40px;">
+                        <span class="title" style="height: 40px;line-height: 40px;margin:unset">{$p.title}</span>
+                    </a>
+                </li>
+            {/volist}
+         </ul>
+        </div>
+       </div>
+       <hr />
+       <div class="recycle-opening" id="recycle-opening">
+        <div class="isQbi">
+         <div class="form-group" id="card-facevalue-wrapper">
+          <div class="col-xs-1">
+           <label class="control-label" id="recycle-danzhang">充值面值：</label>
+          </div>
+          <div class="col-xs-11 card-facevalue-box">
+           <ul class="btn-group btn-group-value clearfix" id="cardFacevalue">
+             
+           </ul>
+           <div class="card-facevalue-tips"></div>
+          </div>
+         </div>
+         <hr />
+         <div class="form-group" id="batch">
+          <div class="col-xs-1">
+           <label class="control-label" id="recycle-batch">提交方式：</label>
+          </div>
+          <div class="col-xs-11">
+           <ul class="btn-group btn-group-figure btn-group-units clearfix" id="chooseMode">
+            <li class="active"><a class="btn" id="choose-batch" href="#batchMode"><i class="iconfont iconfont-batch"></i>批量提交<b></b></a></li>
+             <li><a class="btn" id="choose-single" href="#batchMode"><i class="iconfont iconfont-batch"></i>上传提交<b></b></a></li>
+           </ul>
+           <p class="text-orange h4 pt10 hide" id="cardnote"></p>
+          </div>
+         </div>
+         <div class="recycle-mode" id="batchMode">
+          <div class="form-group">
+           <div class="col-xs-1">
+            <label class="control-label" id="recycle-cardnopsw">充值号码/数量：</label>
+           </div>
+           <div class="col-xs-11">
+            <div class="textarea-wrapper">
+             <textarea style="resize: none;" class="form-control" name="cardlist" id="cardlist"  wrap="off"></textarea>
+               <div class="textarea-tips">
+              <div class="mask-black"></div>
+              <ul class="textarea-tips-list" id="card-tips">
+               <li class="textarea-attention"><i class="iconfont iconfont-tips"></i> <p class="text-red nocode">充值号码与数量之间请用<strong class="text-orange">“空格”</strong>隔开，如数量为1可不填，<br />每个充值号码与数量占用一行用 <strong class="text-orange">&quot;回车(Enter键)&quot;</strong> 隔开，例：</p><p class="h5 text-gray" id="cardlizi">s555444@163.com 2</p></li>
+              </ul>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+          <div class="recycle-mode hide" id="uploadMode">
+          <div class="form-group">
+           <div class="col-xs-1">
+            <label class="control-label">上传文件：</label>
+           </div>
+           <div class="col-xs-11">
+            <div class="uploadimg-group clearfix" id="uploadimg-group">
+             <ul id="uploadimg-preview"></ul>
+             <div class="uploadimg-btn">
+              <label class="btn btn-default btn-uploadfile" for="uploadimg"  id="uploadimg"><span><i class="iconfont"></i>上传<em class="upload-text">文件</em></span></label>
+             </div>
+            </div>
+            <div class="help-block">
+             <p><strong class="text-red">仅支持xlsx,请将数据放到AB两列，A列为账号B列为充值金额。单次上传文本所包含的充值信息最多2000条</strong></p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="recycle-sumbit" id="recycle-sumbit">
+         <hr />
+         <div id="recycle-check">
+          <div class="form-group">
+           <div class="col-xs-11 col-xs-offset-1">
+            <label class="checkbox" for="protocol"><input type="checkbox" id="protocol" checked="checked" /><span class="checkbox-text"> 我已阅读，理解并接受「<a class="text-blue" target="_blank" href="{:url('home/Helpfaq/danye',['id'=>21])}">{$C.sitename}礼品卡转让协议</a>」和「<a class="text-blue" target="_blank" href="{:url('home/Helpfaq/danye',['id'=>20])}">礼品卡回收说明</a>」</span></label>
+           </div>
+          </div>
+          <div class="form-group" id="isFaceerr">
+           <div class="col-xs-11 col-xs-offset-1">
+            <label class="checkbox" for="faceerr"><input type="checkbox" id="faceerr" /><span class="checkbox-text">我已确认本次<strong class="text-primary">充值金额选择正确及充值账号和充值数量</strong>准确无误，<strong class="text-primary">如有错误余额恕不退还！损失自行承担！</strong></span></label>
+           </div>
+          </div>
+         </div>
+         <hr />
+         <div class="form-group isQbi">
+          <div class="col-xs-11 col-xs-offset-1">
+           <input type="hidden" name="urgent" id="urgentval" value="0" />
+           <input type="hidden" name="type" id="type" value="0" />
+           <input type="hidden" name="title"  value="" />
+		   <input type="hidden" name="cardid"  value="0" />
+           <button class="btn btn-green btn-lg btn-sellform btn-disabled" type="button" id="sellbutton" name="sell">确认提交充值</button>
+          </div>
+         </div>
+        </div>
+       </div>
+      </form>
+     </div>
+    </div>
+   </div>
+	</div>
+</div>
+</div>
+   {/block}
+   {block name="js"}
+   <script src="__JS__/webuploader.min.js"></script>
+   <script>
+   var uploader = "";
+   upload();
+   cselect($("#cardSpecies li:first"),"{$title}");
+   function cselect(a,e){
+       $("#cardSpecies").find('li').removeClass('active');
+       $("input[name=title]").val(e);
+       $(a).addClass('active');
+       $.post("{:url('merchants/CashApi/sellmianzhi')}",{title:e},function(res){
+           console.log(res);
+           if(res.code==0){
+               var html='';
+               for(var i=0;i<res.data.length;i++){
+                   if(i==0){
+                        $("input[name=cardid]").val(res.data[i].id);
+                       html+='<li class="active" onclick="pselect(this,'+res.data[i].id+')">';
+                   }else{
+                      html+='<li onclick="pselect(this,'+res.data[i].id+')">'; 
+                   }
+                    html+='<a class="btn" href="javascript:;" >';
+                    html+='<strong>'+res.data[i].mianzhi+'</strong>';
+                    let sdf=res.data[i].rate*100;
+                    html+='<small><span class="text-red">'+sdf.toFixed(2)+'折</span>';
+                    html+='</small></a></li>';
+               }
+               $("#cardFacevalue").html(html);
+           }
+       })
+   }
+   
+  function pselect(b,c){
+       $("#cardFacevalue").find('li').removeClass('active');
+       $(b).addClass('active');
+       $("input[name=cardid]").val(c);
+  }
+  
+  $("#choose-batch").click(function(){
+      $(this).parent().addClass("active");
+      $("#choose-single").parent().removeClass("active");
+      $("#batchMode").show();
+      $("#uploadMode").hide();
+      $("#card-facevalue-wrapper").show();
+      $("input[name=type]").val(0);
+  })
+  
+  $("#choose-single").click(function(){
+      $(this).parent().addClass("active");
+      $("#choose-batch").parent().removeClass("active");
+      $("#uploadMode").show();
+      $("#batchMode").hide();
+      $("#card-facevalue-wrapper").hide();
+      $("input[name=type]").val(1);
+  })
+  var aca=true,acb=false;
+   $("#protocol").click(function(e){
+        var isok=$(this).is(':checked');
+        if(isok){
+            aca=true;
+        }else{
+            aca=false;
+        }
+        if(aca && acb){
+            $("#sellbutton").attr('disabled',false).removeClass('btn-disabled');
+        }else{
+            $("#sellbutton").attr('disabled',true).addClass('btn-disabled');
+        }
+    })
+    
+    $("#faceerr").click(function(e){
+        var isok=$(this).is(':checked');
+        console.log(isok);
+         if(isok){
+            acb=true;
+        }else{
+            acb=false;
+        }
+        if(aca && acb){
+            $("#sellbutton").attr('disabled',false).removeClass('btn-disabled');
+        }else{
+            $("#sellbutton").attr('disabled',true).addClass('btn-disabled');
+        }
+    })
+    
+    $("#sellbutton").click(function(){
+        var type=$("#type").val();
+         if(type==0){
+             subcard();
+         }else{
+             $("#sellbutton").text("上传中...").prop("disabled", !0).addClass("btn-disabled"), ccardupload();
+         }
+    })
+    
+    function ccardupload() {
+    	uploader.upload();
+    	$("#sellbutton").text("确认提交充值").removeAttr("disabled").removeClass("btn-disabled")
+    };
+    
+    function subcard(){
+        var a= $("#sell"),b= 0,c= -1;
+        formtest(a, 1) && (loading(!0), $.post("{:url('merchants/Card/topay')}", $("#sell").serializeArray(), function(a) {
+		loading(!1);
+		$("#sellbutton").text("确认提交充值").removeAttr("disabled").removeClass("btn-disabled");
+		if ("login" == a.run) $.get("/signlogin.html?callback=tijiao()", function(a) {
+			$("#modal-dialog").html(a).width(420).modal({
+				title: "用户登录！",
+				modal: !0,
+				header: !1
+			}).datatoggle().ajaxsubmit().tooltip()
+		});
+		else if (2 == a.state) {
+			var b = "",
+				e = 0;
+			if (2 == a.type) $.each(a.list, function(a, b) {
+				$("#WU_FILE_" + (a - 1)).find(".success").remove();
+				$("#WU_FILE_" + (a - 1)).append('<div class="error"><i class="iconfont">&#xe63a;</i>' + b + "</div>")
+			});
+			else if ($("#card-tips").html(""), 0 < a.num) {
+				for (x = 0; x <a.num; x++) b += '<li id="c_' + x + '"></li>';
+				$("#card-tips").html(b);
+				$.each(a.list, function(a, b) {
+					$("#c_" + a).text(b);
+					e += 1
+				})
+			}
+			b = "";
+			3 > e ? $.each(a.list, function(a, d) {
+				b += '<span class="text-red">' + d + "</span><br>"
+			}) : b += '点击“<span class="text-red">返回修改</span>”查看错误原因';
+			openconfirm({
+				width: 450,
+				name: a.content,
+				content: b,
+				prompt: "warning",
+				cancel: "返回修改",
+				callback: function(a) {
+					submitcard(a, 1)
+				}
+			})
+		} else 2 == a.type && ($("#cardlist").val(""), a.list && $.each(a.list, function(a, b) {
+			$("#WU_FILE_" + (a - 1)).find(".success").remove();
+			$("#WU_FILE_" + (a - 1)).append('<div class="error"><i class="iconfont">&#xe63a;</i>' + b + "</div>")
+		})), out_json(a);
+		a = null
+	}, "json"))
+
+    }
+    
+   function upload() {
+		var a = "";
+		uploader = WebUploader.create({
+			auto: !1,
+			swf: "/servtools/js/Uploader.swf",
+			server: "{:url('merchants/Account/uploadImage')}",
+			method: "POST",
+			fileVal: "file",
+			formData: {
+				ajax: 1
+			},
+			pick: "#uploadimg",
+			fileSizeLimit: 1*1024*1024,
+			accept: {
+              title: 'file',
+              extensions: 'xlsx,xls',
+              mimeTypes: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }
+		});
+
+		uploader.on("beforeFileQueued", function(a) {
+			if (2 < $("#uploadimg-preview li").length) return alert("最多只可一份文件！"), !1
+		});
+		uploader.on("fileQueued", function(a){
+				$li = $("#uploadimg-preview");
+				$li.html('<li id="asd"><div class="success"><i class="iconfont">&#xe639;</i>'+a.name+'</div></li>')
+		});
+		uploader.on("uploadProgress", function(a, b) {
+			var c = $("#asd"),
+				e = c.find(".progress .progress-bar");
+			e.length ? e.css("width", 100 * b + "%") : (c.append('<div class="progress"><div class="progress-bar progress-bar-success"></div></div>'), c.find(".progress .progress-bar").css("width", 100 * b + "%"))
+		});
+		uploader.on("uploadSuccess", function(b, c) {
+			c.imgurl ? (a = c.imgurl + "\n" + a, $("#asd").attr("data-url", c.imgurl).append('<div class="success"><i class="iconfont">&#xe639;</i>上传完成</div>')) : $("#asd").append('<div class="error"><i class="iconfont">&#xe63a;</i>' + c.content + "</div>")
+		});
+		uploader.on("uploadError", function(a, b) {
+		    console.log(a,b);
+			$("#asd").append('<div class="error"><i class="iconfont">&#xe63a;</i>' + b + "</div>")
+		});
+		uploader.on("uploadFinished", function() {
+			$("#cardlist").val(a);
+			subcard();
+		});
+		uploader.on("error",function (type){ 
+		    console.log(type);
+          if(type == "Q_EXCEED_SIZE_LIMIT"){
+              $li = $("#uploadimg-preview");
+			  $li.html('<li id="asd"><div class="error"><i class="iconfont">&#xe63a;</i>文件太大</div></li>')
+         }
+        });
+		uploader.on("fileDequeued", function(b) {
+			var c = $("#asd").attr("data-url");
+			c && $("#cardlist").val(a.replace(c + "\n", ""));
+			$("#asd").remove()
+		})
+    }
+    
+       
+   </script>
+   {/block}

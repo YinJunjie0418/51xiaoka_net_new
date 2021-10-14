@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{$title}后台管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/static/simple/hqui/libs/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/static/simple/hqui/module/admin.css?v=3116"/>
+  <link rel="stylesheet" href="/static/simple/css/fonts.css">
+  <link rel="stylesheet" href="/static/simple/css/base.css">
+  <style>
+      html,body{height:100%}
+  </style>
+  {block name="css"}{/block}
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        {block name="body"}{/block}
+    </div>
+</div>
+<script>
+var imagea="{:url('/uploads/uploadImage')}",imageb="{:url('/uploads/uploadImage')}",upfile="{:url('/uploads/upFile')}",Video="{:url('/uploads/uploadVideo')}",imagec="{:url('/uploads/uploadImage')}";
+</script>
+<script type="text/javascript" src="/static/simple/hqui/libs/layui/layui.all.js?v=15"></script>
+<script type="text/javascript" src="/static/simple/js/jquery.min.js?v=11"></script>
+<script type="text/javascript" src="/static/simple/js/layui.base.js?v=185"></script>
+<script type="text/javascript" src="/static/simple/hqui/js/common.js?v=317"></script>
+{block name="js"}
+{/block}
+<script>
+    var str="{:session('admin_auth.username')}  {:date('Y-m-d H:i:s')}";
+    TpWatermark(str,'100','400','-15','#aaa','18','.12');
+</script>
+</body>
+</html>

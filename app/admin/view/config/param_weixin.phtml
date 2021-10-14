@@ -1,0 +1,106 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">参数配置</div>
+    <div class="layui-card-body" pad15>
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li><a href="{:url('/config/param',['model'=>'qiniu'])}">七牛配置</a></li>
+                <li class="layui-this"><a href="{:url('/config/param',['model'=>'weixin'])}">公众号配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxapp'])}">APP配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'wxpay'])}">微信支付</a></li>
+				 <li><a href="{:url('/config/param',['model'=>'alipay'])}">支付宝配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'qcloudsms'])}">短信配置</a></li>
+                <li><a href="{:url('/config/param',['model'=>'baiduapp'])}">百度数据</a></li>
+				<li><a href="{:url('/config/param',['model'=>'email'])}">邮件配置</a></li>
+				<li><a href="{:url('/config/param',['model'=>'cash'])}">提现配置</a></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form action="{:url('/config/param',['model'=>'weixin'])}" class="layui-form" method="post">
+					<div class="layui-form-item">
+						<label class="layui-form-label">公众号二维码</label>
+						<div class="layui-input-block">
+							<div class="layui-upload-list">
+								<img class="layui-upload-img" id="test-upload-normal-img" src="{$list.wxewm|default=''}" width="110" height="110">
+							</div>
+							<input type="hidden" name="wxewm" value="{$list.wxewm|default=''}" autocomplete="off" placeholder="" class="layui-input">
+							<button type="button" class="layui-btn ajax-avatar"><i class="fa fa-file-image-o"></i> 选择图片</button>
+						</div>
+					</div>
+                    <!--<div class="layui-form-item">
+                        <label class="layui-form-label">Appid</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="appid" value="{$list.appid}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">AppSecret</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="appsecret" value="{$list.appsecret}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">Token</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="token" value="{$list.token}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">AesKey</label>
+                        <div class="layui-input-inline" style="width: 400px;">
+                            <input type="text" name="aes_key" value="{$list.aes_key}" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-input-company"></div>
+                    </div>-->
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit  lay-filter="*">确认保存</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class="layui-form" wid100 lay-filter="">
+        
+            
+            
+            
+            
+        
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="https://cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
+<script>
+    element.on('tab(demo)', function(data){
+            var that = $(this);
+            var model = data.value;
+            console.log(data);
+            $.ajax({ 
+                type: 'POST',
+                url: "/user/charge/get_course_data/",
+                data:{course_id:course_id},
+                success:function(ret) {    
+                    //console.log(ret);
+                    that.closest("tr").find("select[name='course_data_id[]']").empty();
+                    that.closest("tr").find("select[name='course_data_id[]']").append("<option value=''>请选择专业</option>");
+                    $.each(ret, function(i,item){
+                        //console.log(item.level);
+                        that.closest("tr").find("select[name='course_data_id[]']").append("<option value="+item.id+">"+item.level+"</option>");
+                    });
+                    form.render('select');
+                },
+                dataType:'json',
+            });
+        });
+</script>
+{/block}

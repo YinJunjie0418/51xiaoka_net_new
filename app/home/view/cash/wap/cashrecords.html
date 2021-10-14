@@ -1,0 +1,64 @@
+ {include file="layout/wap/tou2" /}
+ <style>
+ .lay-span {
+    padding: 3px 10px;
+    color: #FFF;
+    border-radius: 5px;
+	}
+ </style>
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title"><span class="header-toggle" data-toggle="matte" data-target="#calendar">提现记录 <i class="iconfont iconfont-filter"></i></span></h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+
+	{volist name="list" id="p" empty="$empty"}
+		<div class="card">
+		<a class="cell cell-access" href="">
+		  <div class="cell-bd">
+				<h5><span class="text-light">提现日期：</span>{$p.create_time}</h5>
+				<p>
+					<span class="text-light">提现金额：</span>{$p.money}
+				</p>
+				<p>
+					<span class="text-light">提现账号：</span>{$p.bankname}-{$p.accounts}
+				</p>
+				<p>
+					<span class="text-light">状态：</span>{:htmlspecialchars_decode($p.status)}  - <span class="text-red">{$p.content}</span>
+				</p>
+			</div>
+			</a>
+		</div>
+      {/volist}
+		<div class="card">
+		{$list|raw}
+		</div>
+
+	<div class="matte actionsheet" id="calendar">
+		<div class="actionsheet-header">
+			<h4>选择时间查询</h4>
+			<button class="close" type="button" data-dismiss="matte"></button>
+		</div>
+		<div class="actionsheet-body">
+			<div class="datafilter">
+				<form action="{:request()->url()}" method="get" id="formsubmit">
+					<div class="grids grids-tabs filter-date">
+						<a class="grid " href="javascript:;" onclick="submitset('day',1)"><span>今天</span></a><a class="grid " href="javascript:;" onclick="submitset('day',7)"><span>最近7天</span></a><a class="grid " href="javascript:;" onclick="submitset('day',30)"><span>1个月</span></a><a class="grid " href="javascript:;" onclick="submitset('day',60)"><span>2个月</span></a><a class="grid " href="javascript:;" onclick="submitset('day',90)"><span>3个月</span></a><a class="grid " href="javascript:;" onclick="submitset('day',365)"><span>1年</span></a>
+					</div>
+					<input type="hidden" name="day" value="1">
+				</form>
+			</div>
+		</div>
+		<div class="actionsheet-action">
+			<div class="btn-group">
+				<a class="btn btn-primary" href="{:url('home/Cash/cashrecords')}">全部提现记录</a>
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+</body>
+</html>

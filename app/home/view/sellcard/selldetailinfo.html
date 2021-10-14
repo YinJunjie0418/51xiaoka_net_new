@@ -1,0 +1,190 @@
+{extend name="layout/member" /} 
+{block name="content"}
+    <div class="view-framework-main">
+	<div class="box">
+		<h2 class="box-caption">卖卡详情<span class="h4 pl10 text-muted">（单号：{$res['batchno']}<span class="sep">|</span>{$res['time']}）</span></h2>
+		<div class="box sellrecords-steps">
+			<ul class="order-delivery-steps clearfix">
+				<li class="step-done">
+				<div class="rate">
+					<i class="icon"></i>
+				</div>
+				<h5>卖卡提交</h5>
+				<p>
+					{$res['create_time']}
+				</p>
+				</li>
+				{empty name="res['update_time']"}
+				<li class="step-doing">
+				<div class="rate">
+					<i class="icon"></i>
+				</div>
+				<h5>等待受理</h5>
+	
+				</li>
+				<li class="step-doing">
+				<div class="rate">
+					<i class="icon"></i>
+				</div>
+				<h5>验卡处理</h5>
+				
+				</li>
+				<li class="step-doing">
+				<div class="rate">
+					<i class="icon"></i>
+				</div>
+				<h5>等待处理结果</h5>
+				</li>
+				{else/}
+				<li class="step-done">
+				<div class="rate">
+					<i class="icon"></i>
+				</div>
+				<h5>等待受理</h5>
+				<p>
+					{$res['update_time']}
+				</p>
+				</li>
+				{empty name="$res['chulitime']"}
+				<li class="step-doing">
+				<div class="rate">
+					<i class="icon"></i>
+				</div>
+				<h5>验卡处理</h5>
+				
+				</li>
+				<li class="step-doing">
+				<div class="rate">
+					<i class="icon"></i>
+				</div>
+				<h5>等待处理结果</h5>
+				</li>
+				{else/}
+				<li class="step-done">
+				<div class="rate">
+					<i class="icon"></i>
+				</div>
+				<h5>验卡处理</h5>
+				<p>
+					{$res['chulitime']}
+				</p>
+				</li>
+				<li class="step-done">
+				<div class="rate">
+					<i class="icon"></i>
+				</div>
+				<h5>{$da.state|raw}</h5>
+				<p>
+					{$res['chulitime']}
+				</p>
+				</li>
+				{/empty}
+				{/empty}
+			</ul>
+		</div>
+		<div class="alert alert-info">
+		    <div class="form-group-btn" style="display: inline-block;"><button class="btn btn-green"  data-href="{:url('home/Sellcard/reissued',['batchno'=>$res['batchno']])},href,top-left,get" style="margin-top:0" type="button">一键导出失败卡密</button></div>
+			此次交易共{$da.num}张卡，交易成功： <span class="text-red fsz16">{$da['ok']}</span> 张，失败 <span class="text-red fsz16">{$da['err']}</span> 张，您共获得： <span class="text-red fsz16">¥{$da['money']}</span> 元，款项已经打入您的账户余额中，你可以查看 <a href="{:url('home/Member/index')}">账户余额</a>。
+		</div>
+		<div class="form-group">
+			<button class="btn btn-primary btn-sm btn-square px30 order-cancel" type="button">取消订单</button>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-custom selldetail-records">
+			<thead>
+			<tr>
+				<th width="30">
+					<label class="checkbox"><input type="checkbox" class="order-cancel-all"><span class="checkbox-text"> </span></label>
+				</th>
+				<th class="genre">
+					卡类
+				</th>
+				<th class="card">
+					卡号
+				</th>
+				<th class="code">
+					卡密
+				</th>
+				<th class="price">
+					面值
+				</th>
+				<th class="price">
+					实际面值
+				</th>
+				<th class="recycle">
+					结算金额
+				</th>
+				<th class="state">
+					状态
+				</th>
+				<th class="time">
+					处理时间
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+			{volist name="data" id="p"}
+			<tr>
+				<td>
+					<label class="checkbox" ><input type="checkbox" value="{$p.id}" class="order-cancel-checkbox"><span class="checkbox-text"></span></label>
+				</td>
+				<td class="genre">
+					{$p.title}
+				</td>
+				<td class="card">
+					{$p.card_no}
+				</td>
+				<td class="code">
+					{$p.card_key}
+				</td>
+				<td class="price">
+					¥{$p.money}
+				</td>
+				<td class="price">
+					¥{$p.settle_amt}
+				</td>
+				<td class="recycle text-green">
+					¥{$p.amount}
+				</td>
+				<td class="state">
+				   {switch name="$p->getData('state')"}
+				   {case value="0"}
+				    <span class="text-gray" >等待验证</span>
+				   {/case}
+				   {case value="1"}
+				   <span class="text-danger" >处理中{if $p['remarks']}
+					[{$p.remarks}]
+					{/if}</span>
+				   {/case}
+					{case value="4"}
+					<span class="text-danger" >处理中</span>
+					{/case}
+				   {case value="2"}
+				   <span class="text-success" >处理成功</span>
+				   {/case}
+				   {case value="3"}
+				    <span class="text-red" title="{$p.remarks}">失败[{$p.remarks}]</span>
+				   {/case}
+				   {case value="8"}
+				    <span class="text-red" title="{$p.remarks}">失败[{$p.remarks}]</span>
+				   {/case}
+				   {case value="7"}
+				    <span class="text-red" title="{$p.remarks}">失败[{$p.remarks}]</span>
+				   {/case}
+					{/switch}
+				</td>
+				<td class="time">
+					{$p.update_time|default='-'}
+				</td>
+			</tr>
+			{/volist}
+			</tbody>
+			</table>
+			{empty name="data"}{$empty|raw}{/empty}
+		</div>
+			<div class="pb20">
+			  {$data|raw}
+       </div>
+	</div>
+</div>
+   {/block}

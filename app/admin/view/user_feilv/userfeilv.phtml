@@ -1,0 +1,117 @@
+{extend name="base" /}
+{block name="css"}
+<style>
+    #treeTbTree {
+        height: 100%;
+        overflow: auto;
+    }
+
+    @media screen and (max-width: 768px) {
+        #treeTbTree {
+            height: auto;
+        }
+    }
+
+    /** dtree选中颜色重写 */
+    .dtree-theme-item-this {
+        background-color: #eeeeee !important;
+    }
+</style>
+<style>
+    .ew-iframe-body {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        overflow: auto;
+    }
+</style>
+{/block}
+{block name="body"}
+<!-- 正文开始 -->
+
+<div class="layui-row layui-col-space15">
+    <!-- 左树 -->
+    <div class="layui-col-sm12 layui-col-md4 layui-col-lg2" style="width:25%">
+        <div class="layui-card" >
+            <div class="layui-card-body mini-bar" id="treeTbTree" style="height: 610px;overflow: scroll;">
+			 <div class="layui-btn-container">
+			    {foreach name="list" item="vo" key="k" }
+				   <button type="button" class="layui-btn layui-btn-primary" value="{$vo.id}" style="width:100%">{$vo.title}</button>
+				{/foreach}
+			  </div>
+            </div>
+        </div>
+    </div>
+    <!-- 右表 -->
+    <div class="layui-col-sm12 layui-col-md8 layui-col-lg10" style="width:75%">
+            <table id="tableTbTree" lay-filter="tableTbTree"></table>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="status">
+    <input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="开启|禁用" data-url="{:url('/UserFeilv/setfeilv')}?id={{d.id}}" {{d.status==1?'checked':''}}>
+</script>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+		var insTb = table.render({
+            elem: '#tableTbTree',
+            url: "{:url('/UserFeilv/getFeilv')}",
+            where:{id:{$id},cid:$("#treeTbTree button:first").attr('value')},
+            page: true,
+            limit:10,
+            limits:[15,30,45,60,75,90],
+            cellMinWidth: 100,
+            cols: [[
+                {type:'numbers',title:'#'},
+                {field: 'mianzhi',align: 'content', sort: true, title: '面值'},
+				{field: 'feilv', align: 'content', title: '费率',edit:'text'},
+                {field: 'status', align: 'content',toolbar: '#status', title: '状态'},
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.length, //解析数据长度
+                  "data": res.data //解析数据列表
+                };
+            }
+        });
+
+		  //监听单元格编辑
+		  table.on('edit(tableTbTree)', function(obj){
+			var value = obj.value //得到修改后的值
+			,data = obj.data //得到所在行所有键值
+			var index = layer.msg('正在修改数据，请稍候', {icon: 16,time: false,shade: 0.3});
+			$.post("{:url('/UserFeilv/setfeilv')}?id="+data.id,{feilv:value},function(e){
+				 layer.close(index);
+				layer.msg(e.msg);
+			})
+		  });
+		 $("#treeTbTree").on("click","button",function(){
+		    var e=$(this);
+			e.siblings().addClass("layui-btn-primary");
+			e.removeClass("layui-btn-primary");
+            var name=e.attr('value');
+                 insTb.reload({
+					page:{curr:1},
+                    where:{
+						 id:{$id},
+						 cid:name
+                     }
+                 });
+		});
+		$("#treeTbTree button:first").removeClass("layui-btn-primary");
+    });
+</script>
+{/block}

@@ -1,0 +1,122 @@
+{extend name="base" /}
+{block name="body"}
+       <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                      <div class="layui-form">
+							  <table class="layui-table">
+								<colgroup>
+								   <col width="110">
+								  <col width="170">
+								  <col width="110">
+								  <col width="180">
+								  <col width="130">
+								  <col >
+								 <col >
+								</colgroup>
+								<tbody>
+								  <tr>
+									<td>订单号</td>
+									<td>{$res.orderno}</td>
+									<td>运营商</td>
+									<td colspan=3>{$res.classa}</td>
+								  </tr>
+								  <tr>
+									<td>卡号</td>
+									<td>{$res.card_no}</td>
+									<td>密码</td>
+									<td>{$res.card_key|default='--'}</td>
+									<td>验证码/CVV2码</td>
+									<td>{$res.seccode|default='--'}</td>
+								  </tr>
+								  <tr>
+									<td>提交面额</td>
+									<td>{$res.money}</td>
+									<td>实际面额</td>
+									<td colspan=3><div class="layui-input-inline"><input name="settle_amt" type="text" class="layui-input" style="width:150px"  value="{$res.settle_amt}"></div><div class="layui-input-inline" style="margin-left:8px"><div class="text-danger">可以手动输入实际面值</div></div></td>
+								  </tr>
+								  <tr>
+									<td>用户金额</td>
+									<td>{$res.amount}</td>
+									<td>赔付金额</td>
+									<td colspan=3><div class="layui-input-inline"><input  name="xitmoney" type="text" class="layui-input" style="width:150px" value="{$res.settle_amt*$res.feilv-$res.amount}" lay-verify="required|number"></div><div class="layui-input-inline" style="margin-left:8px"><div class="text-danger">可以手动输入本单结算价</div></div></td>
+								  </tr>
+								  <tr>
+									<td>卡状态</td>
+									<td>{$res.state|raw}</td>
+									<td>错误详情</td>
+									<td colspan=3>{$res.remarks}</td>
+								  </tr>
+								  <tr>
+									<td>提交时间</td>
+									<td>{$res.create_time}</td>
+									<td>处理时间</td>
+									<td colspan=3>{$res.update_time} </td>
+								  </tr>
+								  <tr>
+									<td>提交IP</td>
+									<td>{$res.ip}</td>
+									<td>渠道</td>
+									<td colspan=3>{$res.atype} </td>
+								  </tr>
+								  <tr>
+                                   
+                                <td class="am-text-left">
+                                    操作
+                                </td>
+
+                                <td colspan=5>
+								<div class="layui-inline" >
+								 
+								  <div class="layui-input-inline">
+								      <input type="hidden" id="textid" value="{$res.id}">
+									<button class="layui-btn layui-btn-danger"  lay-filter="sok" lay-submit="">确定赔付</button>
+								  </div>
+								</div>
+							                                 
+                                </td>
+                                
+                            </tr>
+								</tbody>
+							  </table>
+							</div>
+                </form>
+            </div>
+        </div>
+			{/block}
+			{block name="js"}
+			<script>
+		layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+                //监听提交
+                form.on('submit(sok)',
+                   function(data) {
+				        var id=$("#textid").val();
+				        var mianzi=$("input[name=settle_amt]").val();
+				        var xitmoney=$("input[name=xitmoney]").val();
+						layer.confirm('您确定要订单赔付吗？', function(index){
+								var loading =layer.load(3, {shade: [0.1,'#fff']});
+								$.post("{:url('/Order/setStatus')}",{id:id,mianzi:mianzi,xitmoney:xitmoney},function(res){
+										layer.close(loading);
+										if(res.code==1){
+											layer.alert(res.msg,{icon:1},function(index){
+												 layer.close();
+												 window.parent.location.reload();
+												 layer.closeAll();
+											});
+								        }else{
+										layer.alert(res.msg,{icon:2});
+										}
+										
+								})
+							})
+						return false;
+                  
+                });
+				
+
+            });</script>
+				{/block}

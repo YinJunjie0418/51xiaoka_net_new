@@ -1,0 +1,40 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$C['title']} </title>
+  <meta name="keywords" content="{$res['keywords']}" />
+  <meta name="description" content="{$res['description']}" />
+  <style>
+  .timeline-listing li{
+	  border-bottom: 1px #e5e5e5 dashed;
+      height: 38px;
+      line-height: 38px;
+  }	 
+  </style>
+{/block}
+{block name="content"}
+  <div class="content">
+   <div class="container help-center">
+    <div class="help-aside">
+     <div class="help-aside-inner" id="side-float">
+      {include file="layout/tomenu" /}
+     </div> 
+    </div>
+    <div class="help-main">
+	<h2>行业资讯</h2>
+	<div class="timeline notice-timeline" style="margin-top:0">
+		<ul class="timeline-listing">
+		{volist name="list" id="p"}
+			<li>
+			<span ><a href="{:url('home/helpfaq/danye',['id'=>$p.id])}">{$p.title}</a></span>
+			<span>
+			{:date("m-d H:i",strtotime($p.update_time))}
+			</span>
+			</li>
+			{/volist}
+		</ul>
+	</div>
+	{$list|raw}
+</div>
+   </div>
+  </div>
+{/block}

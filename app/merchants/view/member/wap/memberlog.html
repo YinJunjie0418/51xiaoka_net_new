@@ -1,0 +1,67 @@
+ {include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">资金记录</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+	<div class="card-gradient">
+		<div class="panel">
+		{volist name="data" id="p"  empty="$empty"}
+		<div style="border-bottom: 1px solid #9c9b9b;">
+		   <div class="cell">
+				<div class="cell-bd">
+					<span>日期</span><span style="margin-left:8px;color:#1e90ff">{$p.addtime}</span>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+					<h5>类型</h5>
+					<p>
+						{$p.type}
+					</p>
+				</div>
+				<div class="cell-bd">
+					<h5>金额</h5>
+					{gt name="p.price" value="0"}
+					<p class="text-success">
+						{$p.price}
+					</p>
+					{else/}
+					<p class="text-primary">
+						{$p.price}
+					</p>
+					{/gt}
+				</div>
+				<div class="cell-bd">
+					<h5>余额</h5>
+					<p>
+						{$p.money}
+					</p>
+				</div>
+				<div class="cell-ft" >
+					<h5 class="text-purple">关联订单</h5>
+					<p class="text-purple">
+						{$p.orderno|default='--'}
+					</p>
+				</div>
+			</div>
+			<div class="cell">
+				<div class="cell-bd">
+					<span>备注</span><span style="margin-left:8px;color:#999999">{$p.data|default='--'}</span>
+				</div>
+			</div>
+			</div>
+			{/volist}
+		</div>
+		<div class="card">
+			<div class="page">
+				{$data|raw}
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+</body>

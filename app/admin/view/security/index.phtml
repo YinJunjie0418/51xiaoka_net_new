@@ -1,0 +1,43 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">网站安全设置</div>
+    <div class="layui-card-body" pad15>
+        <div class="layui-form" wid100 lay-filter="">
+        <form action="" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">数据加密密钥</label>
+                <div class="layui-input-inline" style="width: 400px;">
+                    <input type="text" name="datakey" value="{$data.datakey|default=""}"  class="layui-input">
+                </div>
+				<div class="layui-form-mid layui-word-aux" style="color:#d40808!important">不能大于24位的字符串</div>
+            </div>
+			 
+			 <div class="layui-form-item">
+				<label class="layui-form-label">数据加密</label>
+				<div class="layui-input-inline" style="width: 400px;">
+					<input type="checkbox" name="datatype" lay-skin="switch" lay-text="加密|无" {if isset($data.datatype) && $data.datatype=='1'} checked{/if}>
+				</div>
+				<div class="layui-form-mid layui-word-aux" style="color:#d40808!important">该功能开启所有自动提交的卡号卡密在没有处理完成之前只显示密文，处理完成后才能查看卡号和卡密</div>
+            </div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">后台登陆验证</label>
+				<div class="layui-input-block">
+				  <input type="radio" name="isyan" value="1" title="手机验证" {eq name="$data.isyan|default=''" value="1"}checked{/eq} ><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><div>手机验证</div></div>
+				  <input type="radio" name="isyan" value="2" title="邮箱验证" {eq name="$data.isyan|default=''" value="2"}checked{/eq}><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>邮箱验证</div></div>
+				  <input type="radio" name="isyan" value="0" title="禁用" {eq name="$data.isyan|default=0" value="0"}checked{/eq}><div class="layui-unselect layui-form-radio layui-radio-disbaled "><i class="layui-anim layui-icon"></i><div>禁用</div></div>
+				</div>
+				<div class="layui-form-mid layui-word-aux" style="color:#d40808!important">该功能开启前请确认管理员账号的邮箱或手机能正常接收信息否则将无法登陆后台，还需确认短信和邮件功能正常</div>
+			  </div>
+			
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+				   <input type="hidden" name="id" value="{$data.id|default=''}">
+                    <button class="layui-btn" lay-submit=""  lay-filter="*">确认保存</button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+{/block}

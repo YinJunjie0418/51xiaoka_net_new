@@ -1,0 +1,82 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .layui-table img {
+        max-width: 300px;
+    }
+</style>
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="" class="layui-form" method="post">
+            <form class="layui-form">
+                <div class="layui-form">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="110">
+                            <col width="380">
+                            <col width="110">
+                            <col width="380">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td>真实姓名</td>
+                            <td>{$res.name}</td>
+                            <td>身份证</td>
+                            <td >{$res.idcard}</td>
+                        </tr>
+                        <tr>
+                            <td>认证类型</td>
+                            <td>{eq name="res.clas" value="1"}<span style="color:#A8FF60">个人认证</span>{else/}<span style="color:#ff6634">企业认证</span>{/eq}</td>
+                            <td>认证状态</td>
+                            <td>{switch name="res.retype"}
+                                {case value="1" break="2"}
+                                <span style="color:#4DAF29">认证通过</span>
+                                {/case}
+                                {case value="3" }<span >审核中</span>{/case}
+                                {default /}
+                                <span style="color:#ff6634">退回重提</span>
+                                {/switch}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>公司名称</td>
+                            <td>{$res.company_name}</td>
+                            <td>营业执照号</td>
+                            <td colspan=3>{$res.canada}</td>
+                        </tr>
+                        <tr>
+                            <td>身份证正面</td>
+                            <td><img style="width: 300px;height: 300px" src="{$res.positive_img|default=$moren}" tb-img></td>
+                            <td>身份证背面</td>
+                            <td><img style="width: 300px;height: 300px" src="{$res.back_img|default=$moren}" tb-img></td>
+                        </tr>
+
+                        <tr>
+                            <td>手持证件照</td>
+                            <td><img style="width: 300px;height: 300px" src="{$res.hand_img|default=$moren}" tb-img></td>
+                            <td>营业执照</td>
+                            <td><img width="300px" height="300px" src="{$res.canada_img|default=$moren}" tb-img></td>
+                        </tr>
+
+                        <tr>
+                            <td>提交时间</td>
+                            <td>{$res.create_time}</td>
+                            <td>处理时间</td>
+                            <td colspan=3>{$res.update_time} </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    // 点击图片放大
+    $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
+        layer.photos({photos: {data: [{src: $(this).attr('src')}]}, shade: .2, closeBtn: true});
+    });
+</script>
+{/block}
+

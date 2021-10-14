@@ -1,0 +1,357 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .bottobtn{
+        background: url(/static/simple/img/beijin.png) no-repeat;
+        width: 100%;
+        background-size: 100%;
+        display: block;
+        position: absolute;
+        background-position-y: -5px;
+        height: 50px;
+        bottom: 0px;
+    }
+    .bottobtn >ul{
+        margin-left: 14%;
+        display: block;
+        width: 86%;
+        height: 100%;
+    }
+    .bottobtn >ul li{
+            cursor:pointer;
+            width: 32%;
+        height: 50px;
+        border: 1px solid #c0c0c0;
+        margin-left: 1px;
+        float: left;
+        font-size: 14px;
+        text-align: center;
+        line-height: 50px;
+    }
+    .subbtn{
+            position: absolute;
+            width: 86%;
+            bottom: 50px;
+            padding-left: 14%;
+            display: flex;
+            align-items: flex-end;
+    }
+    .subbtn ul:not(:first-child){
+            float: left;
+            width: 32%;
+            margin-left: 3px;
+    }
+    .subbtn ul:first-child{
+         float: left;
+        width: 32%;
+        
+    }
+    .subbtn li{
+            cursor:pointer;
+            width: 100%;
+            height: 50px;
+            border: 1px solid #c0c0c0;
+            line-height: 50px;
+            text-align: center;
+            margin-left: 1px;
+            margin-bottom: 1px;
+            font-size: 14px;
+    }
+    #treeTbTree .active{
+        border: 1px solid #f60;
+    }
+</style>
+<div class="layui-row layui-col-space15">
+    <!-- 左树 -->
+    <div class="layui-col-sm12 layui-col-md4 layui-col-lg2" style="width:400px">
+        <div class="layui-card" >
+            <div class="layui-card-body mini-bar" id="treeTbTree" style="height: 600px;padding: 0;">
+			 <div class="layui-btn-container">
+			    <img src="/static/simple/img/mobile.png" style="width:100%">
+			    <div class="subbtn">
+			        {empty name="list[0]['sub_button']"}
+			        <ul id="sub1"></ul>
+			        {else/}
+			        <ul id="sub1"> 
+			        {volist name="$list[0]['sub_button']" id="k"}
+			           <li data-name="{$k['name']}" data-type="{$k['type']|default=''}" data-keys="{$k['key']|default=''}" data-url="{$k['url']|default=''}">{$k.name}</li>
+			        {/volist}
+			        </ul>
+			        {/empty}
+			        
+			        {empty name="list[1]['sub_button']"}
+			        <ul id="sub2"></ul>
+			        {else/}
+			        <ul id="sub2"> 
+			        {volist name="$list[1]['sub_button']" id="kk"}
+			           <li data-name="{$kk['name']}" data-type="{$kk['type']|default=''}" data-keys="{$kk['key']|default=''}" data-url="{$kk['url']|default=''}">{$kk.name}</li>
+			        {/volist}
+			        </ul>
+			        {/empty}
+			        
+			        {empty name="list[2]['sub_button']"}
+			        <ul id="sub3"></ul>
+			        {else/}
+			        <ul id="sub3"> 
+			        {volist name="$list[2]['sub_button']" id="kkk"}
+			           <li data-name="{$kkk['name']}" data-type="{$kkk['type']|default=''}" data-keys="{$kkk['key']|default=''}" data-url="{$kkk['url']|default=''}">{$kkk.name}</li>
+			        {/volist}
+			        </ul>
+			        {/empty}
+			     </div>
+			    <div class="bottobtn">
+			        <ul>
+			            {empty name="list[0]"}<li><i class="layui-icon"></i></li>{else/}<li data-name="{$list[0]['name']}" data-type="{$list[0]['type']|default=''}" data-keys="{$list[0]['key']|default=''}" data-url="{$list[0]['url']|default=''}">{$list[0]['name']}{/empty}</li>
+			            {empty name="list[1]"}<li><i class="layui-icon"></i></li>{else/}<li data-name="{$list[1]['name']}" data-type="{$list[1]['type']|default=''}" data-keys="{$list[1]['key']|default=''}" data-url="{$list[1]['url']|default=''}">{$list[1]['name']}{/empty}</li>
+			            {empty name="list[2]"}<li><i class="layui-icon"></i></li>{else/}<li data-name="{$list[2]['name']}" data-type="{$list[2]['type']|default=''}" data-keys="{$list[2]['key']|default=''}" data-url="{$list[2]['url']|default=''}"> {$list[2]['name']}{/empty}</li>
+			            </ul>
+			        </div>
+			  </div>
+            </div>
+        </div>
+    </div>
+    <!-- 右表 -->
+    <div class="layui-col-sm12 layui-col-md8 layui-col-lg10" id="menu" style="width:75%;display:none">
+        <div class="layui-card" style="padding-top: 20px;">
+             <div class="layui-card-header" style="padding-bottom: 20px;">
+                    <div >
+                        <button class="layui-btn layui-btn-danger" type="button" id="del" data_id="" data_sid=""><i class="layui-icon"></i>删除</button>
+                        <button class="layui-btn layui-btn-normal" type="button" id="fabu"><i class="layui-icon">&#xe691;</i>发布</button>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                   <blockquote class="layui-elem-quote layui-text" id="wanger" style="border-left: 5px solid red;color:red">已添加子菜单，仅可设置菜单名称</blockquote>
+            	   <form action="{:request()->url()}" class="layui-form" method="post">
+                         <div class="layui-form-item">
+                            <label class="layui-form-label">菜单名称：</label>
+                            <div class="layui-input-inline">
+                               <input type="text" class="layui-input" name="name"  lay-verify='required' value="" size="24" />
+                            </div>
+                           
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">菜单类型：</label>
+                            <div class="layui-input-inline">
+                              	<select name="type" id="typeid" lay-filter="levelM">
+                             		<option value="view">跳转链接</option>
+                             		<option value="click">关键词回复</option>
+            					</select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="keys" style="display:none">
+                            <label class="layui-form-label">要触发的关键字：</label>
+                            <div class="layui-input-inline">
+                               <input type="text" class="layui-input"  name="keyword" value="" size="24" />
+                            </div>
+                           
+                        </div>
+                         <div class="layui-form-item" id="url">
+                            <label class="layui-form-label">链接 URL：</label>
+                            <div class="layui-input-block">
+                               <input type="text" class="layui-input" name="url" value=""  placeholder="http(s)://" size="24" />
+                            </div>
+                           
+                        </div>
+                        
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-danger"  type="button" id="btnadd">添加/修改</button>
+                                <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        form.on('select(levelM)', function (data) {
+        if(data.value=="view"){
+               $("#url").show();$("#keys").hide();
+               $("input[name=keyword]").val("");
+           }else{
+               $("#url").hide();$("#keys").show();
+               $("input[name=url]").val("");
+           }
+        });
+        $("#fabu").on("click",function(){
+            var n=0,parm={},err="";
+            $(".bottobtn").find("li").each(function(){
+                var id=$(this).index();
+                var fid=parseInt(id)+1;
+                if($("#sub"+fid).find('li').length>0 && ($(this).attr("data-name")=="" || $(this).attr("data-name")==undefined )){
+                    err="有子菜单的主菜单名称不能为空";
+		            return false;
+                }
+                
+                var datatype=$(this).attr("data-name");
+                if(datatype==undefined || datatype=="null" || datatype==""){return true;}
+                
+                var datat=$(this).attr("data-type");
+                console.log(datat);
+                if(datat=="null"){
+                    err="菜单类型未选择";
+		            return false;
+                }
+                if($("#sub"+fid).find('li').length>0){
+                    var fdata={},i=0;
+                     $("#sub"+fid).find('li').each(function(){
+                         var df={};
+                         df.name=$(this).attr('data-name');
+                         df.type=$(this).attr("data-type");
+                         df.url=$(this).attr("data-url");
+                         df.key=$(this).attr("data-keys");
+                         fdata[i]=df;
+                         i++;
+                     })
+                    var dparm={};
+                    dparm.name=$(this).attr('data-name');
+                    dparm.sub_button=fdata;
+                    parm[n]=dparm;
+                }else{
+                    var dparm={};
+                    dparm.name=$(this).attr('data-name');
+                    dparm.type=$(this).attr("data-type");
+                    dparm.url=$(this).attr("data-url");
+                    dparm.key=$(this).attr("data-keys");
+                    parm[n]=dparm;
+                }
+                 n++;
+              });
+              if(err!=""){
+                  layer.msg(err);
+                  return false;
+              }
+              var index = layer.msg('发布中，请稍候', {
+							icon: 16,
+							time: false,
+							shade: 0.3
+						});
+			  $.post("{:url('/weixin/add')}",parm,function(e){
+			      layer.close(index);
+			      layer.alert(e.msg, {
+                      icon: 1,
+                      skin: 'layer-ext-moon'
+                    })
+			  });
+        })
+        $(".bottobtn").on("click","li",function(){
+		    var e=$(this);
+		    if(e.hasClass("active")){
+		        var num=$(".subbtn").find("ul").eq(e.index()).find('li').length;
+		        if(num<5){
+		           $(".subbtn").find("ul").eq(e.index()).prepend('<li><i class="layui-icon"></i></li>');
+		        }else{
+		            layer.msg("最多只能添加5个菜单");
+		            return false;
+		        }
+		    }
+		    $("#treeTbTree").find("li").removeClass("active");
+		    e.addClass("active");
+		    $(".subbtn").find("ul").eq(e.index()).find('li').addClass("active");
+		    var da=menu[e.index()];
+		    data(e.index(),-1,this);
+		});
+		
+		$("#btnadd").on("click",function(){
+		    var id=$("#del").attr("data_id"),sid=$("#del").attr("data_sid");
+		    var name=$("input[name=name]").val(),type=$("#typeid").val(),key=$("input[name=keyword]").val(),url=$("input[name=url]").val();
+		    if(name=="" || name==null){
+		        layer.msg("请填写菜单名称");
+		        return false;
+		    }
+		    switch(type){
+		        case "click": 
+		            if(key=="" || key==null){
+		                layer.msg("请填写关键词");
+		                return false;
+		            }
+		        break;
+		        case "view":
+		            if(url=="" || url==null){
+		                layer.msg("请填写跳转地址");
+		                return false;
+		            }
+		        break;
+		    }
+		    var html="<li class='active' data-name='"+name+"' data-type='"+type+"' data-keys='"+key+"' data-url='"+url+"'>"+name+"</li>";
+		    if(sid== -1){
+		        $(".bottobtn").find("li").eq(id).replaceWith(html);
+		    }else{
+		        id=parseInt(id)+1;
+		        $("#sub"+id).find("li").eq(sid).replaceWith(html);
+		    }
+		    console.log(html);
+		})
+		
+		function data(id,sid,e){
+		    var name=$(e).attr("data-name"),type=$(e).attr("data-type"),key=$(e).attr("data-keys"),url=$(e).attr("data-url");
+		    $("#menu").show();
+		    $("#del").attr("data_id",id).attr("data_sid",sid);
+		    var fid=parseInt(id)+1;
+		   if($("#sub"+fid).find("li").length>0 && sid== -1){
+		       $("#wanger").show();
+		     }else{
+		        $("#wanger").hide(); 
+		     }
+		    
+		    if(name==undefined){
+		        $("input[name]").val("");
+		        $("input[name=url]").val("");
+		        $("input[name=keyword]").val("");
+		        return false;
+		    }
+		    $("input[name]").val(name);
+    		$("#typeid").val(type);
+    		form.render('select');
+    		       if(type=='view'){
+    		           $("#keys").hide();
+    		           $("#url").show();
+    		           $("input[name=keyword]").val("");
+    		           $("input[name=url]").val(url);
+    		       }else{
+    		           $("#url").hide();
+    		           $("#keys").show();
+    		            $("input[name=url]").val("");
+    		           $("input[name=keyword]").val(key);
+    		       }
+		}
+		$("#del").on("click",function(){
+		    var id=$(this).attr("data_id"),sid=$(this).attr("data_sid");
+		    if(sid=="" || sid== -1){
+		        $(".bottobtn").find("li").eq(id).html('<i class="layui-icon"></i>').attr("data-name","").attr("data-type","").attr("data-keys","").attr("data-url","");
+		        id=parseInt(id)+1;
+		        $("#sub"+id).find("li").remove();
+		    }else{
+		        id=parseInt(id)+1;
+		        $("#sub"+id).find("li").eq(sid).remove();
+		    }
+		})
+		$("#sub1").on("click","li",function(){
+		    var e=$(this);
+		    $("#treeTbTree").find("li").removeClass("active");
+		    e.addClass("active");
+		    data(0,e.index(),e);
+		});
+		$("#sub2").on("click","li",function(){
+		   var e=$(this);
+		     $("#treeTbTree").find("li").removeClass("active");
+		    e.addClass("active");
+		    data(1,e.index(),e);
+		});
+		$("#sub3").on("click","li",function(){
+		    var e=$(this);
+		     $("#treeTbTree").find("li").removeClass("active");
+		    e.addClass("active");
+		    data(2,e.index(),e);
+		});
+    });
+
+</script>
+{/block}

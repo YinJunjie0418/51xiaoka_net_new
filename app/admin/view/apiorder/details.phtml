@@ -1,0 +1,144 @@
+{extend name="base" /}
+{block name="body"}
+       <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                      <div class="layui-form">
+							  <table class="layui-table">
+								<colgroup>
+								  <col width="110">
+								  <col width="170">
+								  <col width="110">
+								  <col width="180">
+								  <col width="130">
+								  <col >
+								</colgroup>
+								<tbody>
+								  <tr>
+									<td>系统订单号</td>
+									<td>{$res.orderno}</td>
+									<td>运营商</td>
+									<td colspan=3>{$res.classa}</td>
+								  </tr>
+								  <tr>
+								    <td>操作管理员</td>
+									<td>{$res.guan|default='系统自动'}</td>
+									<td>商户订单号</td>
+									<td style="color:red" colspan=3>{$res.tmporder}</td>
+								  </tr>
+								  <tr>
+									<td>卡号</td>
+									<td>{$res.card_no}</td>
+									<td>密码</td>
+									<td>{$res.card_key|default='--'}</td>
+									<td>验证码/CVV2码</td>
+									<td>{$res.seccode|default='--'}</td>
+								  </tr>
+								  <tr>
+									<td>提交面额</td>
+									<td>{$res.money}</td>
+									<td>实际面额</td>
+									<td colspan=3 style="color:#c30">{$res.settle_amt}</td>
+								  </tr>
+								  <tr>
+									<td>用户金额</td>
+									<td style="color:green">{$res.amount}</td>
+									<td>系统金额</td>
+									<td colspan=3 style="color:red">{$res.xitmoney}</td>
+								  </tr>
+								  <tr>
+									<td>卡状态</td>
+									<td>{$res.state|raw}</td>
+									<td>错误详情</td>
+									<td colspan=3>{$res.remarks}</td>
+								  </tr>
+								  <tr>
+									<td>异步地址</td>
+									<td colspan=5>{$res.notify|default="回掉地址为空"}</td>
+								  </tr>
+								  <tr>
+									<td>回掉详情</td>
+									<td colspan=5>{$res.tongzhi|default='未回掉'}</td>
+								  </tr>
+								   <tr>
+									<td>自定义参数</td>
+									<td colspan=5>{$res.custom|default='--'}</td>
+								  </tr>
+								  <tr>
+									<td>提交时间</td>
+									<td>{$res.create_time}</td>
+									<td>处理时间</td>
+									<td colspan=3>{$res.update_time|default="等待处理"} </td>
+								  </tr>
+								  <tr>
+									<td>提交IP</td>
+									<td>{$res.ip}</td>
+									<td>通道</td>
+									<td colspan=3>{$res.atype|default="通道未知"} </td>
+								  </tr>
+								  
+								</tbody>
+							  </table>
+							</div>
+                </form>
+            </div>
+        </div>
+			{/block}
+			{block name="js"}
+			<script>
+		layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+                //监听提交
+                form.on('submit(sok)',
+                   function(data) {
+				        var id=$("#textid").val();
+				        var t=$("#ChannelType").val();
+				        var m=$("#ContentPlaceHolder1_txtRealMoney").val();
+						layer.confirm('您确定要订单赔付吗？', function(index){
+								var loading =layer.load(3, {shade: [0.1,'#fff']});
+								$.post("{:url('/Apiorder/setStatus')}",{id:id,op:t,amt:m,type:'peifuok'},function(res){
+										layer.close(loading);
+										if(res.code==1){
+											layer.alert(res.msg,{icon:1},function(index){
+												 layer.close();
+												 window.parent.location.reload();
+												 layer.closeAll();
+											});
+								        }else{
+										layer.alert(res.msg,{icon:2});
+										}
+										
+								})
+							})
+						return false;
+                  
+                });
+				form.on('submit(sno)',
+                   function(data) {
+				        var id=$("#textid").val();
+						var t=$("#ChannelType").val();
+				        var e=$("#ContentPlaceHolder1_txtErrinfo").val();
+						layer.confirm('您确定要订单赔付吗？', function(index){
+								var loading =layer.load(3, {shade: [0.1,'#fff']});
+								$.post("{:url('/Apiorder/setStatus')}",{id:id,op:t,str:e,type:'peifuerr'},function(res){
+										layer.close(loading);
+										if(res.code==1){
+											layer.alert(res.msg,{icon:1},function(index){
+												 layer.close();
+												 window.parent.location.reload();
+												 layer.closeAll();
+											});
+										}else{
+											layer.alert(res.msg,{icon:2});
+										}
+								})
+							})
+						return false;
+                  
+                });
+
+            });</script>
+				{/block}

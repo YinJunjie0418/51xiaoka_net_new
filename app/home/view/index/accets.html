@@ -1,0 +1,193 @@
+{extend name="layout/index" /} 
+{block name="content"}
+  <link href="__CSS__/sup/base.css?2020522" rel="stylesheet" />
+  <style>
+  .panel-heading ul{
+    width:60%;
+	text-align:center;
+	margin:0;
+	display: contents;
+  }
+  .dropdown .btn{
+     animation: rotate 1s linear infinite;
+  }
+  .yaoqing-masthead{
+    -webkit-animation-name: fadeIn; /*动画名称*/
+	-webkit-animation-duration: 1s; /*动画持续时间*/
+	-webkit-animation-iteration-count: 1; /*动画次数*/
+	-webkit-animation-delay: 0s;
+  }
+  .panel-heading ul li{
+    width: 50%;
+    float: left;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 15px 15px;
+	-webkit-animation-name: fadeIn; /*动画名称*/
+	-webkit-animation-duration: 1s; /*动画持续时间*/
+	-webkit-animation-iteration-count: 1; /*动画次数*/
+	-webkit-animation-delay: 0s;
+  }
+  .panel-heading ul li:nth-child(2n){
+   text-align: left;
+   padding:8px 8px;
+  }
+  
+  .panel-heading .leftspan{
+    padding: 6px 8px;
+    background: #007dfe;
+    color: #fff;
+    border-radius: 5px;
+  }
+
+  .leftbe{
+    width: 12px;
+    display: inline-block;
+    border-top: 10px solid transparent;
+    border-right: 10px solid #007dfe;
+    border-bottom: 10px solid transparent
+   }
+  .tubiao{
+    background:url(/static/home/images/level/1.jpg) no-repeat
+  }
+  .one{
+        width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-position: -8px -16px;
+  }
+  .two{
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-position: -8px -48px;
+  }
+  .tree{
+        width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-position: -8px -79px;
+  }
+  .panel-heading ul li>.di{
+    background: #FFF;
+    color: #f96868;
+    border: 1px solid #f04848;
+    width: 30%;
+    display: inline-block;
+  }
+  .panel-heading ul li>.er{
+    margin-left: 8px;
+    background: #f96868;
+  }
+  @keyframes fadeIn {  /*定义关键帧、scaleDrew是需要绑定到选择器的关键帧名称*/
+            0%{
+                transform: scale(0.75);  /*开始为原始大小*/
+				opacity:0
+            }
+            
+			100%{
+                transform: scale(1);
+				opacity:1;
+            }
+        }
+   .panel-subtitle p{
+     text-align: left;
+    display: ;
+    height: 24px;
+    width: 60%;
+    line-height: 24px;
+    margin: 12px;
+    font-size: 18px;
+	color:#f96868
+   }
+  .panel-subtitle p:after, .panel-subtitle p:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 100px;
+    height: 0;
+    background-color: #FFF;
+	}
+	@keyframes shadow {
+		0%, 100% {transform: scaleX(1);}
+		50% {transform: scaleX(1.2);}
+	}
+	@keyframes rotate {
+    0% {
+		color:#FFF;
+		border-color:#FFF;
+		background-color:transform
+    }
+    25% {
+		color:#fFF;
+		border-color:#f04848;
+		background-color:#f04848
+    }
+    50% {
+       color:#fFF;
+	   border-color:#FFF;
+	   background-color:transform
+    }
+    75% {
+		color:#fFF;
+		border-color:#f04848;
+		background-color:#f04848
+    }
+    100% {
+		color:#fFF;
+		border-color:#FFF;
+		background-color:transform
+    }
+}
+  </style>
+  <div class="content">
+   <div class="yaoqing-jumbotron">
+    <div class="container">
+     <div class="yaoqing-masthead">
+      
+     </div>
+     <div class="xianxia-city dropdown">
+      <a class="btn btn-lg" href="{:url('home/Member/assets')}"  rel="external nofollow">马上推广</a>
+     </div>
+    </div>
+   </div> 
+   <div class="panel panel-bggray">
+    <div class="container"> 
+     <div class="panel-heading">
+      <ul>
+	  <li><span><i class="tubiao one"></i></span><span class="leftbe"></span><span class="leftspan">每次销卡卡密面值 *约{$C.onerate}%</span></li>
+	  <li><span class="leftspan di">{eq name="$C.onenum" value="0"}注册默认{else/}拥有{$C.onenum}有效下级{/eq}</span><span class="leftspan er">{eq name="$C.oneok" value="0"}注册默认{else/}个拥有所有下级销卡总面值达{$C.oneok}元{/eq}</span></li>
+	  
+	  <li><span><i class="tubiao two"></i></span><span class="leftbe"></span><span class="leftspan" >每次销卡卡密面值 *约{$C.tworate}%</span></li>
+	  
+	  <li><span class="leftspan di">{eq name="$C.twonum" value="0"}注册默认{else/}拥有个{$C.twonum}有效下级{/eq}</span><span class="leftspan er">{eq name="$C.twook" value="0"}注册默认{else/}拥有所有下级销卡总面值达{$C.twook}元{/eq}</span></li>
+	  
+	  <li><span><i class="tubiao tree"></i></span><span class="leftbe"></span><span class="leftspan" >每次销卡卡密面值 *约{$C.threerate}%</span></li>
+	  
+	  <li><span class="leftspan di">{eq name="$C.threenum" value="0"}注册默认{else/}拥有个{$C.threenum}有效下级{/eq}</span><span class="leftspan er">{eq name="$C.threeok" value="0"}注册默认{else/}拥有所有下级销卡总面值达{$C.threeok}元{/eq}</span></li>
+	  </ul>
+     </div>
+    </div>
+   </div>
+   <div class="panel">
+    <div class="container"> 
+     <div class="panel-heading">
+      <h2 class="panel-title">活动说明</h2>
+      <div class="panel-subtitle">
+            <p>1、为保障用户已邀请的好友不会流失或者后面变成自己邀请自己，我们开通邀请功能、销卡、提现都需要通过实名认证，而且 <span>一个身份证只能实名认证一个帐号，可以有效保障用户邀请好友的权益；</span> </p>
+            <p>2、好友访问邀请链接，会自动在他浏览器保存您的邀请链接该链接一个月内有效，也就是说只要您好友访问过您的邀请链接，只要是他一个月内注册，就算是您邀请的；</p>
+            <p>3、浏览器上保存的邀请链接，会新的覆盖旧的。比如好友先访问A用户的邀请链接，但是当时没注册，后面又访问B用户的邀请链接，并且在一个月内注册了，那他就算是B用户邀请的；</p>
+            <p>4、邀请按用户编号优于邀请链接的原则，比如好友先访问A用户的邀请链接，但是注册的时候，在注册页面填写“推广员编号”是B用户的编号，那他就算B用户邀请的； </p>
+            <p>5、<span>实际返现佣金比例可能会有小范围波动，具体以实际返现为主，具体产品返现</span>，点击<a href="" class="text-blue">查看详情&gt;&gt;</a></p>
+            <p>6、另若发现邀请人恶意刷佣金，一经查实将禁用帐号。</p>
+            <p>7、如有疑问请联系QQ客服：{$C.qq}。(咨询时间：9:00-18:00)。</p>
+            <p><span>* 本活动最终解释权在法律范围内归{$C.sitename}所有</span></p>
+      </div>
+     </div>
+     
+    </div>
+   </div>
+   
+  </div>
+  
+  {/block}

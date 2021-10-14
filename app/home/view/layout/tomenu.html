@@ -1,0 +1,25 @@
+    {volist name="fg" id="p"}
+	  <dl class="help-links">
+	  {eq name="i" value="1"}
+       <dt>
+        关于我们
+       </dt>
+	   <dd {eq name="id" value="0"}class="current"{/eq}>
+        <a href="{:url('home/Helpfaq/index')}" >平台公告</a>
+       </dd>
+	   <dd {eq name="action" value="zixun"}class="current"{/eq}>
+        <a href="{:url('home/Helpfaq/zixun')}" >行业资讯</a>
+       </dd>
+	   {/eq}
+	   {volist name="p" id="k" key="k"}
+		   <dd {eq name="id" value="$k.id"}class="current"{/eq}>
+			<a href="{:url('home/Helpfaq/danye',['id'=>$k.id])}">{$k.title}</a>
+		   </dd>
+		{/volist}
+		{eq name="i" value="1"}
+	   <dd {eq name="action" value="feedback"}class="current"{/eq}>
+        <a href="{:url('home/Index/feedback')}" >意见反馈</a>
+       </dd>
+	   {/eq}
+      </dl>
+    {/volist}

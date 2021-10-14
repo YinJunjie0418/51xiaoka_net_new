@@ -1,0 +1,108 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 所属父级</label>
+                <div class="layui-input-block">
+                    <select name="pid" lay-filter="pid" lay-search>
+                        <option value="0">顶级分类</option>
+                        {foreach name="category" item="v"}
+                        <option value="{$v.id}" {if condition="isset($data) and $data.pid eq $v.id"}selected="selected"{/if} {if isset($data) and $data.id == $v.id}disabled{/if}>{neq name="v.level" value="1"}|{php}for($i=1;$i<$v['level'];$i++){echo ' ----';}{/php}{/neq} {$v.name}</option> 
+                        {/foreach}
+                    </select> 
+                </div>
+            </div> 
+            <div class="layui-form-item">
+                <label class="layui-form-label">* 所属模型</label>
+                <div class="layui-input-block">
+                    <select name="model" id="model" >
+                        {foreach name="models" item="r"}
+                        <option value="{$r.model}" {if condition="isset($data) and $data.model eq $r.model"}selected="selected"{/if}>{$r.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" value="{$data.name|default=''}" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+                </div>
+            </div>
+            <!--<div class="layui-form-item">
+                <label class="layui-form-label">英文名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name_en" value="{$data.name_en|default=''}" autocomplete="off" placeholder="请输入英文名称" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类封面</label>
+                <div class="layui-input-block">
+                    <input type="text" name="image" value="{$data.image|default=''}" autocomplete="off" placeholder="请上传分类封面" class="layui-input">
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-images"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>-->
+            <div class="layui-form-item">
+                <label class="layui-form-label">关键字</label>
+                <div class="layui-input-block">
+                    <input type="text" name="keywords" value="{$data.keywords|default=''}" autocomplete="off" placeholder="请输入关键字" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-block">
+                    <textarea name="description" autocomplete="off" placeholder="请输入描述" class="layui-textarea">{$data.description|default=''}</textarea>
+                </div>
+            </div>
+            <!--<div class="layui-form-item">
+                <label class="layui-form-label">分类模板</label>
+                <div class="layui-input-block">
+                    <select name="list_template">
+                        {foreach name="list_template" item="r"}
+                        <option value="{$r}" {if condition="isset($data) and $data.list_template eq $r"}selected="selected"{/if}>{$r}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>-->
+            <div class="layui-form-item">
+                <label class="layui-form-label">详情模板</label>
+                <div class="layui-input-block">
+                    <select name="show_template">
+                        {foreach name="show_template" item="r"}
+                        <option value="{$r}" {if condition="isset($data) and $data.show_template eq $r"}selected="selected"{/if}>{$r}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    form.on('select(pid)', function(data){
+        var that = $(this);
+        var cid = data.value;
+        $.ajax({ 
+            type: 'POST',
+            url: "{:url('/category/get_pcategory')}",
+            data:{id:cid},
+            success:function(ret) {
+                console.log(ret.data);
+                $('#model').empty();
+                $('#model').append("<option value="+ret.data.model+">"+ret.data.name+"</option>");
+                form.render('select');
+            },
+            dataType:'json',
+        });
+    });
+</script>
+{/block}
+

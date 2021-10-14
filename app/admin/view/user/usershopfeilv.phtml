@@ -1,0 +1,112 @@
+{extend name="base" /}
+{block name="css"}
+<style>
+    #treeTbTree {
+        height: 100%;
+        overflow: auto;
+    }
+
+    @media screen and (max-width: 768px) {
+        #treeTbTree {
+            height: auto;
+        }
+    }
+
+    /** dtree选中颜色重写 */
+    .dtree-theme-item-this {
+        background-color: #eeeeee !important;
+    }
+</style>
+<style>
+    .ew-iframe-body {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        overflow: auto;
+    }
+</style>
+{/block}
+{block name="body"}
+<!-- 正文开始 -->
+
+<div class="layui-row layui-col-space15">
+   
+    <div class="layui-col-sm12 layui-col-md8 layui-col-lg10" >
+        <input type="hidden" value="" name="state" id="seltt">
+        	<div class="layui-btn-group layui-show-xs-block" id="allbutton">
+				   <button class="layui-btn" style="margin-bottom:8px" type="button" id="typeClick" lay-type="" >全 部</button>
+				   {volist name="li" id="p"}
+                    <button class="layui-btn layui-btn-primary" style="margin-bottom:8px" type="button" id="typeClick" lay-type="{$p.id}" >{$p.title}</button> 
+                   {/volist}									
+                </div>
+             <table id="tableTbTree" lay-filter="tableTbTree"></table>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="status">
+    <input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="正常|关闭" data-url="{:url('/User/editshop')}?id={{d.id}}" {{d.status==1?'checked':''}}>
+</script>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+		var insTb = table.render({
+            elem: '#tableTbTree',
+            url: "{:url('/User/usershopfeilv')}",
+            where:{id:{$uid}},
+            page: true,
+            limit:10,
+            limits:[15,30,45,60,75,90],
+            cellMinWidth: 100,
+            cols: [[
+                {type:'numbers',title:'#'},
+                {field: 'title',align: 'content', sort: true, title: '充值类型'},
+                {field: 'rate',align: 'content', sort: true, title: '费率',edit:'text'},
+				{field: 'status', align: 'content', title: '状态', toolbar: '#status'},
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.total, //解析数据长度
+                  "data": res.data.data //解析数据列表
+                };
+            }
+        });
+        //监听单元格编辑
+        table.on('edit(tableTbTree)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            var index = layer.msg('正在修改数据，请稍候', {icon: 16,time: false,shade: 0.3});
+            $.post("{:url('/User/editshop')}?id="+data.id,{rate:value},function(e){
+                layer.close(index);
+                layer.msg(e.msg);
+            })
+        });
+        
+         $("#allbutton").on("click","#typeClick",function(){
+            var e=$(this);
+            e.siblings().addClass("layui-btn-primary");
+            e.removeClass("layui-btn-primary");
+            insTb.reload({
+                page:{curr:1
+                },
+                where:{
+                    type:e.attr('lay-type')
+                }
+            });
+        });
+
+    });
+</script>
+{/block}

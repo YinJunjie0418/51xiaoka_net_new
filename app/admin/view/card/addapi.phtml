@@ -1,0 +1,58 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">接口名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" value="{$data.name|default=''}" autocomplete="off" placeholder="请输入接口名称" class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">接口类名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="class" value="{$data.class|default=''}" autocomplete="off" placeholder="请输入接口类名" class="layui-input">
+                </div>
+            </div>
+			{volist name="$fields|default=''" id="p"}
+				<div class="layui-form-item">
+					<label class="layui-form-label">{$p.name}</label>
+					<div class="layui-input-block">
+					    {switch name="p.type|default=''"}
+					    {case value="texteara"}
+					    <textarea name="{$p.field}" class="layui-textarea">{$data['content'][$p.field]|default=''}</textarea>
+					    {/case}
+                        {case value="update"}
+                        <input type="text" name="{$p.field}" value="{$data['content'][$p.field]|default=''}" class="layui-input">
+                        <button type="button" class="layui-btn ajax-file" style="margin-top:5px" ><i class="layui-icon"></i>上传文件</button>
+                        {/case}
+					    {default/}
+						<input type="text" name="{$p.field}" value="{$data['content'][$p.field]|default=''}" autocomplete="off" placeholder="请输入{$p.name}" class="layui-input">
+						{/switch}
+					</div>
+				</div>
+			{/volist}
+			<div class="layui-form-item">
+                <label class="layui-form-label">网址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="url" value="{$data.url|default=''}" autocomplete="off"  class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">作者QQ</label>
+                <div class="layui-input-block">
+                    <input type="text" name="qq" value="{$data.qq|default=''}" disabled  autocomplete="off"  class="layui-input">
+                </div>
+            </div>
+			 <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+

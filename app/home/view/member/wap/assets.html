@@ -1,0 +1,96 @@
+{include file="layout/wap/tou2" /}
+<style>
+.ewm{
+  background: #FFF;
+    width: 200px;
+    height: 200px;
+    margin: auto;
+}
+.ewm img{
+width:200px
+}
+.btna{
+ width: 35%;
+ padding: 8px 40px;
+ background: #ec0a8f;
+ color: #FFF;
+ border-color: #ff4bb5;
+ float:left;
+ margin-left: 10%;
+}
+</style>
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+	<div class="header-title">
+		<h1 class="title">{$title}</h1>
+	</div>
+	<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent" id="mycontent">
+
+	<div class="realname-status arch-mask">
+		<div class="ewm">
+			<h2><img src="{$qrcode}"></h2>
+		</div>
+		<div class="realname-status-text" style="margin-top:8px">
+			<h5>推广二维码</h5>
+		</div>
+	</div>
+	<div class="card realname-show">
+		<div class="cell">
+			<div class="cell-bd">
+				推广佣金
+			</div>
+			<div class="text-danger">
+				￥{$yong}
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				有效人数
+			</div>
+			<div class="cell-ft text-pink">
+				{$res.r}
+			</div>
+		</div>
+		<div class="cell">
+			<div class="cell-bd">
+				推广人数
+			</div>
+			<div class="cell-ft">
+				{$res.num}
+			</div>
+		</div>
+		
+		<div class="cell">
+			<div class="cell-bd">
+				推广链接
+			</div>
+			<div class="cell-ft" style="width: 300px;">
+			{eq name="shi" value="1"}
+				<input type="text" class="form-control" value="" placeholder="实名认证才能推广哦"  readonly="true">
+				{else/}
+				<input type="text" class="form-control" value="{$url}" id="urltext" placeholder="实名认证才能推广哦"  readonly="true">
+				{/eq}
+			</div>
+		</div>
+		{eq name="shi" value="1"}
+		  <a class="btn btn-default btn-sm btna"  href="{:url('home/Member/realname')}">前往实名认证</a>
+		{else/}
+		<div class="status-hint-text" style="width: 100%; margin-top:8px" >
+				<a class="btn btn-default btn-sm btna"  href="javascript:void(0);" onclick="copyText()">复制推广链接</a>
+				<a class="btn btn-default btn-sm btna" style="margin-top:0;background: #0085fe;"  href="{:url('home/Member/assetslog')}">查看推广详情</a>
+		</div>
+		{/eq}
+	</div>
+	<div class="myaction-wrapper">
+		<div class="myaction">
+			<div class="btn-group">
+				<a class="btn btn-primary" href="{:url('home/Member/index')}">返回我的账户</a>
+			</div>
+		</div>
+	</div>
+	
+</div>
+</body>
+</html>

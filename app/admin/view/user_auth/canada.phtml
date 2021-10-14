@@ -1,0 +1,18 @@
+{extend name="iframe" /}
+{block name="body"}
+<form action="" class="layui-form layui-form-pane" method="post">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	  <legend>营业执照</legend>
+	</fieldset>
+    <div class="layui-form-item" style="height:370px">
+            <img src="{$data.canada_img|default=''}" class="layui-input" style="height: 100%;width: 50%;margin:auto">
+    </div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>开户许可证</legend>
+    </fieldset>
+    <div class="layui-form-item" style="height:370px">
+        <img src="{$data.xuke_img|default=''}" class="layui-input" style="height: 100%;width: 50%;margin:auto">
+    </div>
+	
+</form>
+{/block}

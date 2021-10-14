@@ -1,0 +1,44 @@
+{extend name="layout/index" /} 
+{block name="titile"}
+  <title>{$C['sitename']}-{$res['title']} </title>
+  <meta name="keywords" content="{$res['keywords']}" />
+  <meta name="description" content="{$res['description']}" />
+{/block}
+{block name="content"}
+  <div class="content">
+   <div class="view-framework-body">
+    <div class="view-framework-main">
+        <div class="box" style="text-align:center;">
+            <h2 class="box-caption"> 平台费率</h2>
+
+            <div class="table-responsive">
+                <table class="table table-custom cash-records">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>名称</th>
+                        <th>卡类费率</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+					{volist name="list" id="p"}
+                        <tr>
+                            <td>{$key}</td>
+                            <td>{$p.title}</td>
+                            <td>{$p.feilv}</td>
+                            <td>{eq name="p.status" value="1"}<span style="color: green">正常</span>{else/}<span style="color: red">维护</span>{/eq}</td>
+                        </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+			<div class="pb20">
+			  {$list|raw}
+          </div>
+        </div>
+    </div>
+
+</div>
+  </div>
+{/block}

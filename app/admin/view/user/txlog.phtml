@@ -1,0 +1,35 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <table class="layui-table layui-form">
+            <thead>
+                <tr>
+					<th>真实姓名</th>
+                    <th>账户类别</th>
+                    <th>帐户名</th>
+					<th>账户</th>
+                    <th>状态</th>
+                    <th>添加时间</th>
+                    <th>删除时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach name="list" item="v" empty="$empty"}
+                <tr>
+
+                    <td>{$v.user}</td>
+                    <td>{$v.bankid}</td>
+					<td>{$v.bankname}</td>
+                    <td>{$v.accounts}</td>
+                    <td>{$v.state}</td>
+                    <td>{$v.create_time}</td>
+					<td>{$v.delete_time}</td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        <div class="page">{$list|raw}</div>
+    </div>
+</div>
+{/block}

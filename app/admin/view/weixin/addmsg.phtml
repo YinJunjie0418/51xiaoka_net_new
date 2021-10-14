@@ -1,0 +1,309 @@
+{extend name="base" /}
+{block name="body"}
+<style>
+    .layui-btn-container li:first-child{
+        width: 100%;
+        display: block;
+        height: 100px;
+        border: 1px solid #f60;
+    }
+    .layui-btn-container li:not(:first-child){
+        width:100%;
+        height: 70px;
+        border: 1px solid #f60;
+    }
+    .layui-textarea {
+       min-height: 50px;
+       height: 100%;
+    }
+
+</style>
+<div class="layui-row layui-col-space15">
+    <!-- 左树 -->
+    <div class="layui-col-sm12 layui-col-md4 layui-col-lg2" style="width:340px;padding: 10px 0 0;position: fixed;">
+        <div class="layui-card" >
+            <div class="layui-card-body mini-bar" id="treeTbTree" style="height: 600px;padding: 0;">
+			 <div class="layui-btn-container">
+			     <fieldset class="layui-elem-field layui-field-title" style="line-height:50px;margin:0">
+                  <legend>{{公众号名称}}</legend>
+                </fieldset>
+			   <ul>
+			       <li>
+			           <div class="fengmian"></div>
+			            <div class="title"></div>
+			       </li>
+			       <li></li>
+			   </ul>
+			  </div>
+            </div>
+        </div>
+    </div>
+    <!-- 右表 -->
+    <div class="layui-col-sm12 layui-col-md8 layui-col-lg10" id="menu" style="width:65%;float:right">
+        <div class="layui-card">
+             <div class=" layui-card-header" style="padding-bottom: 20px;">
+                    <div style="padding-top:20px">
+                        <button class="layui-btn layui-btn-danger" type="button" id="del" data_id="" data_sid=""><i class="layui-icon"></i>删除</button>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+ 
+            	   <form action="{:request()->url()}" class="layui-form" method="post">
+            	       <div class="layui-form-item">
+                            <label class="layui-form-label">标题：</label>
+                            <div class="layui-input-block">
+                              <input type="text" class="layui-input" placeholder="请输入标题" lay-verify="required"  name="title" value="" size="60" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">作者：</label>
+                            <div class="layui-input-block">
+                              <input type="text" class="layui-input" placeholder="请输作者" lay-verify="required"  name="author" value="" size="16" />
+                            </div>
+                        </div>
+                         <div class="layui-form-item">
+                             <label class="layui-form-label">内容：</label>
+                            <div class="layui-input-block">
+                                <textarea id="demo" style="display: none;" name="content"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">封面和摘要：</label>
+                            <div class="layui-input-inline" style="width:120px">
+                              	<div class="layui-upload-drag" id="test10">
+                                  <p>上传封面</p>
+                                  <div class="layui-hide" id="uploadDemoView">
+                                    <hr>
+                                    <img src="" alt="上传成功后渲染" style="max-width: 196px">
+                                    <input type="hidden" name="thumb_media_id" value="">
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="layui-input-inline" style="width:348px;height:86px;margin-right:0">
+                                  <textarea placeholder="请输入摘要" style="resize: none;" name="digest" class="layui-textarea"></textarea>
+                                </div>
+                        </div>
+                        <div class="layui-form-item"  >
+                            <label class="layui-form-label">原文链接：</label>
+                            <div class="layui-input-block">
+                               <input type="text" class="layui-input" placeholder="http(s)://" name="content_source_url" value="" size="24" />
+                            </div>
+                           
+                        </div>
+                         <div class="layui-form-item" >
+                            <label class="layui-form-label">留言选择：</label>
+                            <div class="layui-input-block">
+                              <select name="need_open_comment">
+                                  <option value="-1">关闭留言</option>
+                                  <option value="0">所有人均可留言</option>
+                                  <option value="1">关注后留言</option>
+                              </select>
+                            </div>
+                           
+                        </div>
+                        
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-danger"  type="button" id="btnadd">保存</button>
+                                <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'layedit'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var layedit = layui.layedit;
+         layedit.build('demo'); 
+         
+        form.on('select(levelM)', function (data) {
+        if(data.value=="view"){
+               $("#url").show();$("#keys").hide();
+               $("input[name=keyword]").val("");
+           }else{
+               $("#url").hide();$("#keys").show();
+               $("input[name=url]").val("");
+           }
+        });
+        $("#fabu").on("click",function(){
+            var n=0,parm={},err="";
+            $(".bottobtn").find("li").each(function(){
+                var id=$(this).index();
+                var fid=parseInt(id)+1;
+                if($("#sub"+fid).find('li').length>0 && ($(this).attr("data-name")=="" || $(this).attr("data-name")==undefined )){
+                    err="有子菜单的主菜单名称不能为空";
+		            return false;
+                }
+                
+                var datatype=$(this).attr("data-name");
+                if(datatype==undefined || datatype=="null" || datatype==""){return true;}
+                
+                var datat=$(this).attr("data-type");
+                console.log(datat);
+                if(datat=="null"){
+                    err="菜单类型未选择";
+		            return false;
+                }
+                if($("#sub"+fid).find('li').length>0){
+                    var fdata={},i=0;
+                     $("#sub"+fid).find('li').each(function(){
+                         var df={};
+                         df.name=$(this).attr('data-name');
+                         df.type=$(this).attr("data-type");
+                         df.url=$(this).attr("data-url");
+                         df.key=$(this).attr("data-keys");
+                         fdata[i]=df;
+                         i++;
+                     })
+                    var dparm={};
+                    dparm.name=$(this).attr('data-name');
+                    dparm.sub_button=fdata;
+                    parm[n]=dparm;
+                }else{
+                    var dparm={};
+                    dparm.name=$(this).attr('data-name');
+                    dparm.type=$(this).attr("data-type");
+                    dparm.url=$(this).attr("data-url");
+                    dparm.key=$(this).attr("data-keys");
+                    parm[n]=dparm;
+                }
+                 n++;
+              });
+              if(err!=""){
+                  layer.msg(err);
+                  return false;
+              }
+              var index = layer.msg('发布中，请稍候', {
+							icon: 16,
+							time: false,
+							shade: 0.3
+						});
+			  $.post("{:url('/weixin/add')}",parm,function(e){
+			      layer.close(index);
+			      layer.alert(e.msg, {
+                      icon: 1,
+                      skin: 'layer-ext-moon'
+                    })
+			  });
+        })
+        $(".bottobtn").on("click","li",function(){
+		    var e=$(this);
+		    if(e.hasClass("active")){
+		        var num=$(".subbtn").find("ul").eq(e.index()).find('li').length;
+		        if(num<5){
+		           $(".subbtn").find("ul").eq(e.index()).prepend('<li><i class="layui-icon"></i></li>');
+		        }else{
+		            layer.msg("最多只能添加5个菜单");
+		            return false;
+		        }
+		    }
+		    $("#treeTbTree").find("li").removeClass("active");
+		    e.addClass("active");
+		    $(".subbtn").find("ul").eq(e.index()).find('li').addClass("active");
+		    var da=menu[e.index()];
+		    data(e.index(),-1,this);
+		});
+		
+		$("#btnadd").on("click",function(){
+		    var id=$("#del").attr("data_id"),sid=$("#del").attr("data_sid");
+		    var name=$("input[name=name]").val(),type=$("#typeid").val(),key=$("input[name=keyword]").val(),url=$("input[name=url]").val();
+		    if(name=="" || name==null){
+		        layer.msg("请填写菜单名称");
+		        return false;
+		    }
+		    switch(type){
+		        case "click": 
+		            if(key=="" || key==null){
+		                layer.msg("请填写关键词");
+		                return false;
+		            }
+		        break;
+		        case "view":
+		            if(url=="" || url==null){
+		                layer.msg("请填写跳转地址");
+		                return false;
+		            }
+		        break;
+		    }
+		    var html="<li class='active' data-name='"+name+"' data-type='"+type+"' data-keys='"+key+"' data-url='"+url+"'>"+name+"</li>";
+		    if(sid== -1){
+		        $(".bottobtn").find("li").eq(id).replaceWith(html);
+		    }else{
+		        id=parseInt(id)+1;
+		        $("#sub"+id).find("li").eq(sid).replaceWith(html);
+		    }
+		    console.log(html);
+		})
+		
+		function data(id,sid,e){
+		    var name=$(e).attr("data-name"),type=$(e).attr("data-type"),key=$(e).attr("data-keys"),url=$(e).attr("data-url");
+		    $("#menu").show();
+		    $("#del").attr("data_id",id).attr("data_sid",sid);
+		    var fid=parseInt(id)+1;
+		   if($("#sub"+fid).find("li").length>0 && sid== -1){
+		       $("#wanger").show();
+		     }else{
+		        $("#wanger").hide(); 
+		     }
+		    
+		    if(name==undefined){
+		        $("input[name]").val("");
+		        $("input[name=url]").val("");
+		        $("input[name=keyword]").val("");
+		        return false;
+		    }
+		    $("input[name]").val(name);
+    		$("#typeid").val(type);
+    		form.render('select');
+    		       if(type=='view'){
+    		           $("#keys").hide();
+    		           $("#url").show();
+    		           $("input[name=keyword]").val("");
+    		           $("input[name=url]").val(url);
+    		       }else{
+    		           $("#url").hide();
+    		           $("#keys").show();
+    		            $("input[name=url]").val("");
+    		           $("input[name=keyword]").val(key);
+    		       }
+		}
+		$("#del").on("click",function(){
+		    var id=$(this).attr("data_id"),sid=$(this).attr("data_sid");
+		    if(sid=="" || sid== -1){
+		        $(".bottobtn").find("li").eq(id).html('<i class="layui-icon"></i>').attr("data-name","").attr("data-type","").attr("data-keys","").attr("data-url","");
+		        id=parseInt(id)+1;
+		        $("#sub"+id).find("li").remove();
+		    }else{
+		        id=parseInt(id)+1;
+		        $("#sub"+id).find("li").eq(sid).remove();
+		    }
+		})
+		$("#sub1").on("click","li",function(){
+		    var e=$(this);
+		    $("#treeTbTree").find("li").removeClass("active");
+		    e.addClass("active");
+		    data(0,e.index(),e);
+		});
+		$("#sub2").on("click","li",function(){
+		   var e=$(this);
+		     $("#treeTbTree").find("li").removeClass("active");
+		    e.addClass("active");
+		    data(1,e.index(),e);
+		});
+		$("#sub3").on("click","li",function(){
+		    var e=$(this);
+		     $("#treeTbTree").find("li").removeClass("active");
+		    e.addClass("active");
+		    data(2,e.index(),e);
+		});
+    });
+
+</script>
+{/block}

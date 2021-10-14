@@ -1,0 +1,194 @@
+{extend name="layout/index" /} 
+{block name="content"}
+<style>
+ .kaka-notice-text a img{
+  display: none;
+ }
+</style>
+  <div class="content">
+   <div class="jumbotron" id="jjjparticles-js" style="padding:0">
+   </div>
+   <div class="container" style="position: absolute;top: 200px;width: 100%;margin: auto;text-align: center;max-width: -webkit-fill-available;">
+     <div class="masthead" style="height:100%">
+      <img height="500" style="margin-top:0;" src="__IMG__/sprites/masthead.png?201905221" alt=""  />
+     </div>
+     <a class="btn btn-white btn-lg btn-circle" href="{:url('home/card/index')}">我有卡要回收</a>
+  </div>
+   <div class="panel panel-stepflow ">
+    <div class="container" style="position: relative;padding-bottom: 40px;">
+     <div class="kaka-notice">
+      <div class="kaka-notice-icon">
+       <i class="iconimg iconimg-notice"></i>
+      </div>
+      <div class="kaka-notice-time">
+       <span>{:date("Y",strtotime($new.update_time))}</span>
+       <strong>{:date("m-d",strtotime($new.update_time))}</strong>
+      </div>
+      <div class="kaka-notice-text">
+       <h5><a href="{:url('home/helpfaq/index')}" target="_blank">{$new.title}</a></h5>
+       <a href="{:url('home/helpfaq/index')}" target="_blank" title="{$new.title}">{$new.content|raw}</a>
+      </div> 
+      <div class="kaka-notice-more"> 
+       <a href="{:url('home/helpfaq/index')}" target="_blank"> <span>更多公告</span> <i class="iconfont"></i></a> 
+      </div>
+     </div>
+     <div class="kaka-stepflows">
+      <ul class="stepflow-group clearfix">
+       <li>
+        <div class="icon">
+         <i class="newtop s1"></i>
+        </div>
+        <div class="title">
+         注册账号
+        </div>
+        </li>
+       <li>
+        <div class="flow">
+         登录账户
+        </div><em></em>
+		</li>
+       <li>
+        <div class="icon">
+         <i class="newtop s2"></i>
+        </div>
+        <div class="title">
+         实名认证
+        </div>
+		
+        </li>
+       <li>
+        <div class="flow">
+         绑定提现账号
+        </div><em></em></li>
+       <li>
+        <div class="icon">
+         <i class="newtop s3"></i>
+        </div>
+        <div class="title">
+         提交卡密
+        </div>
+       </li>
+       <li>
+        <div class="flow">
+         等待平台验卡
+        </div><em></em></li>
+       <li>
+        <div class="icon">
+         <i class="newtop s4"></i>
+        </div>
+        <div class="title">
+         验卡成功
+        </div>
+        </li>
+       <li>
+        <div class="flow">
+         相应资金到账
+        </div><em></em></li>
+       <li>
+        <div class="icon">
+         <i class="newtop s5"></i>
+        </div>
+        <div class="title">
+         账户提现
+        </div>
+        </li>
+       <li>
+        <div class="flow">
+         银行或支付宝
+        </div><em></em></li>
+       <li>
+        <div class="icon">
+         <i class="newtop s6"></i>
+        </div>
+        <div class="title">
+         交易成功
+        </div>
+        </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+   {include file="layout/home_buttom" /}
+   </div>
+   <div class="panel panel-what">
+    <div class="container">
+     <div class="panel-heading">
+      <h3 class="panel-title">{$C.sitename}能做什么？</h3>
+      <div class="panel-subtitle">
+       <p>优质的服务让您的每一笔交易都放心满意</p>
+      </div>
+     </div>
+     <div class="panel-body">
+      <ul class="what-group clearfix">
+       <li>
+        <div class="what-group-inner">
+         <i class="iconimg iconimg-1"></i>
+         <h5>解决浪费</h5>
+         <p>{$C.sitename}直接面对用户回收，足不出户即可提交卡号卡密完成回收交易，解决每年上十亿礼品卡闲置的问题。</p>
+        </div></li>
+       <li>
+        <div class="what-group-inner">
+         <i class="iconimg iconimg-2"></i>
+         <h5>资金回流</h5>
+         <p>{$C.sitename}让企业置闲、员工福利、亲友相赠等方式获取的礼品卡快速变现，以达到资金回流最大化。</p>
+        </div></li>
+       <li class="last">
+        <div class="what-group-inner">
+         <i class="iconimg iconimg-3"></i>
+         <h5>交易多样</h5>
+         <p>{$C.sitename}提供线上回收、线下交易、API接口等多种交易方式，还可以根据用户自由定制交易方式。</p>
+        </div></li>
+      </ul>
+     </div>
+    </div>
+   </div>
+   <div class="panel panel-bggray panel-feature">
+    <div class="container">
+     <div class="panel-heading">
+      <h3 class="panel-title">为什么要选择{$C.sitename}？</h3>
+      <div class="panel-subtitle">
+       <p>我们是专业的卡券服务平台</p>
+      </div>
+     </div>
+     <div class="panel-body">
+      <ul class="feature-group clearfix">
+       <li>
+        <div class="feature-type">
+         <i class="iconimg iconimg-type"></i>
+         <h5>丰富</h5>
+         <p>支持丰富回收多样</p>
+        </div> </li>
+       <li> 
+        <div class="feature-heart">
+         <i class="iconimg iconimg-heart"></i>
+         <h5>用心</h5>
+         <p>一对一的用心服务</p>
+        </div> </li>
+       <li>
+        <div class="feature-safe"> 
+         <i class="iconimg iconimg-safe"></i>
+         <h5>保证</h5>
+         <p>人工处理品牌保证</p>
+        </div> </li>
+       <li>
+        <div class="feature-fast"> 
+         <i class="iconimg iconimg-fast"></i>
+         <h5>极速</h5>
+         <p>处理快捷汇款极速</p>
+        </div> </li>
+       <li>
+        <div class="feature-price"> 
+         <i class="iconimg iconimg-price"></i>
+         <h5>高价</h5>
+         <p>价格公道让您满意</p>
+        </div> 
+	   </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+   {include file="layout/home_wen" /}
+  </div>
+  <script type="text/javascript" src="/static/home/js/particles.min.js?20190520"></script>
+  <script type="text/javascript" src="/static/home/js/index.js?20190520"></script>
+  {/block}

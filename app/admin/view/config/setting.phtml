@@ -1,0 +1,118 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">网站设置</div>
+    <div class="layui-card-body" pad15>
+        <div class="layui-form" wid100 lay-filter="">
+        <form action="{:url('/config/setting')}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">网站LOGO</label>
+                <div class="layui-input-block">
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="test-upload-normal-img" src="{$list.logo|default=''}" width="110" height="110">
+                    </div>
+                    <input type="hidden" name="logo" value="{$list.logo|default=''}" autocomplete="off" placeholder="" class="layui-input">
+                    <button type="button" class="layui-btn ajax-avatar"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">登陆页面背景</label>
+                <div class="layui-input-block">
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="test-upload-normal-img" src="{$list.loginimg|default=''}" width="500" height="200">
+                    </div>
+                    <input type="hidden" name="loginimg" value="{$list.loginimg|default=''}" autocomplete="off" placeholder="" class="layui-input">
+                    <button type="button" class="layui-btn ajax-avatar"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>
+			
+            <div class="layui-form-item">
+                <label class="layui-form-label">网站名称</label>
+                <div class="layui-input-block" style="width: 400px;">
+                    <input type="text" name="sitename" value="{$list.sitename|default=""}"  class="layui-input">
+                </div>
+            </div>
+			 <div class="layui-form-item">
+                <label class="layui-form-label">网站域名</label>
+                <div class="layui-input-inline" style="width: 400px;">
+                    <input type="text" name="domain" value="{$list.domain|default=""}" placeholder="http://或https://" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux" style="color:#d40808!important">不要/结尾</div>
+            </div>
+            <div class="layui-form-item">
+				<label class="layui-form-label">注册开关</label>
+				<div class="layui-input-inline" style="width: 400px;">
+					<input type="checkbox" name="isreg" lay-skin="switch" lay-text="开启|关闭" {if isset($list.isreg) && $list.isreg=='on'} checked{/if}>
+				</div>
+				<div class="layui-input-inline layui-input-company"></div>
+			</div>
+
+			<div class="layui-form-item">
+                <label class="layui-form-label">客服电话</label>
+                <div class="layui-input-block">
+                    <input type="text" name="kefu" value="{$list.kefu|default=""}"  class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">客服QQ</label>
+                <div class="layui-input-block">
+                    <input type="text" name="qq" value="{$list.qq|default=""}"  class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">首页标题</label>
+                <div class="layui-input-block">
+                    <textarea name="title" class="layui-textarea">{$list.title|default=""}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">META关键词</label>
+                <div class="layui-input-block">
+                    <textarea name="keywords" class="layui-textarea" placeholder="多个关键词用英文状态 , 号分割">{$list.keywords|default=""}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">META描述</label>
+                <div class="layui-input-block">
+                    <textarea name="description" class="layui-textarea">{$list.description|default=""}</textarea>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">版权信息</label>
+                <div class="layui-input-block">
+                    <textarea name="copyright" class="layui-textarea">{$list.copyright|default=""}</textarea>
+                </div>
+            </div>
+            
+			<div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">统计代码</label>
+                <div class="layui-input-block" >
+                    <textarea name="tongji" class="layui-textarea">{$list.tongji|default=""}</textarea>
+                </div>
+                
+            </div>
+			<div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">补充信息</label>
+                <div class="layui-input-block" >
+                    <textarea name="buchong" class="layui-textarea">{$list.buchong|default=""}</textarea>
+                </div>
+                
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">备案信息</label>
+                <div class="layui-input-inline" style="width: 400px;">
+                    <input type="text" name="beian" value="{$list.beian|default=""}" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux"  style="color:#d40808!important">工信部备案信息</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+				    <input name="type" type="hidden" value="website">
+                    <button class="layui-btn" lay-submit  lay-filter="*">确认保存</button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+{/block}

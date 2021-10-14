@@ -1,0 +1,60 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">SHOPID</label>
+                <div class="layui-input-block">
+                    <label class="layui-form-label" style="text-align:left">{$data.shopid}</label>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">账户余额</label>
+                <div class="layui-input-block">
+                     <label class="layui-form-label" style="text-align:left">{$data.money}</label>
+                    
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">授信额度</label>
+                <div class="layui-input-block">
+                    <label class="layui-form-label" style="text-align:left">{$data.xin}</label>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                 <label class="layui-form-label">操作类别</label>
+                 <div class="layui-input-block" style="margin-left:0">
+						  <input type="radio" name="type" value="money" title="账户余额" checked=""><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>账户余额</div></div>
+						  <input type="radio" name="type" value="xin" title="授信额度" ><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon layui-anim-scaleSpring"></i><div>授信额度</div></div>
+                </div>
+            </div>
+           
+            <div class="layui-form-item" id="company" >
+                <label class="layui-form-label">加减金额</label>
+                <div class="layui-input-block">
+                    <input type="text" name="money" value="" autocomplete="off" placeholder="请输入修改金额" lay-verify="required|number" class="layui-input">
+                    <div class="layui-form-mid  text-danger" style="">正数为加金额，负数为减金额</div>
+                </div>
+                
+            </div>
+             <div class="layui-form-item" id="company" >
+                <label class="layui-form-label">摘要</label>
+                <div class="layui-input-block">
+                    <textarea type="text" name="remarks" value="" autocomplete="off" placeholder="请输入摘要" lay-verify="required" style="height:100px" class="layui-input"></textarea>
+                </div>
+                
+            </div>
+			
+		
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input name="id" value="{$data.id}" type="hidden">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+

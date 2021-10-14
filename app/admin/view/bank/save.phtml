@@ -1,0 +1,67 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">银行名称</label>
+                <div class="layui-input-block">
+                    <select  lay-filter="one_cate" lay-search="">
+                        <option value="">请选择银行</option>
+                        {volist name="$bankid" id="p"}
+                         <option value="{$p.node.bank_code}|{$p.node.bank_name}" {eq name="$data['procode']|default=0" value="$p.node.bank_code"}selected{/eq}>{$p.node.bank_name}</option>
+                        {/volist}
+                    </select>
+                    <input type="hidden" name="bankName" value="{$data.bankName|default=''}">
+                    <input type="hidden" name="procode" value="{$data.procode|default=''}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">银行代码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="abbr" value="{$data.abbr|default=''}" autocomplete="off" lay-verify="required" placeholder="请输入银行代码"  class="layui-input">
+                </div>
+            </div>
+           <div class="layui-form-item">
+                <label class="layui-form-label">PC端图标</label>
+                <div class="layui-input-block">
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="test-upload-normal-img" src="{$data.logo|default=''}" width="80%" height="80">
+                    </div>
+                    <input type="hidden" name="logo" value="{$data.logo|default=''}" autocomplete="off" placeholder="" class="layui-input">
+                    <button type="button" class="layui-btn ajax-avatar"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>
+			 <div class="layui-form-item">
+                <label class="layui-form-label">WAP端图标</label>
+                <div class="layui-input-block">
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="test-upload-normal-img" src="{$data.logo1|default=''}" width="80%" height="80">
+                    </div>
+                    <input type="hidden" name="logo1" value="{$data.logo1|default=''}" autocomplete="off" placeholder="" class="layui-input">
+                    <button type="button" class="layui-btn ajax-avatar"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{/block}
+{block name="js"}
+<script>
+    form.on('select(one_cate)', function(data){
+        var val=data.value;
+        var str=val.split("|");
+        $("input[name=procode]").val(str[0]);
+        $("input[name=bankName]").val(str[1]);
+
+    });
+</script>
+
+{/block}

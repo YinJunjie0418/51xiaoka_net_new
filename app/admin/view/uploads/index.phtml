@@ -1,0 +1,112 @@
+{extend name="base" /}
+{block name="css"}
+<style>
+    #tableTbImg + .layui-table-view .layui-table-body tbody > tr > td {
+        padding: 0;
+    }
+
+    #tableTbImg + .layui-table-view .layui-table-body tbody > tr > td > .layui-table-cell {
+        height: 146px;
+        line-height: 146px;
+    }
+
+    .tdImg {
+        width: 200px;
+        height: 90px;
+        cursor: zoom-in;
+        border-radius: 10%;
+        border: 2px solid #dddddd;
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="layui-card">
+        <button class="layui-btn layui-btn-danger" type="button" id="delAll"><i class="layui-icon"></i>批量删除</button>
+        <table id="tableTrack" lay-filter="tableTrack"></table>
+        <!-- 表格操作列 -->
+        <script type="text/html" id="tableTBTrack">
+            <a href="{:url('/uploads/del')}?id={{d.id}}" class="layui-btn layui-btn-danger layui-btn-sm ajax-delete">删除</a>
+        </script>
+        <!-- 权限列 -->
+        <script type="text/html" id="status">
+            {{# if(d.status == '0'){ }}
+            <a class="layui-btn layui-btn-primary layui-btn-sm">失效</a>
+            {{# }else if(d.status == '1'){ }}
+            <a class="layui-btn layui-btn-sm">正常</a>
+            {{# } }}
+        </script>
+		<script type="text/html" id="barDemo">
+		  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+		</script>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+
+        // 渲染回访表格
+        var insTb = table.render({
+            elem: '#tableTrack',
+            url: "{:url('/uploads/index_json')}",
+            page: true,
+            cols: [[
+				{type: 'checkbox'},
+                {
+                    align: 'center', templet: function (d) {
+                        var url = d.file_url + '/' + d.file_name;
+                        return '<img src="' + url + '" class="tdImg" tb-img/>';
+                    }, title: '图片', width: 300, unresize: true
+                },
+                {field: 'storage', align: 'center', sort: true, title: '储存位置'},
+                {field: 'file_size', align: 'center', sort: true, title: '文件大小'},
+                {field: 'status', sort: true, templet: '#status', title: '状态'},
+                {align: 'center', toolbar: '#tableTBTrack', title: '操作', minWidth: 200}
+				
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.total, //解析数据长度
+                  "data": res.data.data //解析数据列表
+                };
+            }
+        });
+	
+	    $("#delAll").click(function(){
+            layer.confirm('确认要删除选中信息吗？', {icon: 3}, function(index) {
+                layer.close(index);
+                var checkStatus = table.checkStatus('tableTrack'); //test即为参数id设定的值
+                var ids = [];
+                $(checkStatus.data).each(function (i, o) {
+                    ids.push(o.id);
+                });
+                var loading = layer.load(1, {shade: [0.1, '#fff']});
+                $.post("{:url('/Uploads/delall')}", {ids: ids}, function (data) {
+                    layer.close(loading);
+                    if (data.code === 1) {
+                        layer.msg(data.msg, {time: 1000, icon: 1},function(){
+                        insTb.reload();
+						});
+                    } else {
+                        layer.msg(data.msg, {time: 1000, icon: 2});
+                    }
+                });
+            });
+        });
+        
+        // 点击图片放大
+        $(document).off('click.tbImg').on('click.tbImg', '[tb-img]', function () {
+            layer.photos({photos: {data: [{src: $(this).attr('src')}]}, shade: .1, closeBtn: true});
+        });
+        
+    });
+</script>
+{/block}

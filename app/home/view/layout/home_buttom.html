@@ -1,0 +1,34 @@
+<div class="panel panel-bggray panel-cards">
+    <div class="container">
+     <div class="cards">
+      <ul class="cards-tabs">
+	  {volist name="cardModel" id="p" }
+       <li id="card{$i}" onclick="setTab('card', {$i}, 7);" {eq name="i" value="1"}class="active"{/eq}><a href="javascript:;">
+	   <i class="iconfont {empty name="$p.icon"}text-red">&#59052;{else/}{$p.icon}">{/empty}</i><span>{$p.title}</span><span class="cover"><img src="{$p.image}" /></span></a></li>
+	   {/volist}
+      </ul>
+      <div class="cards-content">
+	  {volist name="cardModel" id="k" key="m"}
+       <div id="con_card_{$m}" class="cards-item {neq name="m" value="1"}hide{/neq}">
+        <div class="cards-group owl-carousel clearfix" id="silder">
+		{volist name="k.comments" id="b"}
+         <div class="item">
+          <div class="cards-cover">
+           <a href="{:url('home/card/index',['id'=>$b.id])}" target="_blank"><img src="{$b.phoneRecycleIcon}" alt="{$b.title}" /></a>
+           <h5 class="title"><a href="{:url('home/card/index',['id'=>$b.id])}">{$b.title}</a></h5>
+           <h6 class="discount">{:hasTone($b.id)}</h6>
+           <div class="actions">
+            <a class="btn btn-default" href="{:url('home/card/index',['id'=>$b.id])}" target="_blank">我有卡要回收</a>
+           </div>
+          </div>
+         </div>
+		 {/volist}
+        </div>
+       </div>
+	   {/volist}
+      </div>
+     </div>
+     <script type="text/javascript" src="__JS__/owl.carousel.min.js"></script>
+     <script>$(".owl-carousel").owlCarousel({items : 7,itemsDesktop: [2048,7],itemsDesktopSmall: [1900,6],itemsTablet: [1280,5],itemsMobile: false,rewindNav: false,scrollPerPage: true,navigation: true,navigationText : ["<i class='iconfont'>&#xe638;</i>", "<i class='iconfont'>&#xe629;</i>"],});</script>
+</div>
+</div>

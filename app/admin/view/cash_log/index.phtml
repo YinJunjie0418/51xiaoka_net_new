@@ -1,0 +1,292 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+							  <form class="layui-form layui-col-space5" >
+								<div class="layui-inline layui-show-xs-block">
+                                <input class="layui-input"  autocomplete="off" placeholder="开始日期" name="starttime" value="{:date('Y-m-d 00:00:00',strtotime('-3 day'))}" id="starttime">
+								</div>
+								<div class="layui-inline layui-show-xs-block">
+									<input class="layui-input"  autocomplete="off" placeholder="截止日期" name="endtime" value="{:date('Y-m-d H:i:s')}" id="endtime">
+								</div>
+								<div class="layui-inline layui-show-xs-block">
+								 <select name="type" id="selt" lay-skin="select">
+									 <option value="shopid">SHOPID</option>
+									 <option value="tmporder|orderno|cardorder">订单号</option>
+									 <option value="money">充值金额</option>
+                                     <option value="number">充值号码</option>
+									 <option value="cardno">卡号</option>
+								 </select>
+                                </div>
+								<div class="layui-inline layui-show-xs-block">
+								<input type="hidden" id="typen" value="">
+								<input type="hidden" id="money" value="">
+                                    <input type="text" name="username" placeholder="搜索内容" autocomplete="off" class="layui-input">
+								</div>
+                                  <div class="layui-inline layui-show-xs-block">
+                                      <button class="layui-btn" type="button" lay-submit="" lay-filter="sreach" lay-skin="select" lay-filter="type">
+                                          <i class="layui-icon">&#xe615;</i></button>
+
+                                      <button class="layui-btn layui-btn-danger" type="button" >
+                                          API总调用次数：{$num}</button>
+                                      <button class="layui-btn layui-btn-normal" type="button" >
+                                          代充费用：{$feeamount}</button>
+                                          <button class="layui-btn" type="button" id="printno" lay-event="LAYTABLE_EXPORT">
+                                        导出</button>
+                                  </div>
+                                  <input type="hidden" value="" name="state" id="seltt">
+                                  
+                                 <div class="layui-btn-group layui-show-xs-block" id="allbutton" style="display:block">
+								   <button class="layui-btn" style="margin-bottom:8px" type="button" id="typeClick" lay-type="" >全 部</button>
+								   {volist name="li" id="p"}
+                                    <button class="layui-btn layui-btn-primary" style="margin-bottom:8px" type="button" id="typeClick" lay-type="{$p.geway}" >{$p.title}【{$p.mianzhi}】</button>
+                                   {/volist}									
+                                </div>
+                                 <div class="layui-inline layui-show-xs-block" id="dorder">
+                                        <button class="layui-btn layui-btn-default" type="button" id="sall" lay-type="0">全部订单</button>
+										<button class="layui-btn layui-btn-primary" type="button" id="sall" lay-type="1">正在处理</button>
+								     	<button class="layui-btn layui-btn-primary" type="button" id="sall" lay-type="2">成功订单</button>
+								     	<button class="layui-btn layui-btn-primary" type="button" id="sall" lay-type="3">失败订单</button>
+                                        <button class="layui-btn layui-btn-primary" type="button" id="sall" lay-type="4">待审核</button>
+                                </div>
+
+								</form>
+								<input type="hidden" id="font-primary" >
+                        </div>
+		<table id="tableList" lay-filter="tableList"></table>
+</div>
+
+
+
+   <script type="text/html" id="tmporder">
+      <a ew-href="{:url('/CashOrder/index')}?orderno={{d.tmporder}}">业:{{d.number}}</p>流:{{d.tmporder}}</a>
+   </script>
+   
+   <script type="text/html" id="shopid">
+      寄:{{d.ouid}}</p>充:{{d.uid}}
+   </script>
+    <script type="text/html" id="order">
+      单:{{d.orderno}}</p>凭:{{d.voucher}}
+   </script>
+   
+   <script type="text/html" id="card">
+      <a ew-href="{:url('/Order/index')}?orderno={{d.cardorder}}" style="color:red">卡:{{d.cardno}}</p>单:{{d.cardorder}}</a>
+   </script>
+     <script type="text/html" id="state">
+      {{d.state}}</p>{{d.ovtime}}
+   </script>
+   	<script type="text/html" id="caoz">
+		<div class="layui-btn-group">
+        {{# if(d.getstate==3){}}
+    		<button class="layui-btn ajax-iframe" href="{:url('/CashLog/shenhe')}?id={{d.id}}" data-width="850px" data-height="410px" >成功</button>
+    		<button class="layui-btn ajax-iframe" href="{:url('/CashLog/Failure')}?id={{d.id}}" style="background: #ff2e14;"  data-width="850px" data-height="500px" >失败</button>
+    	{{# }else{ }}
+    	    <button class="layui-btn layui-btn-disabled"  >成功</button>
+    		<button class="layui-btn layui-btn-disabled" >失败</button>
+		{{# }}}
+		<button class="layui-btn layui-btn-normal"  lay-event="chaxun">查询</button>
+		<button class="layui-btn layui-btn-danger" style="background-color: #198bfc;"lay-event="issue">手动回掉</button>
+		</div>
+   </script>
+{/block}
+{block name="js"}
+<script src="/static/simple/js/clipboard.min.js"></script>
+<script>
+    layui.use(['layer', 'form', 'table', 'laydate'], function () {
+        var $ = layui.jquery,layer = layui.layer,form = layui.form,table = layui.table,laydate=layui.laydate;
+        var stt=$("#starttime").val(),set=$("#endtime").val();
+		var insTb = table.render({
+            elem: '#tableList',
+            id:'tabl',
+            url: "{:url('/CashLog/index')}?se="+set+"&st="+stt,
+            page: true,
+            limit:15,
+            limits:[15,30,45,60,75,90],
+            cellMinWidth: 100,
+            totalRow:true,
+            cols: [[
+                {field:'id',type: 'checkbox',filter:"ids",width:30,minWidth:30},
+				{field: 'orderno',title:"订单号/充值凭证",toolbar: '#order', align: 'left', sort: true,width:200},
+				{field:'tmporder', toolbar: '#tmporder',title: '业务号码/流水',align: 'left',width:200},
+				{field:'uid',title:"商户信息",toolbar: '#shopid', align: 'left', width:100},
+				{title: '充值卡号/流水',toolbar: '#card',field:'number',style:"color:#ff5722",align: 'left',sort: true,width:210},
+				{field:'money',title: '面额',style:"color:#c60",align: 'center',width:70},
+				{field:'price',title: "实际到账",style:"color:#00a65a",align: 'center',totalRow: true,width:90},
+                {field:'feeamount',title: "代充费用",style:"color:#fb1c00",align: 'center',totalRow: true,width:90},
+				{field:'oper', align: 'center',title:'代充通道',width:120},
+				{field:'create_time', align: 'center',title:'充值时间',width:180},
+                {field:'state', align: 'center',toolbar: '#state',title:'状态',width:120},
+                {field:'remarks', align: 'center',title:'备注',width:180},
+                {toolbar:'#caoz', align: 'center',title:'操作',width:320},
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.total, //解析数据长度
+                  "data": res.data.data //解析数据列表
+                };
+            }
+        });
+		var nowTime=new Date();    
+		var startTime=laydate.render({
+			elem:'#starttime',
+			type:'datetime',
+			btns: ['confirm'],
+			max:'nowTime',//默认最大值为当前日期
+			done:function(value,date){
+				endTime.config.min={    	    		
+					year:date.year,
+					month:date.month-1,//关键
+					date:date.date,
+					hours:date.hours,
+					minutes:date.minutes,
+					seconds:date.seconds
+				};
+				
+			}
+		})
+		var endTime=laydate.render({
+			elem:'#endtime',
+			type:'datetime',
+			btns: ['confirm'],
+			max:'23:59:59',
+			done:function(value,date){   	   
+				startTime.config.max={
+						year:date.year,
+						month:date.month-1,//关键
+						date:date.date,
+				}
+				
+			}
+		})
+		
+		table.on('row(tableList)', function(obj){
+		        var data = obj.data;
+		        $("#font-primary").val("");
+		    	var checkStatus = table.checkStatus("tableList"),str="";
+                    $(checkStatus.data).each(function (i,o) {
+                		str+=o.card_no+" "+o.card_key+"\n";
+                    });
+                    if($(this).find(".layui-form-checked").length==1){
+    		            str+=data.card_no+" "+data.card_key+"\n";
+    		        }else{
+    		            str=str.replace(data.card_no+" "+data.card_key+"\n","");
+    		        }
+                $("#font-primary").val(str);
+		})
+
+        table.on('tool(tableList)', function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            var indexs = layer.load(3, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+            switch (layEvent) {
+                case 'chaxun':
+                    $.post("{:url('/CashLog/findorder')}",{id:data.id},function (e) {
+                        console.log(e);
+                        layer.close(indexs);
+                        layer.msg(e.msg, {
+                            time: 1000,
+                            shade: 0.3
+                        },function(){
+                            insTb.reload();
+                        });
+                    })
+                    break;
+                case "issue":
+                    $.post("{:url('/CashLog/sendPost')}",{order:data.tmporder},function (e) {
+                        console.log(e);
+                        layer.close(indexs);
+                        layer.msg(e.msg, {
+                            time: 1000,
+                            shade: 0.3
+                        });
+                    })
+                    break;
+            }
+        })
+		
+
+		  form.on('submit(sreach)', function(obj){
+            loading =layer.load(1, {shade: [0.1,'#fff']});
+            var name=$("input[name=username]").val();
+			var kk=$("#selt").val(),st=$("#starttime").val(),se=$("#endtime").val();
+			var state=$("#seltt").val(),cl=$("#typen").val();
+			var index = layer.load(3, {
+					  shade: [0.1,'#fff'] //0.1透明度的白色背景
+					});
+                 insTb.reload({
+					page:{curr:1
+						 },
+                     where:{
+						 name:name,
+						 kk:kk,
+						 st:st,
+						 se:se,
+						 state:state,
+						 classa:cl,
+                     }
+                 });
+				 layer.close(index);
+        });
+		
+		//卡类查询
+		$("#allbutton").on("click","#typeClick",function(){
+            var index =layer.load(1, {shade: [0.1,'#fff']});
+		    var e=$(this);
+			e.siblings().addClass("layui-btn-primary");
+			e.removeClass("layui-btn-primary");
+			$("#typen").val(e.attr('lay-type'));
+            var name=$("input[name=username]").val();
+			var kk=$("#selt").val(),st=$("#start").val(),se=$("#end").val();
+			var state=$("#seltt").val(),cl=$("#typen").val();
+                 insTb.reload({
+					page:{curr:1
+						 },
+                     where:{
+						 name:name,
+						 kk:kk,
+						 st:st,
+						 se:se,
+						 state:state,
+						 classa:cl,
+                     }
+                 });
+				 layer.close(index);
+		});
+		
+		$("#dorder").on("click","#sall",function(){
+		    var e=$(this);
+			e.siblings().addClass("layui-btn-primary");
+			e.removeClass("layui-btn-primary");
+			$("#seltt").val(e.attr('lay-type'));
+            var name=$("input[name=username]").val();
+			var kk=$("#selt").val(),st=$("#start").val(),se=$("#end").val();
+			var state=$("#seltt").val(),cl=$("#typen").val();
+                 insTb.reload({
+					page:{curr:1
+						 },
+                     where:{
+						 name:name,
+						 kk:kk,
+						 st:st,
+						 se:se,
+						 state:state,
+						 title:cl,
+                     }
+                 });
+		});
+			$("#printno").click(function(){
+				var name=$("input[name=username]").val();
+				var kk=$("#selt").val(),st=$("#starttime").val(),se=$("#endtime").val();
+				var state=$("#seltt").val(),cl=$("#typen").val();
+				location.href="{:url('/CashLog/export')}?type=card&name="+name+"&kk="+kk+"&st="+st+"&se="+se+"&state="+state+"&classa="+cl;
+		});
+
+
+    });
+
+</script>
+{/block}

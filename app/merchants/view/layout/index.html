@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ {block name="titile"}
+ <title>{$C['sitename']}-{$C['title']} </title>
+ <meta name="keywords" content="{$C['keywords']}" />
+ <meta name="description" content="{$C['description']}" />
+ <meta http-equiv="Cache-Control" content="no-cache, no-store">
+ {/block}
+ <meta name="robots" content="all" />
+ <link href="__CSS__/animate.css?20191011" rel="stylesheet" />
+ <link href="__CSS__/common.css?{:time()}" rel="stylesheet" />
+ <link href="__CSS__/base.css?2020132527" rel="stylesheet" />
+ <script type="text/javascript" src="__JS__/j_lipin.js?20190520"></script>
+ <script type="text/javascript" src="__JS__/library.js?20150"></script>
+ <script type="text/javascript" src="__JS__/common.js?2086595557"></script>
+</head>
+<body>
+<div class="header" id="header">
+ <div class="navbar " id="navbar" data-navbar="">
+  <div class="container-fluid">
+   <div class="navbar-brand" id="logo">
+    <a href="/"><span class="logo"><img src="{$C['logo']}" style="display:block;margin: auto;width: auto;height: 60px;" alt="{$C['sitename']}" /></span></a>
+   </div>
+  </div>
+ </div>
+</div>
+{block name="content"}内容视图{/block}
+<div class="footer" id="footer">
+
+ <div class="footer-about">
+  <div class="container">
+   <ul class="clearfix" style="text-align:center;margin-top:20px">
+    <li style="margin:0 8px;float:left;border: 1px solid #ccc;padding: 2px 8px;"><span>友情链接</span></li>
+    {volist name=":get_link(5,'desc')" id="p"}
+    <li style="margin:0 8px;float:left;padding: 2px 8px;"><a href="{$p.url}" target="{$p.target}" rel="nofollow"><span>{$p.name}</span></a></li>
+    {/volist}
+   </ul>
+
+  </div>
+ </div>
+ <div class="footer-about">
+  <div class="container">
+   <ul class="authentication clearfix">
+    {volist name=":get_link(6,'desc')" id="p"}
+    <li><a href="{$p.url}" target="{$p.target}" rel="nofollow"><i class="iconimg"><img style="display: block;
+    height: 100%;" src="{$p.image}"></i><span>{$p.name|raw}</span></a></li>
+    {/volist}
+   </ul>
+   <div class="copyright">
+    <p>{$C['copyright']}<span class="sep">|</span><a href="/" target="_blank">{$C['sitename']}</a></p>
+    <p><a href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_blank" rel="nofollow">ICP证：{$C['beian']}</a>{$C['buchong']|raw}</p>
+   </div>
+  </div>
+ </div>
+</div>
+
+{$C['tongji']|raw}
+</body>
+</html>

@@ -1,0 +1,213 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">点卡名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" value="{$data.title|default=''}" autocomplete="off" placeholder="请输入分类名称" class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">选择分类</label>
+                <div class="layui-input-block">
+                    <select name="cid" id="model" >
+                        {foreach name="fenlei" item="r"}
+                        <option value="{$r.id}" {if condition="isset($data) and $data.cid eq $r.id"}selected="selected"{/if}>{$r.title}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择销卡渠道</label>
+                <div class="layui-input-block">
+                    <select name="tid" id="model" >
+                        <option value="0" {if condition="isset($data) and $data.tid eq 0"}selected="selected"{/if}>站内消耗</option>
+                        {foreach name="oper" item="p"}
+                        <option value="{$p.id}" {if condition="isset($data) and $data.tid eq $p.id"}selected="selected"{/if}>{$p.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">通道标识</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="type" value="{$data.type|default=''}" autocomplete="off" placeholder="请输入通道标识" class="layui-input">
+                </div>
+				<div class="layui-form-mid layui-word-aux text-danger">此通道标识是给本站API用户识别卡类的与其他平台无关</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">通道代码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="class" value="{$data.class|default=''}" autocomplete="off" placeholder="请输入通道代码" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux text-danger">此通道代码是上游给的通道识别代码</div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">系统费率</label>
+                <div class="layui-input-inline" >
+                    <input type="text" name="sysrate" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d\.]/g,'')" value="{$data.sysrate|default=''}" autocomplete="off" placeholder="请输入系统费率" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux text-danger">用于计算利润，如0.98，实体卡可以直接输入利润如2</div>
+            </div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">提交类别</label>
+				<div class="layui-input-block">
+				  <input type="checkbox" name="batch" title="批量卡密" {eq name="$data.batch|default=''" value="1"}checked=""{/eq}><div class="layui-unselect layui-form-checkbox"><span>批量卡密</span><i class="layui-icon layui-icon-ok"></i></div>
+				  <input type="checkbox" name="single" title="单张卡密" {eq name="$data.single|default=''" value="1"}checked=""{/eq} ><div class="layui-unselect layui-form-checkbox layui-form-checked"><span>单张卡密</span><i class="layui-icon layui-icon-ok"></i></div>
+				</div>
+			  </div>
+			<div class="layui-form-item">
+					<label class="layui-form-label">是否自动</label>
+					<div class="layui-input-block">
+						<input type="radio" name="is_auto" value="0" title="手动" {eq name="$data.is_auto|default=0" value="0"}checked{/eq}/>
+						<input type="radio" name="is_auto" value="1" title="自动" {eq name="$data.is_auto|default=0" value="1"}checked{/eq}/>
+					</div>
+            </div>
+			<div class="layui-form-item">
+					<label class="layui-form-label">是否热门</label>
+					<div class="layui-input-block">
+						<input type="radio" name="is_hot" value="0" title="取消" {eq name="$data.is_hot|default=0" value="0"}checked{/eq}/>
+						<input type="radio" name="is_hot" value="1" title="热门" {eq name="$data.is_hot|default=0" value="1"}checked{/eq}/>
+					</div>
+            </div>
+			<div class="layui-form-item">
+					<label class="layui-form-label">企业专用</label>
+					<div class="layui-input-block">
+						<input type="radio" name="isqiye" value="0" title="否" {eq name="$data.isqiye|default=0" value="0"}checked{/eq}/>
+						<input type="radio" name="isqiye" value="1" title="是" {eq name="$data.isqiye|default=0" value="1"}checked{/eq}/>
+					</div>
+            </div>
+			<div class="layui-form-item">
+					<label class="layui-form-label">只需卡密</label>
+					<div class="layui-input-block">
+						<input type="radio" name="iskami" value="0" title="卡号密码" {eq name="$data.iskami|default=0" value="0"}checked{/eq}/>
+						<input type="radio" name="iskami" value="1" title="只需卡密" {eq name="$data.iskami|default=0" value="1"}checked{/eq}/>
+					</div>
+            </div>
+			<div class="layui-form-item">
+					<label class="layui-form-label">自定费率</label>
+					<div class="layui-input-block">
+						<input type="radio" name="isjiaji" lay-filter="levelM" value="0"  title="禁用" {eq name="$data.isjiaji|default=0" value="0"}checked{/eq}/>
+						<input type="radio" name="isjiaji" lay-filter="levelM" value="1" title="可以" {eq name="$data.isjiaji|default=0" value="1"}checked{/eq}/>
+					</div>
+            </div>
+            
+            <div class="layui-form-item" id="qujian" {eq name="$data.isjiaji|default=0" value="0"}style="display:none" {/eq}>
+                <div class="layui-inline">
+                  <label class="layui-form-label">定义区间</label>
+                  <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" name="pricemin"  onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d\.]/g,'')" value="{$data.pricemin|default=''}" class="layui-input">
+                  </div>
+                  <div class="layui-form-mid">-</div>
+                  <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" name="pricemax" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d\.]/g,'')" value="{$data.pricemax|default=''}" class="layui-input">
+                  </div>
+                </div>
+                 <div class="layui-inline">
+                  <label class="layui-form-label">定义利润</label>
+                  <div class="layui-input-inline" style="width: 100px;">
+                    <input name="porfitjia"  autocomplete="off" type='text'  onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" onafterpaste="this.value=this.value.replace(/[^\d\.]/g,'')" step="0.01" value="{$data.porfitjia|default=''}" class="layui-input">
+                  </div>
+                 <div class="layui-form-mid layui-word-aux text-danger">客户自定义费率才有效，如0.02 表示2%的利润</div>
+                </div>
+            </div>
+
+		
+			<div class="layui-form-item">
+					<label class="layui-form-label">显示模式</label>
+					<div class="layui-input-block">
+						<input type="radio" name="mode" value="0" title="显示折扣" {eq name="$data.mode|default=0" value="0"}checked{/eq}/>
+						<input type="radio" name="mode" value="1" title="回收实价" {eq name="$data.mode|default=0" value="1"}checked{/eq}/>
+						
+					</div>
+            </div>
+			<div class="layui-form-item">
+					<label class="layui-form-label">上传图片</label>
+					<div class="layui-input-block">
+						<input type="radio" name="iscode" value="0" title="无需图片" {eq name="$data.iscode|default=0" value="0"}checked{/eq}/>
+						<input type="radio" name="iscode" value="1" title="需二维码" {eq name="$data.iscode|default=0" value="1"}checked{/eq}/>
+						<input type="radio" name="iscode" value="2" title="需实体图" {eq name="$data.iscode|default=0" value="2"}checked{/eq}/>
+					</div>
+            </div>
+			
+			<div class="layui-form-item">
+					<label class="layui-form-label">需验证码</label>
+					<div class="layui-input-block">
+						<input type="radio" name="isyzm" value="0" title="无验证码" {eq name="$data.isyzm|default=0" value="0"}checked{/eq}/>
+						<input type="radio" name="isyzm" value="1" title="需验证码" {eq name="$data.isyzm|default=0" value="1"}checked{/eq}/>
+						<input type="radio" name="isyzm" value="2" title="需CVV2码" {eq name="$data.isyzm|default=0" value="2"}checked{/eq}/>
+					</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">验证规则</label>
+                <div class="layui-input-block">
+                    <input type="text" name="regularity" value="{$data.regularity|default=''}" autocomplete="off" placeholder="请输入验证码规则" class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">提交例子</label>
+                <div class="layui-input-block">
+                    <input type="text" name="lizi" value="{$data.lizi|default=''}" autocomplete="off" placeholder="请输入提交例子" class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+                <label class="layui-form-label">输入提醒</label>
+                <div class="layui-input-block">
+                    <input type="text" name="note" value="{$data.note|default=''}" autocomplete="off" placeholder="请输入提醒" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">卡小图标</label>
+                <div class="layui-input-block">
+                    <input type="text" name="iconurl" value="{$data.iconurl|default=''}" autocomplete="off" placeholder="请上传点卡小图标" class="layui-input">
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-images"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>
+			 <div class="layui-form-item">
+                <label class="layui-form-label">卡大图标</label>
+                <div class="layui-input-block">
+                    <input type="text" name="phoneRecycleIcon" value="{$data.phoneRecycleIcon|default=''}" autocomplete="off" placeholder="请上传点卡大图标" class="layui-input">
+                    <button type="button" class="layui-btn layui-btn-primary layui-btn-position ajax-images"><i class="fa fa-file-image-o"></i> 选择图片</button>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    form.on('radio(levelM)', function (data) {
+       if(data.value==1){
+           $("#qujian").show();
+       }else{
+           $("#qujian").hide();
+       }
+    });
+    form.on('select(pid)', function(data){
+        var that = $(this);
+        var cid = data.value;
+        $.ajax({ 
+            type: 'POST',
+            url: "{:url('/category/get_pcategory')}",
+            data:{id:cid},
+            success:function(ret) {
+                console.log(ret.data);
+                $('#model').empty();
+                $('#model').append("<option value="+ret.data.model+">"+ret.data.name+"</option>");
+                form.render('select');
+            },
+            dataType:'json',
+        });
+    });
+
+</script>
+{/block}
+

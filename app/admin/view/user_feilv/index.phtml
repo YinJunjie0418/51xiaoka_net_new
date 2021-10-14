@@ -1,0 +1,91 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-header">
+        <div class="layui-btn-group">
+            <a href="{:url('/UserFeilv/add')}" class="layui-btn ajax-iframe" data-width="600px" data-height="390px"><i class="fa fa-plus-circle"></i> 添加费率组</a>
+        </div>
+    </div>
+    
+    <table id="tableList" lay-filter="tableList"></table>
+    <!-- 表格操作列 -->
+    <script type="text/html" id="tableTBTrack">
+        <button href="{:url('/UserFeilv/gengxin')}?id={{d.id}}"  class="layui-btn layui-btn-danger layui-btn-sm ajax-action" style="background: #f71f04;">更新到费率组</button>
+        <button lay-event="bianji" class="layui-btn layui-btn-normal layui-btn-sm">费率设置</button>
+        <a href="{:url('/UserFeilv/editfeilv')}?id={{d.id}}" class="layui-btn layui-btn-sm ajax-iframe" data-width="600px" data-height="380px">修改</a>
+        <a href="{:url('/UserFeilv/delfeilv')}?id={{d.id}}" class="layui-btn layui-btn-danger layui-btn-sm ajax-delete">删除</a>
+    </script>
+    <!-- 权限列 -->
+    <script type="text/html" id="status">
+        <input type="checkbox" name="status" lay-skin="switch" lay-filter="*" lay-text="正常|锁定" data-url="{:url('/UserFeilv/editfeilv')}?id={{d.id}}" {{d.status==1?'checked':''}}>
+    </script>
+    
+    <script type="text/html" id="isrest">
+        <input type="checkbox" name="isrest" lay-skin="switch" lay-filter="*" lay-text="可以重提|不可重提" data-url="{:url('/UserFeilv/editfeilv')}?id={{d.id}}" {{d.isrest==1?'checked':''}}>
+    </script>
+    
+    
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dropdown'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var admin = layui.admin;
+        var dropdown = layui.dropdown;
+
+        // 渲染回访表格
+        var insTb = table.render({
+            elem: '#tableList',
+            url: "{:url('/UserFeilv/index')}",
+            page: true,
+            cellMinWidth: 100,
+            limit:'15',
+            limits:['15','30','50','100','200','500'],
+            size:'lg',
+            cols: [[
+                {type:'numbers',title:'#'},
+                {field: 'name', align: 'left', sort: true, title: '用户组'},
+                {field: 'description', align: 'center', sort: true, title: '描述'},
+                {align: 'center', sort: true, title: '过期卡',templet:'#isrest',width:160},
+                {align: 'center', sort: true, title: '状态',templet:'#status',width:100},
+                {align: 'center', toolbar: '#tableTBTrack', title: '操作', minWidth: 190}
+            ]],
+            parseData: function(res){ //res 即为原始返回的数据
+                return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": res.data.total, //解析数据长度
+                  "data": res.data.data //解析数据列表
+                };
+            }
+        });
+
+        table.on('tool(tableList)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            switch(layEvent){
+                case "bianji":
+                    var one=openUrl("编辑费率【"+data.name+"】<span style='color:red'>(点击费率出现输入框,修改完成点击其他地方自动保存)</span>",'880px','720px',"{:Url('/UserFeilv/feilv')}?id="+data.id);
+                    break;
+            }
+            function openUrl(title,width,height,url){
+                var index = layer.open({
+                    title: title,
+                    type: 2,
+                    shadeClose:true,
+                    area: [width, height],
+                    content: url,
+                })
+                return index;
+            }
+        });
+
+    });
+
+</script>
+{/block}

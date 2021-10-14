@@ -1,0 +1,54 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+            <div class="layui-form-item">
+                <label class="layui-form-label">接收人</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" value="" autocomplete="off" placeholder="单人发送填写SHOPID，全体会员发送填写all,选择用户组发送此处留空"  class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux text-danger" style="margin-left: 100px">单人发送填写SHOPID，多人发送SHOPID用|号隔开，全体会员发送填写all,选择用户组发送此处留空</div>
+            </div>
+
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">充值用户组</label>
+                <div class="layui-input-block">
+                    {volist name="selllist" id="p"}
+                    <input type="checkbox" name="sell[{$p.id}]" lay-skin="primary" title="{$p.name}" ><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><span>{$p.name}</span><i class="layui-icon layui-icon-ok"></i></div>
+                    {/volist}
+                </div>
+            </div>
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">寄售用户组</label>
+                <div class="layui-input-block">
+                    {volist name="shoplist" id="p"}
+                    <input type="checkbox" name="shop[{$p.id}]" lay-skin="primary" title="{$p.name}" ><div class="layui-unselect layui-form-checkbox" lay-skin="primary"><span>{$p.name}</span><i class="layui-icon layui-icon-ok"></i></div>
+                    {/volist}
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">发送标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" value="" style="max-width:400px" autocomplete="off" placeholder="发送标题30字以内" maxlength="30" class="layui-input">
+                </div>
+                
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">发送内容</label>
+                <div class="layui-input-inline" style="width: 50%">
+                    <textarea placeholder="请输入内容" name="content" style="height:300px;" class="layui-textarea" lay-verify='required'></textarea>
+                </div>
+                <div class="layui-input-inline layui-input-company"></div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-filter="*" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+

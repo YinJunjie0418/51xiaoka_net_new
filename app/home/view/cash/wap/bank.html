@@ -1,0 +1,104 @@
+{include file="layout/wap/tou2" /}
+<div class="myheader" id="myheader">
+	<header class="header "><button class="btn btn-back fl" type="button" onclick="javascript:history.back(-1);"><i class="iconfont iconfont-back"></i></button><a class="btn btn-guide fl" href="{:url('home/helpfaq/index')}"><i class="iconfont iconfont-book"></i></a>
+		<div class="header-title">
+			<h1 class="title">我要提现</h1>
+		</div>
+		<button class="btn btn-service fr" type="button" data-toggle="matte" data-target="#service"><i class="iconfont iconfont-service"></i></button></header>
+</div>
+<div class="mycontent mycontent-hastabs" id="mycontent">
+	<div class="myfixed">
+		<div class="tabs navbar navbar-inverse">
+			{eq name="$pei.alitype" value="1"}
+			<a class="tab-item " href="{:url('home/Cash/index')}"><span>提现至支付宝</span></a>{/eq}
+			{eq name="$pei.banktype" value="1"}
+			<a class="tab-item active" href="{:url('home/Cash/bank')}"><span>提现至银行卡</span></a>{/eq}
+			{eq name="pei.wxtype" value="1"}
+			<a class="tab-item" href="{:url('home/Cash/weixin')}"><span>提现至微信</span></a>{/eq}
+		</div>
+	</div>
+	<div class="form-primary">
+		<form action="{:url('home/Cash/withdraw')}" method="post" id="formbtn">
+			<div class="card">
+				<div class="alert alert-alt alert-danger text-center" style="margin-bottom: 0; ">
+					因费率及到账延时问题，银行卡每日限制提现1次{eq name="$pei.bankfeilv" value="0"},免手续费{else/}{lt name="$pei.bankfeilv" value="1"}每笔手续费{$pei.bankfeilv}% {else/}每笔手续费{$pei.bankfeilv}元{/lt}{/eq}
+				</div>
+				{volist name="list" id="p"}
+				<div class="cashlist" id="cashlist">
+					<label class="cell cell-label" for="bank_{$p.id}">
+						<div class="cell-hd">
+							<img class="img-36" src="{$p.logo1}" alt="">
+						</div>
+						<div class="cell-bd">
+							<h5 class="text-gray">{$p.bankname}</h5>
+							<p>
+								尾号 {:substr($p.accounts,-5)}
+							</p>
+						</div>
+						<div class="cell-ft">
+							<input class="icheck" type="radio" checked="" name="bank_id" id="bank_{$p.id}" value="{$p.id}"><i class="owlicon owlicon-checked"></i>
+						</div>
+					</label>
+				</div>
+				{/volist}
+				<div class="card-footer">
+					<div class="cell cell-condensed">
+						<div class="cell-bd">
+							<p class="text-light h5" data-dialog="{:url('home/Bank/addbank')},600,添加银行卡">
+								<i class="plus"></i> 添加银行卡帐号
+							</p>
+						</div>
+						<div class="cell-ft">
+							<a class="text-blue" href="{:url('home/Member/setcash')}">管理</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" style="width: 90%;margin: 20px auto;" >
+
+				<input class="form-control " name="moneyoff" id="moneyoff" type="number" num="0|0.00" maxlength="8" null="请输入要提现的金额" autocomplete="off" placeholder="请输入提现金额"  data_yuer="{$user.money}" data_feilv="{$pei.bankfeilv}" onkeyup="tipss()">
+				<div class="form-action">
+					<a class="text-blue" href="javascript:void(0);">可提现{$user.money}</a>
+				</div>
+				<div class="cell cell-condensed">
+					<div class="cell-bd">
+						最低提现{$pei.bank_min}元，单笔提现不能超过{$pei.bank_max}元，推荐支付宝提现
+					</div>
+
+				</div>
+				<div class="cell cell-condensed" id="tips" style="display:none;color:red">
+				</div>
+			</div>
+
+			<div class="form-group" style="width: 90%;margin: 20px auto;">
+				<input class="form-control" id="codeno" name="codeno" type="number" null="请输入短信验证码" placeholder="请输入短信验证码" reg="[0-9]{6}">
+				<div class="form-action">
+					<a class="text-blue" href="javascript:;" data-href="{:url('home/Api/sendMsg',['scene'=>'cash','tip'=>'mcode'])},,top-right,post" id="mcode" data_money="" data_minmoney="{$pei.bank_min}" data_maxmoney="{$pei.bank_max}">获取验证码</a>
+				</div>
+			</div>
+			<div class="cells-tips text-center">
+				<p class="text-light">
+					如显示提现成功但仍未到账可联系客服查询银行处理结果
+				</p>
+			</div>
+			<div class="myaction-wrapper">
+				<div class="myaction">
+					<div class="btn-group">
+						{:token_field()}
+						<input type="hidden" name="type" value="bank">
+						<button class="btn btn-primary" type="button"  id="anjian" data-form="top-left,json" name="formbtn">确定提现</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="tooltip" id="tooltip" style="display: none;">
+	<div class="tooltip-arrow">
+	</div>
+	<a class="tooltip-close close" href="javascript:;">×</a>
+	<div class="tooltip-inner">
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-card">
+    <div class="layui-card-body" id="mybutton">
+        <form action="{:request()->url()}" class="layui-form" method="post">
+			<div class="layui-form-item">
+                <label class="layui-form-label">选择API</label>
+                <div class="layui-input-block">
+                    <select name="cid" id="model" >
+                        {foreach name="fenlei" item="r"}
+                         <option value="{$r.id}" >{$r.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                    <label class="layui-form-label">通道比例</label>
+                    <div class="layui-input-inline layui-show-xs-block" >
+                        <input type="number" name="bili" value="" autocomplete="off" placeholder="未输入通道占比默认0%" class="layui-input">
+                    </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="hidden" name="id" value="{$id}">
+                    <button class="layui-btn" lay-filter="i" lay-submit="">保存</button>
+                    <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}
+
+
